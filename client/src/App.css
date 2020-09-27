@@ -1,0 +1,156 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.Charsheet {
+  text-align: left;
+}
+.charsheet-box {
+  border: 2px solid blue;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+
+
+.Header {
+  background-color: aqua;
+}
+
+
+
+.label-field  {
+  width: 50%;
+  float: left;
+}
+
+.value-field  {
+  width: 50%;
+  float: right;
+  text-align: right;
+}
+
+.label-input  {
+  width: 100%;
+  float: left;
+}
+
+.value-input  {
+  width: 100%;
+  float: right;
+  text-align: right;
+}
+
+.column {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.container {
+  padding-left: 0;
+  padding-right: 0;
+  /* margin: 0; */
+}
+.line-container {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.charsheet-column {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.pt-pair {
+  margin: 0;
+}
+.trait1 {
+  text-align: left;
+  margin: 0;
+}
+
+.traitVals {
+  text-align: center;
+  margin: 0;
+}
+
+.trait2 {
+  text-align: right;
+  margin: 0;
+}
+
+.value-display {
+  width: 100%;
+  height: 100%;
+}
+
+.login-field {
+  text-align: center;
+}
+
+.Footer {
+  background-color: aqua;
+}
+
+.bug {
+  display: flex;
+  float: right;
+  
+}
+
+.bug-field{
+  display: flex;
+}
+
+.bug-report {
+  font-size: 12px;
+}
+
+
+.Roller {
+  border: 2px solid purple;
+  border-radius: 10px;
+  padding: 0;
+}
+
+.dice-selection {
+  border: 1px solid purple;
+  border-radius: 9px;
+  padding: 0;
+  /* margin-left: 15px; */
+  margin: 0 15px;
+}
+
+.roll-results {
+  border: 1px solid purple;
+  border-radius: 9px;
+  padding: 0;
+  /* margin-right: 15px; */
+  margin: 0 15px;
+}
