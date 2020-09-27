@@ -83,7 +83,8 @@ export default function Access(props) {
     function handleLoginClick() {
         console.log("DOING THIS: handleLoginClick")
         const loginData={
-            login: email,
+            email: email,
+            userName: userName,
             password: password
         }
         Auth.authenticate(loginData, props.setUserId)
@@ -114,9 +115,9 @@ export default function Access(props) {
             alert("Password fields do not match.");
             // moveFocus("pass-val");
         } else {
-            console.log("Registering user ", email);
-            alert("Registering user...");
+            console.log("Registering user ", email," / ",userName);
             regUser();
+            props.setShowThis(false);
         }
     }
 
@@ -125,7 +126,9 @@ export default function Access(props) {
         const payload = {
             email: email,
             userName: userName,
-            password: password
+            password: password,
+            loggedIn: false,
+            privilege: 'user'
         }
         Auth.register(payload, props.setUserId);
     }

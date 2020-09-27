@@ -21,7 +21,7 @@ function Header (props) {
                     loggedIn ? (
                         <button onClick={logout}>Log Out</button>
                     ) : (
-                        <button onClick={()=>setShowAccess(!showAccess)}>Log In</button>
+                        <button onClick={()=>setShowAccess(!showAccess)}>Log In/Register</button>
                     )
                 }
                 {

@@ -4,7 +4,8 @@ const UserSchema = new mongoose.Schema ({
     email: {type: String, unique: true, required: true},
     password: String,
     userName: String,
-    loggedIn: Boolean
+    loggedIn: Boolean,
+    privilege: String
 })
 
 const DiceSetSchema = new mongoose.Schema ({

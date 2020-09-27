@@ -18,6 +18,21 @@ router.get('/', (req, res) => {
           console.log('Error: ',  err);
       })
 });
+//TEMP: DELETE BEFORE COMMIT
+router.get('/admins', (req, res) => {
+   console.log("ROUTING: Get '/admins'")
+   let allData =[]
+
+   models.Users.find({"privilege" : "admin"}).select('_id')
+      .then((data)=>{
+         console.log(data.length, 'characters found.');
+         data.forEach(u=>allData.push(u._id));
+         res.json(allData);
+      })
+      .catch((err)=>{
+          console.log('Error: ',  err);
+      })
+});
 
 router.get('/users/:userId', (req, res) => {
    const userId = req.params.userId;
@@ -26,7 +41,7 @@ router.get('/users/:userId', (req, res) => {
 
    models.Knights.find({"playerInfo.isOwner": userId})
       .then((data)=>{
-         console.log(data.length, 'characters found.');
+         console.log(data.length, '"isOwner" characters found.');
          allData.knights = data;
          models.DiceSets.find({isOwner: userId})
             .then((setsData)=>{
@@ -58,7 +73,7 @@ router.get('/can-edit/:userId', (req, res) => {
 
    models.Knights.find({"playerInfo.canEdit": userId})
       .then((data)=>{
-         console.log(data.length, ' characters found.');
+         console.log(data.length, '"canEdit" characters found.');
          allData.knights = data;
          res.json(allData);
       })
@@ -73,13 +88,15 @@ router.post('/register', (req, res) => {
       const email = req.body.email;
       const password = req.body.password;
       const userName = req.body.userName || req.body.login;
-      const loggedIn = true
+      const loggedIn = req.body.loggedIn || false
+      const privilege = req.body.privilege || 'user'
 
    const newUser = new models.Users({
       email: email,
       password: password,
       userName: userName,
-      loggedIn: loggedIn
+      loggedIn: loggedIn,
+      privilege: privilege
    });
 
    newUser.save((err)=>{
@@ -95,7 +112,8 @@ router.post('/register', (req, res) => {
           return res.status(500).send(err);
         } else {
          console.log("New user created.");
-         res.json({msg: "user created"});
+         res.redirect(307, '/api/login');
+         // res.json({msg: "user created"});
       }
    })
 })
@@ -104,17 +122,17 @@ router.post('/login', (req, res) => {
    console.log('ROUTING: Logging in user. Body:',req.body)
    const user = req.body;
 
-   Users.findOne({email:user.login}, (err, foundUser)=>{
+   Users.findOne({email:user.email}, (err, foundUser)=>{
       if (err) {
          console.log(err)
       } else if (!foundUser) {
-         Users.findOne({userName:user.login}, (err2, foundUser2)=>{
+         Users.findOne({userName:user.userName}, (err2, foundUser2)=>{
             if (err2) {
                console.log(err2)
             } if (foundUser2) {
                console.log(foundUser2);
                if (foundUser2.password===user.password) {
-                  Users.updateOne({userName:user.login}, {loggedIn: true}, (err, resp)=>{
+                  Users.updateOne({userName:user.userName}, {loggedIn: true}, (err, resp)=>{
                      if (err) {
                         console.log("Failed to set loggedIn flag:", err)
                      } else {
@@ -130,7 +148,7 @@ router.post('/login', (req, res) => {
       } else if (foundUser) {
          console.log(foundUser);
          if (foundUser.password===user.password) {
-            Users.updateOne({email:user.login}, {loggedIn: true}, (err, resp)=>{
+            Users.updateOne({email:user.email}, {loggedIn: true}, (err, resp)=>{
                if (err) {
                   console.log("Failed to set loggedIn flag:", err)
                } else {
@@ -168,14 +186,33 @@ router.post('/create', (req, res) => {
    console.log('ROUTING: Creating new Knight character. Body:',req.body)
    const data = req.body;
    const newKnight = new models.Knights(data);
-   newKnight.save((err, response)=>{
-      if (err) {
-         res.json({msg: ("Error saving new knight: " +err)});
-      } else {
-         console.log(response);
-         res.json({msg: "data received"});
-      }
-   })
+
+   // function getAdmins() {
+      let admins = [];
+      
+      models.Users.find({"privilege" : "admin"})
+      .then((data)=>{
+            console.log(data.length, 'admins found.');
+            data.forEach(u=>admins.push(u._id));
+            newKnight.playerInfo.canEdit= admins;
+            console.log("newKnight.playerInfo",newKnight.playerInfo);
+            newKnight.save((err, response)=>{
+               if (err) {
+                  res.json({msg: ("Error saving new knight: " +err)});
+               } else {
+                  console.log("Saved knight: ",response);
+                  res.json({msg: "data received"});
+               }
+            })
+      })
+      .catch((err)=>{
+          console.log('Error: ',  err);
+      })
+   // }
+
+   
+
+   
 })
 
 router.post('/save-sets', (req, res) => {
