@@ -60,7 +60,7 @@ const Protected = (props) => {
     async function createKnight () {
         console.log("DOING THIS: createKnight")
         const payload = templates.knight;
-        payload.playerInfo = {isOwner: props.userId, canEdit:['admin']}
+        payload.playerInfo = {isOwner: props.userId}
 
         axios({
             url: '/api/create',

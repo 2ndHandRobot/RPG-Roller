@@ -65,7 +65,7 @@ export default function ViewEdit(props) {
                     console.log("Resetting edit states to [-/F]. Edit states are Label: ",editLabel," and Value: ",editValue);
                     setEditValue(false);
                     console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    clear = true;
+
                 } else if ([13].includes(event.charCode)) {
                     console.log("Saving change: ", props.group," : ", props.entry._id," : ", val)
                     event.preventDefault();
@@ -74,7 +74,7 @@ export default function ViewEdit(props) {
                     console.log("Resetting edit states to [-/F]. Edit states are Label: ",editLabel," and Value: ",editValue);
                     setEditValue(false);
                     console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    clear = true;
+
                 } 
                 break;
             case "labelField":
@@ -85,7 +85,7 @@ export default function ViewEdit(props) {
                     console.log("Resetting edit states to [F/-]. Edit states are Label: ",editLabel," and Value: ",editValue);
                     setEditLabel(false);
                     console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    clear = true;
+
                 } else if ([13].includes(event.charCode)) {
                     console.log("Saving change: ", props.group," : ", props.entry._id," : ", _.startCase(lab))
                     event.preventDefault();
@@ -94,7 +94,7 @@ export default function ViewEdit(props) {
                     console.log("Resetting edit states to [F/-]. Edit states are Label: ",editLabel," and Value: ",editValue);
                     setEditLabel(false);
                     console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    clear = true;
+
                 } else if ([9].includes(event.charCode)) {
                     console.log("Saving change: ", props.group," : ", props.entry._id," : ", _.startCase(lab))
                     event.preventDefault();
@@ -104,7 +104,7 @@ export default function ViewEdit(props) {
                     setEditLabel(false);
                     setEditValue(true);
                     console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    clear = true;
+
                 }
                 break;
             default:
