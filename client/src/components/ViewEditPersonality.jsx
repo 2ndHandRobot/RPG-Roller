@@ -9,7 +9,7 @@ import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ViewEdit(props) {
-    console.log("LOADING ViewEditPersonality. Props: ", JSON.stringify(props));
+    // console.log("LOADING ViewEditPersonality. Props: ", JSON.stringify(props));
 
     // const [lab, setLab] = useState(props.entry.label);
     const [val, setVal] = useState(props.entry.value);
@@ -205,7 +205,7 @@ export default function ViewEdit(props) {
                 val1:val1,
                 val2:val2
             }
-            console.log("personalityPair: ",result)
+            // console.log("personalityPair: ",result)
             return (result)
         }
 

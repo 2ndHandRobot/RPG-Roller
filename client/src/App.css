@@ -1,6 +1,11 @@
+p {
+  margin: 0;
+}
+
 .App {
   text-align: center;
 }
+
 
 .App-logo {
   height: 40vmin;
@@ -32,8 +37,9 @@
 .charsheet-box {
   border: 2px solid blue;
   border-radius: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 5px;
+  margin: 5px auto;
+  /* vertical-align: middle; */
 }
 
 
@@ -53,6 +59,8 @@
   width: 50%;
   float: right;
   text-align: right;
+  /* text-decoration: underline dotted; */
+  border-bottom: dotted 1px;
 }
 
 .label-input  {
@@ -114,6 +122,12 @@
   text-align: center;
 }
 
+.placeholder-text {
+  background-color: rgb(207, 207, 207);
+  color: rgb(100,100,100);
+  font-style: italic;
+  font-size: 0.8rem;
+}
 .Footer {
   background-color: aqua;
 }
