@@ -18,6 +18,8 @@ const Protected = (props) => {
     const [editOnlyKnightsData, setEditOnlyKnightsData] = useState([]);
     const [activeKnight, setActiveKnight] = useState({knightId:'',access:'', knightData:{}});
     let diceSets =[];
+    let ownKnights = [];
+    let otherKnights = [];
 
     useEffect(()=> {
         getData()
@@ -27,26 +29,37 @@ const Protected = (props) => {
         console.log("DOING THIS: getData (own knights)");
             axios.get('/api/users/'+props.userId)
                 .then((response)=>{
-                    const data = response.data;
+                    ownKnights = response.data.knights;
                     console.log("Initial data received.");
-                    console.log(data.knights.length," knights found");
-                    console.log(data.diceSets.length," dice sets found");
-                    console.log(JSON.stringify(data.knights));
-                    setKnightsData(data.knights);
-                    // console.log("Updated knightsData: ",knightsData);
-                    console.log("Data reloaded. State updated.");
+                    console.log(ownKnights.length," knights found");
+                    console.log(response.data.diceSets.length," dice sets found");
+                    console.log(JSON.stringify(ownKnights));
+                    setKnightsData(ownKnights);
+                    
                 })
-                .catch((error)=>{
-                    alert("Error retrieving data (own knights): ", error);
-            });
-        console.log("DOING THIS: getData (other knights)");
+                .then(r=>{
+                    console.log("Updated knightsData: ",JSON.stringify(knightsData));
+                    // console.log("Data reloaded. State updated.");
+                    console.log("DOING THIS: getData (other knights)");
             axios.get('/api/can-edit/'+props.userId)
                 .then((response)=>{
                     const data = response.data;
                     console.log("Initial knights data received.");
                     console.log(data.knights.length," knights found");
                     console.log(JSON.stringify(data.knights));
-                    setEditOnlyKnightsData(data.knights);
+                    // DEBUG THIS:::
+                    let knightIds = []
+                    console.log("Currently loaded knightsData: ",JSON.stringify(knightsData));
+                    ownKnights.forEach(k=>{
+                        console.log(k)
+                        knightIds.push(k._id)
+                    })
+                    console.log("knightIds:",knightIds)
+                    const otherKnights = data.knights.filter(item=>{
+                        return knightIds.indexOf(item._id) === -1;
+                    })
+                    console.log("otherKnights:",otherKnights)
+                    setEditOnlyKnightsData(otherKnights);
                     diceSets = data.diceSets;
                     console.log("Updated editOnlyKnightsData: ",editOnlyKnightsData);
                     console.log("Data reloaded. State updated.");
@@ -54,7 +67,12 @@ const Protected = (props) => {
                 })
                 .catch((error)=>{
                     alert("Error retrieving data (other knights): ", error);
-            });
+                });
+                })
+                .catch((error)=>{
+                    alert("Error retrieving data (own knights): ", error);
+                });
+        
         }
 
     async function createKnight () {

@@ -23,8 +23,8 @@ export default function Access(props) {
         setPassValid('');
 
     }
-    console.log('Loading <Access>. State: ',{regMode: regMode,email:email,password:password,passValid:passValid,userId:props.userId})
-    console.log('Access props: ',props)    
+    // console.log('Loading <Access>. State: ',{regMode: regMode,email:email,password:password,passValid:passValid,userId:props.userId})
+    // console.log('Access props: ',props)    
 
     function moveFocus(elId) {
         setTimeout(()=>{document.getElementById(elId).focus();},10,);
