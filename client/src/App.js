@@ -4,9 +4,9 @@ import Auth from './Auth';
 import './App.css';
 import Router from './Router';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import Public from './components/Public';
 import Protected from './components/Protected';
+import Footer from './components/Footer';
 
 // import { Container } from 'react-bootstrap';
 
@@ -30,13 +30,13 @@ class App extends React.Component {
     console.log("auth: ",Auth.getAuth())
     return (
     <div className="App">
-      {/* <div> */}
+      <div>
         <Header 
           userState={this.state}
           setUserId={this.setUserId}
           />
-      {/* </div> */}
-      <div>
+      </div>
+      <div className="main">
         <Router 
           userId={this.state.userId} 
           setUserId={this.setUserId}
@@ -45,9 +45,9 @@ class App extends React.Component {
         ? <Protected userId={this.state.userId} />
         : <Public setUserId={this.setUserId}/>}
       </div>
-      {/* <div> */}
-        <Footer />
-      {/* </div> */}
+      <div>
+        <Footer></Footer>
+      </div>
     </div>
     )
   };

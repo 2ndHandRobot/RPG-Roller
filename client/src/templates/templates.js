@@ -251,7 +251,8 @@ const knight= {
     personalityTraits: personality,
     passions:passions,
     statistics: stats,
-    distinctive_features:[],
+    distinctiveFeatures:[],
+    equipment: [],
     skills: skills,
     combat_skills: combatSkills,
     squire: squire

@@ -35,7 +35,6 @@ const CharacterSchema = new mongoose.Schema ({
             },
         value: {
             type: Number,
-            min: [0, 'cannot be negative'],
             default: 0
         },
         paragon: Number
@@ -66,7 +65,7 @@ const CharacterSchema = new mongoose.Schema ({
                 default: 0
             }
 }],
-    distinctive_features: [String],
+    distinctiveFeatures: [String],
     skills: [{ 
         label: 
             {
@@ -132,7 +131,8 @@ const CharacterSchema = new mongoose.Schema ({
                     default: 0
                 }
     }]
-    }
+    },
+    equipment: [String]
 });
 
 const BugReportSchema = new mongoose.Schema ({

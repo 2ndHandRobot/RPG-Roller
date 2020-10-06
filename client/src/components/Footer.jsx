@@ -57,17 +57,21 @@ class Footer extends React.Component {
         return(
         <div className="fixed-bottom">
             <Navbar className="footbar">
+                {/* <NavbarBrand> */}
                 <Container>
-                        <footer>Copyright © {new Date().getFullYear()} - Mark Harley</footer>
-                        <FontAwesomeIcon icon={faBug} className="bug" onClick={()=>{this.setState({showReport: !this.state.showReport})}}/>
+                    <footer>
+                        Copyright © {new Date().getFullYear()} - Mark Harley
+                    </footer>
+                    <FontAwesomeIcon icon={faBug} className="bug" onClick={()=>{this.setState({showReport: !this.state.showReport})}}/>
+                    <Collapse in={this.state.showReport}>
+                        <form className="bug-report" id="bug-report">
+                            <input name="problem" className="bug-field" onChange={this.handleChange} placeholder="the problem is..." value={this.state.problem}/>
+                            <textarea name="description" className="bug-field" onChange={this.handleChange} placeholder="give details..." value={this.state.description}/>
+                            <button type="button" onClick={this.saveBug}>report</button>
+                        </form>
+                    </Collapse>
                 </Container>
-                <Collapse in={this.state.showReport}>
-                    <form className="bug-report" id="bug-report">
-                        <input name="problem" className="bug-field" onChange={this.handleChange} placeholder="the problem is..." value={this.state.problem}/>
-                        <textarea name="description" className="bug-field" onChange={this.handleChange} placeholder="give details..." value={this.state.description}/>
-                        <button type="button" onClick={this.saveBug}>report</button>
-                    </form>
-                </Collapse>
+                {/* </NavbarBrand> */}
             </Navbar>
         </div>)
     }

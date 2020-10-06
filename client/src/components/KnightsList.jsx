@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import KnightSheet from './KnightSheet';
 
 import { Container } from 'react-bootstrap';
 

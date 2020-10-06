@@ -2,6 +2,25 @@ p {
   margin: 0;
 }
 
+hr {
+  margin: 6px 0;
+}
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 10px 0;
+  width: 100%;
+  height: 58px;
+  background-color: #f5f3e4;
+  text-align: center;
+  z-index: 1;
+}
+
+.footbar {
+  float: right;
+}
+
 .App {
   text-align: center;
 }
@@ -27,6 +46,9 @@ p {
   color: #61dafb;
 }
 
+.main {
+  margin: 10px 0 60px 210px;
+}
 .hidden {
   visibility: hidden;
 }
@@ -45,7 +67,7 @@ p {
 
 
 .Header {
-  background-color: aqua;
+  background-color: #f5f3e4;
 }
 
 
@@ -55,25 +77,84 @@ p {
   float: left;
 }
 
+.new-label-field  {
+  width: 100%;
+  background-color: rgb(230, 230, 230);
+  /* border-bottom: dotted 1px;
+  border-style: groove; */
+}
+
+.new-view {
+  padding: 1px 0;
+  margin-top: 3px;
+}
+
 .value-field  {
   width: 50%;
   float: right;
   text-align: right;
   /* text-decoration: underline dotted; */
   border-bottom: dotted 1px;
+  
 }
 
-.label-input  {
+.single-view {
+  width: 100%;
+  border-bottom: dotted 1px;
+}
+.single-edit {
+  width: 100%;
+  border-bottom: dotted 1px;
+}
+
+.label-edit  {
   width: 100%;
   float: left;
 }
 
-.value-input  {
+/* .value-input  {
+  width: 100%;
+  float: right;
+  text-align: right;
+} */
+
+.value-edit  {
   width: 100%;
   float: right;
   text-align: right;
 }
 
+/* .value-display {
+  width: 100%;
+  height: 100%;
+} */
+
+.value-view {
+  width: 100%;
+  height: 100%;
+}
+
+.label-view {
+  width: 100%;
+  height: 100%;
+}
+
+.edit-in-progress > * {
+   position:relative;/* bring on top;*/
+   border: none;
+   border-radius: 5px;
+   box-shadow:0 0 0 1600px rgba(140, 140, 140, 0.66);/* dark around it */
+}
+
+.text-only-field {
+  width: 100%;
+  float: left;
+}
+
+.text-only-input {
+  width: 100%;
+  float: left;
+}
 .column {
   padding-left: 5px;
   padding-right: 5px;
@@ -113,17 +194,13 @@ p {
   margin: 0;
 }
 
-.value-display {
-  width: 100%;
-  height: 100%;
-}
 
 .login-field {
   text-align: center;
 }
 
 .placeholder-text {
-  background-color: rgb(207, 207, 207);
+  background-color: rgb(200, 200, 200);
   color: rgb(100,100,100);
   font-style: italic;
   font-size: 0.8rem;
@@ -135,7 +212,9 @@ p {
 .bug {
   display: flex;
   float: right;
-  
+  margin: 0 2px;
+  z-index: 10;
+  height: 38px;
 }
 
 .bug-field{
@@ -143,7 +222,11 @@ p {
 }
 
 .bug-report {
+  display: flex;
+  float: right;
   font-size: 12px;
+  margin-left: 10px;
+  z-index: 10;
 }
 
 

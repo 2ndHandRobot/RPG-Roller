@@ -221,11 +221,13 @@ export default function ViewEdit(props) {
                 
             }
             console.log("Setting value to ",newVal);
-            props.saveEntry(props.group, props.entry._id, null, newVal);
+            let newObj = props.entry;
+            newObj.value = newVal
+            props.saveEntry(props.group, props.entry._id, newObj, "value");
         }
 
         let personalityPair = personalityObj(props.entry);
-        console.log("personalityPair defined: ",personalityPair)
+        // console.log("personalityPair defined: ",personalityPair)
 
         // return (
         //     <Row  className="lv-pair">

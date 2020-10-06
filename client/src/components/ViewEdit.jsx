@@ -1,151 +1,200 @@
-
-import React, { useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import _ from 'lodash';
-import {Row,Col} from 'react-bootstrap';
 
-export default function ViewEdit(props) {
-    console.log("LOADING ViewEdit. Props: ", JSON.stringify(props));
+// DESCRIPTION
+// The ViewEdit component is a toggleable diplay unit
+// It allows you to display a value, which becomes editable when clicked
+// (note: future versions may include a 'lock' prop, so that you can lock the unit from editing, or switch between a mode where clicking edits or does something else, such as make a skill roll)
+// Content is updated by pressing [Enter] in the input field
+// THe edit is cancelled and content reverts to its previous value by pressing [Esc] or clicking outside the area.
+// When one ViewEdit component on the page is in Edit mode, the rest of the page is dimmed and locked for edit.
 
-    const [lab, setLab] = useState(props.entry.label);
-    const [val, setVal] = useState(props.entry.value);
-    const [editLabel, setEditLabel] = useState(false);
-    const [editValue, setEditValue] = useState(false);
 
-    function handleChange(event){
-        switch (event.target.name){
-            case "valueField":
-                setVal(event.target.value);
-                break;
-            case "labelField":
-                setLab(event.target.value);
-                break;
-            // default:
-        }
-    }
+// PROPS 
+// Content ID: props.id
+// Content Field Name: props.field
+// Content CSS Class: props.css_class
+// Content Value: props.value
+// Save Changes function: props.saveEdit
+// Page listeners: props._listeners
+// Page edit flag: props.editInProgess
+// (note: the [0] is required on the editInProgess flag because the parent 'App' is a component
 
-    function handleKeyPress(event){
-        console.log("keypress in div:",event.target.parentNode.id);
-        const nodeId = event.target.parentNode.id;
-        let clear = false;
+
+    function ViewEdit (props) {   
+        // console.log("LOADING ViewEdit")
+        const [value, setValue] = useState(props.value)
+        const [editMode, setEditMode] = useState(false)
+        const fieldId = props.name;
         
-        switch (event.target.name){
-            case "valueField":
-                if ([27, 9].includes(event.charCode)) {
-                    console.log("Not saving change: ", props.group," : ", props.entry._id," : ", val)
-                    event.preventDefault();                    
-                    console.log("Resetting edit states to [-/F]. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    setEditValue(false);
-                    console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
+        const placeHolderText = props.placeHolderText || "click to add info"
+        const canEdit = props.lockEdit ? false : true
+        
+        let fallBackValue = '';
+        
+        // console.log("_listeners array:",props._listeners)
 
-                } else if ([13].includes(event.charCode)) {
-                    console.log("Saving change: ", props.group," : ", props.entry._id," : ", val)
-                    event.preventDefault();
-                    props.saveEntry(props.group, props.entry._id, null, val);
-                    console.log("Resetting edit states to [-/F]. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    setEditValue(false);
-                    console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
+        // EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener;
+        // EventTarget.prototype.addClickListener = function (listener) {
+        //     console.log("Pushing to props._listeners array:", listener)
+        //     props.set_Listeners(prev=>[...prev, listener])
+        //     // props._listeners.push({ target: this, listener: listener });
+        //     console.log("Checking props._listeners array:",props._listeners.length," found.")
+        //     this.addEventListenerBase("click", listener);
+        // };
+        // EventTarget.prototype.removeClickListeners = function () {
+        //     console.log("Removing 'click' listeners. (",props._listeners.length,"found)")
+        //     for (var index = 0; index !== props._listeners.length; index++) {
+        //         var item = props._listeners[index];
+        //         console.log("Listener:",item);
+        //         var target = item.target;
+        //         var type = "click";
+        //         var listener = item.listener;
+        
+        //         this.removeEventListener(type, listener);
+        //     }
+        //   };
 
-                } 
-                break;
-            case "labelField":
-                if ([27].includes(event.charCode)) {
-                    console.log("Not saving change: ", props.group," : ", props.entry._id," : ", val)
-                    event.preventDefault();
-                    console.log("Resetting edit states to [F/-]. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    setEditLabel(false);
-                    console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-
-                } else if ([13].includes(event.charCode)) {
-                    console.log("Saving change: ", props.group," : ", props.entry._id," : ", _.startCase(lab))
-                    event.preventDefault();
-                    props.saveEntry(props.group, props.entry._id, lab);
-                    console.log("Resetting edit states to [F/-]. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    setEditLabel(false);
-                    console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-
-                } else if ([9].includes(event.charCode)) {
-                    console.log("Saving change: ", props.group," : ", props.entry._id," : ", _.startCase(lab))
-                    event.preventDefault();
-                    props.saveEntry(props.group, props.entry._id, lab);
-                    console.log("Resetting edit states to [F/T]. Edit states are Label: ",editLabel," and Value: ",editValue);
-                    setEditLabel(false);
-                    setEditValue(true);
-                    console.log("States reset. Edit states are Label: ",editLabel," and Value: ",editValue);
-
-                }
-                break;
-            default:
+        function confirmEdit() {
+            console.log("DOING THIS: confirmEdit")
+            // Switch back to View mode
+            document.getElementById(props.group+"_"+props.field+"_"+fieldId).classList.remove("edit-in-progress")
+            exitEditMode()
+            // Save the edited value to DB
+            const payload = {
+                group: props.group,
+                field: props.field,
+                value: value,
+                fieldId: fieldId
+            }
+            props.saveEdit(payload);
+            // Disable or nullify the click-outside event listener
+            props.removeWindowClickListeners();
         }
-    }
 
+        function cancelEdit() {
+            console.log("DOING THIS: cancelEdit")
+            // Switch back to View mode
+            exitEditMode()
+            // Reset the edited value to the fall-back value
+            setValue(fallBackValue);
+            // Disable or nullify the click-outside event listener
+            props.removeWindowClickListeners();
+        }
+        
+        function enterEditMode(element){
+            console.log("DOING THIS: enterEditMode")
+            // activate  edit mode flag
+            props.setEditInProgress(true);
+            // use "edit-in-progress" class to set Edit Mode appearance
+            element.parentElement.classList.add("edit-in-progress")
+        }
+        function exitEditMode(){
+            console.log("DOING THIS: exitEditMode")
+            // remove "edit-in-progress" class to cancel Edit Mode appearance
+            // let elList = document.getElementsByClassName("edit-in-progress")
+            // if (!elList.length === 0){
+            //     console.log(elList.length," 'edit-in-progress' elements found")
+            //     elList[0].classList.remove("edit-in-progress")
+            // } else {
+            //     console.log("No 'edit-in-progress' elements found")
+            // }
+            // deactivate  edit mode flag
+            props.setEditInProgress(false);
+            setEditMode(false);
+        }
 
-    function handleParaClick(elId){
-        console.log("PARA CLICKED: ",elId)
-    
-        const element = document.getElementById(elId);
-        console.log("ELEMENT ",elId,": ", element)
-        const elType = elId.substring(0, 3);
-        if (elType === "lab"){
-            console.log("Label clicked. props.canEditLabel:",props.canEditLabel)
-            if (props.canEditLabel) { 
-                console.log("Setting label edit mode & clickOutside listener.");
-                setEditLabel(true);
-                handleClickOutside(element);
-            } else {
-                console.log("Section is not editable.");
-            }
-        } else if (elType === "val"){
-            console.log("Value clicked. props.canEditValue:",props.canEditValue)
-            if (props.canEditValue) {
-                console.log("Setting value edit mode & clickOutside listener.");
-                setEditValue(true);
-                handleClickOutside(element);
-            } else {
-                console.log("Section is not editable.");
-            }
-        } 
-    }
+        function handeKeyPress(event){
+            // KEY EVENTS
+            // [Enter]: save contents of valueState to DB
+            // [Esc]: revert valueState to fallBack
+            
+            // Required info: which valueState to save or revert to fallBackValue : event.target.name
 
-    function handleClickOutside(element) {
-        console.log("LISTENER ELEMENT: ", element)
-        const outsideClickListener = event => {
-            console.log("OUTSIDE CLICK triggered. event.target: ",event.target)
-            if (!element.contains(event.target)) { // or use: event.target.closest(selector) === null
-                console.log("Click outside element: ",element);
-                console.log("element.name: ",element.getAttribute("name"));
-                const elType = element.getAttribute("name").substring(0,3);
-                if (elType === "lab"){
-                    setLab(props.entry.label);
-                    setEditLabel(false);
-                } else if (elType === "val"){
-                    
-                    setEditValue(false);
-                }
-                removeClickListener()
+            console.log("event.target.name:",event.target.name)
+            if (event.charCode===13) {
+                confirmEdit()
+            } else if (event.charCode===27) {
+                cancelEdit()
             }
+
         }
     
-        const removeClickListener = () => {
-            window.removeEventListener('click', outsideClickListener)
+        function handleParaClick(ev){
+            console.log("DOING THIS: handleParaClick")
+            ev.stopPropagation();
+            // Save valueState to fallBack
+            fallBackValue=value;
+            console.log("fallBack:",fallBackValue);
+            setEditMode(true);
+            enterEditMode(ev.target)
+            handleClickOutside(props.group+"_"+props.field+"_"+fieldId)
         }
-        window.addEventListener('click', outsideClickListener)
-    }
 
-console.log("Rendering: lab=",lab,", val='"+val+"'")
+        function handleClickOutside(elId) {
+            console.log("DOING THIS: handleClickOutside")
+            console.log("Adding LISTENER to: ", elId)
+
+            let element = document.getElementById(elId)
+            console.log('element.id is',element.id)
+            const selector = `#${element.id}`
+            function outsideClickListener (event) {
+                console.log("OUTSIDE CLICK check triggered. event.target: ",event.target)
+                if ( !element.contains(event.target)) {
+                    console.log("Click in ",event.target," is not inside element: ",element);
+                    document.getElementById(element.id).classList.remove("edit-in-progress");
+                    cancelEdit();
+                }
+            }
+            props.addWindowClickListener(outsideClickListener)
+        }
+
+
+
         return (
-            <Row  className="lv-pair">
-                <Col>
-                    <div  id={"lab_"+props.entry._id} name="labField" className="label-field" onClick={!editValue&&((ev)=>{ev.stopPropagation();handleParaClick("val_"+props.entry._id)})}>
-                        {editLabel
-                        ? <input  name="labelField" className="label-input" onChange={handleChange} onKeyPress={handleKeyPress} value={_.startCase(lab)} />
-                        : <p className="label-display" onClick={(ev)=>{ev.stopPropagation();handleParaClick("lab_"+props.entry._id)}}>{_.startCase(lab)}</p>}
-                    </div>
-                    <div key={"val_"+props.entry._id} id={"val_"+props.entry._id} name="valField" className="value-field"  onClick={!editValue&&((ev)=>{ev.stopPropagation();handleParaClick("val_"+props.entry._id)})}>
-                        {editValue 
-                        ? <input type={props.valType} name="valueField" className="value-input" onChange={handleChange} onKeyPress={handleKeyPress} value={val} />
-                        : <p className={(val === '') ? "value-display placeholder-text" : "value-display"} onClick={(ev)=>{ev.stopPropagation();handleParaClick("val_"+props.entry._id)}} >{(val === '') ? "click to add info" : val}</p>}
-                    </div>
-                </Col>            
-            </Row>
-            )
-}
+            <div 
+                key={props.field+"_"+fieldId+"_d"} 
+                id={props.group+"_"+props.field+"_"+fieldId} 
+                className={props.field+"-field"}>
+            {
+                editMode
+                ? <input 
+                    key={fieldId+"_"+props.field+"_i"}
+                    id={fieldId+"_"+props.field+"_p"}
+                    name={props.field}
+                    className={props.field+"-edit"}
+                    // update valueState
+                    onChange={(ev)=>setValue(ev.target.value)} 
+                    // check if [Enter] (save) or [Esc] (cancel)
+                    onKeyPress={handeKeyPress} 
+                    value={value}    
+                />
+                : <p 
+                    key={fieldId+"_"+props.field+"_p"}
+                    id={fieldId+"_"+props.field+"_p"}
+                    name={props.field}
+                    className={
+                        (value)
+                        ? props.field+"-view"
+                        : props.field+"-view placeholder-text"} 
+                    onClick={
+                        canEdit 
+                        ? (ev)=>{!props.editInProgress &&(handleParaClick(ev))}
+                        : ()=>{}
+                    }
+                >
+                    {
+                        (value) 
+                        ?  value
+                        : placeHolderText
+                        }
+                </p>
+            }
+        </div>
+        )
+    }
+
+    
+
+
+export default ViewEdit;
