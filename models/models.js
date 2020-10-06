@@ -24,8 +24,7 @@ const LabelNumberPairSchema = new mongoose.Schema ({
 
 const LabelStringPairSchema = new mongoose.Schema ({
     label: { type: String, default: '' },
-    value: { type: String, default: '' },
-    isTicked: { type: Boolean, default: false }
+    value: { type: String, default: '' }
 })
 
 const PersonalityTraitPairSchema = new mongoose.Schema ({
