@@ -73,8 +73,9 @@ footer {
 
 
 .label-field  {
-  width: 50%;
-  float: left;
+  /* width: 50%;
+  float: left; */
+  border-bottom: dotted 1px;
 }
 
 .new-label-field  {
@@ -90,8 +91,8 @@ footer {
 }
 
 .value-field  {
-  width: 50%;
-  float: right;
+  /* width: 50%;
+  float: right; */
   text-align: right;
   /* text-decoration: underline dotted; */
   border-bottom: dotted 1px;
@@ -169,6 +170,9 @@ footer {
   padding-left: 0;
   padding-right: 0;
   margin: 0;
+  
+  display: flex; 
+  align-items: center;
 }
 
 .charsheet-column {
@@ -179,9 +183,13 @@ footer {
 .pt-pair {
   margin: 0;
 }
+.trait {
+  font-size: 0.8rem;
+}
 .trait1 {
   text-align: left;
   margin: 0;
+  padding-left: 3px;
 }
 
 .traitVals {
@@ -192,6 +200,8 @@ footer {
 .trait2 {
   text-align: right;
   margin: 0;
+  padding-right: 3px;
+  justify-content: flex-end;
 }
 
 

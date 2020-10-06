@@ -16,6 +16,50 @@ const DiceSetSchema = new mongoose.Schema ({
     diceSets: [[Number]]
 })
 
+const LabelNumberPairSchema = new mongoose.Schema ({
+    label: { type: String, default: '' },
+    value: { type: Number, min: [0, 'cannot be negative'], default: 0 },
+    isTicked: { type: Boolean, default: false }
+})
+
+const LabelStringPairSchema = new mongoose.Schema ({
+    label: { type: String, default: '' },
+    value: { type: String, default: '' },
+    isTicked: { type: Boolean, default: false }
+})
+
+const PersonalityTraitPairSchema = new mongoose.Schema ({
+    trait1: { 
+        label: String, 
+        isTicked: {
+            type: Boolean,
+            default: false
+        }
+    },
+    trait2: {
+        label: String,
+        isTicked: {
+            type: Boolean,
+            default: false
+        }
+    },
+    value: {
+        type: Number,
+        default: 10
+    },
+})
+
+const SquireSchema = new mongoose.Schema ({
+    name: {
+        type: String,
+        default: ''
+    },
+    age: {
+        type: Number,
+        default: 15
+    },
+    skills:[LabelNumberPairSchema]
+})
 const CharacterSchema = new mongoose.Schema ({
     playerInfo: {
         isOwner: {
@@ -26,113 +70,18 @@ const CharacterSchema = new mongoose.Schema ({
         canEdit: [String],
         canRead: [String]
     },
-    personalInfo: [{label: String, value: String}],
-    personalityTraits: [{
-        traits: 
-            {
-                trait1: String,
-                trait2: String
-            },
-        value: {
-            type: Number,
-            default: 0
-        },
-        paragon: Number
-    }],
-    passions: [{ 
-        label: 
-            {
-                type: String,
-                default: ''
-            },
-        value:       
-            {
-                type: Number,
-                min: [0, 'cannot be negative'],
-                default: 0
-            }
-}],
-    statistics: [{ 
-        label: 
-            {
-                type: String,
-                default: ''
-            },
-        value:       
-            {
-                type: Number,
-                min: [0, 'cannot be negative'],
-                default: 0
-            }
-}],
+    personalInfo: [LabelStringPairSchema],
+    personalityTraits: [PersonalityTraitPairSchema],
+    passions: [LabelNumberPairSchema],
+    statistics: [LabelNumberPairSchema],
     distinctiveFeatures: [String],
-    skills: [{ 
-        label: 
-            {
-                type: String,
-                default: ''
-            },
-        value:       
-            {
-                type: Number,
-                min: [0, 'cannot be negative'],
-                default: 0
-            }
-}],
-    combatSkills:
-        {
-            general: [{
-                label: 
-                    {
-                        type: String,
-                        default: ''
-                    },
-                value:       
-                    {
-                        type: Number,
-                        min: [0, 'cannot be negative'],
-                        default: 0
-                    }
-        }],
-            weapons: [{ 
-                label: 
-                    {
-                        type: String,
-                        default: ''
-                    },
-                value:       
-                    {
-                        type: Number,
-                        min: [0, 'cannot be negative'],
-                        default: 0
-                    }
-        }]
+    skills: [LabelNumberPairSchema],
+    combatSkills: {
+        general: [LabelNumberPairSchema],
+        weapons: [LabelNumberPairSchema]
     },
-    squire: {
-        name: 
-            {
-                type: String,
-                default: ''
-            },
-        age: {
-            type: Number,
-            default: 15
-        },
-        skills:[{ 
-            label: 
-                {
-                    type: String,
-                    default: ''
-                },
-            value:       
-                {
-                    type: Number,
-                    min: [0, 'cannot be negative'],
-                    default: 0
-                }
-    }]
-    },
-    equipment: [String]
+    equipment: [String],
+    squire: SquireSchema
 });
 
 const BugReportSchema = new mongoose.Schema ({
@@ -142,6 +91,7 @@ const BugReportSchema = new mongoose.Schema ({
     response: String,
     resolved: Boolean
 })
+
 
 // Mongoose Models
 

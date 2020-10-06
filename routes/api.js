@@ -292,7 +292,7 @@ router.post('/edit-entry', (req, res) => {
          updateObject = {$push: {[`${data.group}`]:`${value}`}};
       } else {
          const newId = new mongoose.Types.ObjectId
-         updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":""}}};
+         updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
       }
       options = { 
          useFindAndModify: false,
@@ -340,6 +340,7 @@ router.post('/update-entry', (req, res) => {
    if (field) {
       console.log("Updating nested object")
       const filterObject = { [`${group}._id`]: fieldId }
+      console.log("filterObject:",filterObject)  
       console.log("newVal:",newVal)  
       const updateObject = {$set: {[`${group}.$`]: newVal}}
       console.log("updateObject:",updateObject)  

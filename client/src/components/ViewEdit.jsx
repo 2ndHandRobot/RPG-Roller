@@ -155,42 +155,44 @@ import _ from 'lodash';
             <div 
                 key={props.field+"_"+fieldId+"_d"} 
                 id={props.group+"_"+props.field+"_"+fieldId} 
-                className={props.field+"-field"}>
-            {
-                editMode
-                ? <input 
-                    key={fieldId+"_"+props.field+"_i"}
-                    id={fieldId+"_"+props.field+"_p"}
-                    name={props.field}
-                    className={props.field+"-edit"}
-                    // update valueState
-                    onChange={(ev)=>setValue(ev.target.value)} 
-                    // check if [Enter] (save) or [Esc] (cancel)
-                    onKeyPress={handeKeyPress} 
-                    value={value}    
-                />
-                : <p 
-                    key={fieldId+"_"+props.field+"_p"}
-                    id={fieldId+"_"+props.field+"_p"}
-                    name={props.field}
-                    className={
-                        (value)
-                        ? props.field+"-view"
-                        : props.field+"-view placeholder-text"} 
-                    onClick={
-                        canEdit 
-                        ? (ev)=>{!props.editInProgress &&(handleParaClick(ev))}
-                        : ()=>{}
-                    }
-                >
-                    {
-                        (value) 
-                        ?  value
-                        : placeHolderText
+                className={props.field+"-field"}
+            >
+                
+                {
+                    editMode
+                    ? <input 
+                        key={fieldId+"_"+props.field+"_i"}
+                        id={fieldId+"_"+props.field+"_p"}
+                        name={props.field}
+                        className={props.field+"-edit"}
+                        // update valueState
+                        onChange={(ev)=>setValue(ev.target.value)} 
+                        // check if [Enter] (save) or [Esc] (cancel)
+                        onKeyPress={handeKeyPress} 
+                        value={value}    
+                    />
+                    : <p 
+                        key={fieldId+"_"+props.field+"_p"}
+                        id={fieldId+"_"+props.field+"_p"}
+                        name={props.field}
+                        className={
+                            (value)
+                            ? props.field+"-view"
+                            : props.field+"-view placeholder-text"} 
+                        onClick={
+                            canEdit 
+                            ? (ev)=>{!props.editInProgress &&(handleParaClick(ev))}
+                            : ()=>{}
                         }
-                </p>
-            }
-        </div>
+                    >
+                        {
+                            (value) 
+                            ?  value
+                            : placeHolderText
+                            }
+                    </p>
+                }
+            </div>
         )
     }
 
