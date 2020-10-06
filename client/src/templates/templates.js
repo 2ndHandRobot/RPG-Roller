@@ -27,132 +27,65 @@ const personalInfo = [
 
 const personality= [
     {
-        traits:
-            {
-                trait1:"chaste",
-                trait2:"lustful"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"chaste",isTicked: false},
+        trait2:{label:"lustful",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"energetic",
-                trait2:"lazy"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"energetic",isTicked: false},
+        trait2:{label:"lazy",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"forgiving",
-                trait2:"vengeful"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"forgiving",isTicked: false},
+        trait2:{label:"vengeful",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"generous",
-                trait2:"selfish"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"generous",isTicked: false},
+        trait2:{label:"selfish",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"honest",
-                trait2:"deceitful"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"honest",isTicked: false},
+        trait2:{label:"deceitful",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"just",
-                trait2:"arbitrary"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"merciful",isTicked: false},
+        trait2:{label:"cruel",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"merciful",
-                trait2:"cruel"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"modest",isTicked: false},
+        trait2:{label:"proud",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"modest",
-                trait2:"proud"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"spiritual",isTicked: false},
+        trait2:{label:"worldly",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"pious",
-                trait2:"worldly"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"prudent",isTicked: false},
+        trait2:{label:"reckless",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"prudent",
-                trait2:"reckless"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"temperate",isTicked: false},
+        trait2:{label:"indulgent",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"spiritual",
-                trait2:"worldly"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"trusting",isTicked: false},
+        trait2:{label:"suspiscious",isTicked: false},
+        value: 10
     },
     {
-        traits:
-            {
-                trait1:"temperate",
-                trait2:"indulgent"
-            },
-        value: 10,
-        paragon: 0
-    },
-    {
-        traits:
-            {
-                trait1:"trusting",
-                trait2:"suspiscious"
-            },
-        value: 10,
-        paragon: 0
-    },
-    {
-        traits:
-            {
-                trait1:"valorous",
-                trait2:"cowardly"
-            },
-        value: 10,
-        paragon: 0
+        trait1:{label:"valorous",isTicked: false},
+        trait2:{label:"cowardly",isTicked: false},
+        value: 10
     }
-    
 ]
 
 const passions=
