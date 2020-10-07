@@ -161,9 +161,9 @@ export default function Roller(props){
                 return (
                     props.set.map(set=>{
                         return (
-                            <div>
-                                <button type="button" onClick={()=>rollDice(set)}>{diceSetString(set)}</button>
-                                <button type="button" onClick={()=>removeSet(set)}>-</button>
+                            <div className="saved-dice">
+                                <button type="button" className="dice-button" onClick={()=>rollDice(set)}>{diceSetString(set)}</button>
+                                <button type="button" className="dice-button" onClick={()=>removeSet(set)}>-</button>
                             </div>
                         )
                     })
@@ -184,29 +184,29 @@ export default function Roller(props){
 
     return(
         <Container className="Roller">
-            <Row>
-                <Col className="dice-selection">
+            <Row className="dice-selection">
+            
                     
                         <h2>Roller</h2>
                         
                         <label for="add-dice">Add a Die</label>
                         <input type="number" min="2" id="add-dice" onChange={handeDiceInput} onKeyPress={handleKeyPress} value={diceInput} autocomplete="off"></input>
 
+                        <button type="button" onClick={clearDice}>clear</button>                        
+                        <button type="button" onClick={()=>{saveDice(diceSet)}}>save</button>
+                        
+                        <hr />
                         <p>Current dice:</p>
+                       
                         <div>
                         <p>{diceSet.length>0&&diceSetString(diceSet)}</p>
 
                         <button type="button" onClick={()=>rollDice(diceSet)}>roll</button>
                         </div>
-                        <button type="button" onClick={clearDice}>clear</button>
-                        <button type="button" onClick={()=>{saveDice(diceSet)}}>save</button>
-                        
-                        
-                        <h3>Saved Rolls:</h3>
-                        <DiceSets type="button" set={savedDiceSets}/>
                     
-                </Col>
-                <Col className="roll-results">
+                        </Row>
+            
+                <Row className="roll-results">
                     
                     <h3>Result:</h3>
                         {(roll.length>0) && 
@@ -220,7 +220,10 @@ export default function Roller(props){
                         
                         </p>
                     
-                </Col>
+            </Row>
+            <Row className="roller-row">
+            <hr />
+                        <DiceSets type="button" set={savedDiceSets}/>
             </Row>
         </Container>
     )

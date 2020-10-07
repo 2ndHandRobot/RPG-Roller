@@ -96,6 +96,7 @@ export default function KnightSheet(props) {
         <div>
             <Row>
                 <Col className="charsheet-column">
+                <h6>Personal Information</h6>
                     <div className="charsheet-box">
                         {props.activeKnight.knightData.personalInfo.map((item, index)=>{
                             return (
@@ -152,7 +153,7 @@ export default function KnightSheet(props) {
                             </Col>
                         </Row>
                     </div>
-               
+                        <h6>Distinctive Features</h6>
                     <div key="distinctiveFeatures" className="charsheet-box">
                         {props.activeKnight.knightData.distinctiveFeatures.map((item, index)=>{
                             return (
@@ -189,7 +190,7 @@ export default function KnightSheet(props) {
                             saveEdit={props.saveEdit}
                         />
                     </div>
-
+                    <h6>Equipment</h6>
                     <div key="equipment" className="charsheet-box">
                         {props.activeKnight.knightData.equipment.map((item, index)=>{
                             return (
@@ -229,6 +230,7 @@ export default function KnightSheet(props) {
                 </Col>
  
                 <Col className="charsheet-column">
+                <h6>Statistics</h6>
                     <div key="statistics" className="charsheet-box">
                         {props.activeKnight.knightData.statistics.map((item, index)=>{
                             return (
@@ -296,6 +298,7 @@ export default function KnightSheet(props) {
                             )
                         })}
                     </div>
+                    <h6>Personality Traits</h6>
                     <div className="charsheet-box">
                         {props.activeKnight.knightData.personalityTraits.map((item, index)=>{
                             return (
@@ -311,12 +314,12 @@ export default function KnightSheet(props) {
                             )
                         })}
                     </div>
-
+                    <h6>Passions</h6>
                     <div className="charsheet-box">
                         {props.activeKnight.knightData.passions.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col md={1}>
+                                    <Col md={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -326,7 +329,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"+index}
@@ -341,7 +344,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                     </Col>
-                                    <Col  md={2}>
+                                    <Col  md={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"+index}
@@ -382,12 +385,14 @@ export default function KnightSheet(props) {
                     </div>
                     
                 </Col>
+
                 <Col className="charsheet-column">
+                <h6>Combat Skills</h6>
                     <div key="combatSkills" className="charsheet-box">
                         {props.activeKnight.knightData.combatSkills.general.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                <Col md={1}>
+                                    <Col md={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -397,7 +402,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -412,7 +417,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         </Col>
-                                    <Col md={2}>
+                                    <Col md={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -453,7 +458,7 @@ export default function KnightSheet(props) {
                         {props.activeKnight.knightData.combatSkills.weapons.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                <Col md={1}>
+                                <Col md={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -463,7 +468,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -478,7 +483,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         </Col>
-                                    <Col md={2}>
+                                    <Col md={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -516,12 +521,13 @@ export default function KnightSheet(props) {
                             </Col>
                         </Row>
                     </div>
+                    <h6>Skills</h6>
                     <div key="skills" className="charsheet-box">
-                        {/* {skills.map((item, index)=>{ */}
+                        
                             {props.activeKnight.knightData.skills.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                <Col md={1}>
+                                <Col md={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -531,7 +537,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -546,7 +552,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         </Col>
-                                    <Col md={2}>
+                                    <Col md={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}

@@ -355,7 +355,7 @@ const Protected = (props) => {
                 
             </Row> */}
             <Row>
-                <Col md={1} className="column">
+                <Col md={1} className="sidebar-column">
                     <button type="button" onClick={()=>createKnight()}>New Knight</button>
                     <KnightsList
                         key="myKnights"
@@ -386,7 +386,7 @@ const Protected = (props) => {
                         _listeners={_listeners}
                     />}
                 </Col>
-                <Col md={2} className="column">
+                <Col md={2} className="sidebar-column">
                     <Roller key="roller" diceSets={diceSets} getData={getData}/>
                 </Col>
             </Row>

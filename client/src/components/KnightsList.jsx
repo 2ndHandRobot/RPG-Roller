@@ -14,8 +14,14 @@ export default function KnightsList(props) {
             return (
                 <Container>
                 <h5>{props.listName}</h5>
+                <hr />
                 {l.map((knight, index)=>{
-                    return( <button key={index}  type="button" onClick={()=>{props.openSheet(knight._id, props.permission)}}>{knight.name!==""?knight.name:"(unnamed knight)"}</button>)
+                    return( 
+                        <div>
+                            <button key={index}  type="button" className="character-list" onClick={()=>{props.openSheet(knight._id, props.permission)}}>{knight.name!==""?knight.name:"(unnamed knight)"}</button>
+                            <hr />
+                        </div>
+                        )
                 })}
                 </Container>
             )

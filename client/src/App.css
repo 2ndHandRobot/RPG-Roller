@@ -5,6 +5,13 @@ p {
 hr {
   margin: 6px 0;
 }
+h6 {
+  margin: 6px 0 2px 10px;
+  text-decoration: underline;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
 footer {
   position: fixed;
   left: 0;
@@ -12,7 +19,7 @@ footer {
   padding: 10px 0;
   width: 100%;
   height: 58px;
-  background-color: #f5f3e4;
+  background-color: #eeebd7;
   text-align: center;
   z-index: 1;
 }
@@ -23,6 +30,8 @@ footer {
 
 .App {
   text-align: center;
+  font-family: 'Piazzolla', serif;
+  background-color: rgb(245, 245, 235);
 }
 
 
@@ -47,7 +56,7 @@ footer {
 }
 
 .main {
-  margin: 10px 0 60px 210px;
+  margin: 10px 0 60px 0;
 }
 .hidden {
   visibility: hidden;
@@ -57,19 +66,19 @@ footer {
   text-align: left;
 }
 .charsheet-box {
-  border: 2px solid blue;
+  border: 2px solid #afad90;
   border-radius: 10px;
   padding: 5px;
-  margin: 5px auto;
-  /* vertical-align: middle; */
+  margin: 0 3px;
 }
 
 
 
 .Header {
-  background-color: #f5f3e4;
+  background-color: #eeebd7;
+  line-height: 1.2;
+  padding: 10px 0;
 }
-
 
 
 .label-field  {
@@ -81,8 +90,6 @@ footer {
 .new-label-field  {
   width: 100%;
   background-color: rgb(230, 230, 230);
-  /* border-bottom: dotted 1px;
-  border-style: groove; */
 }
 
 .new-view {
@@ -91,10 +98,7 @@ footer {
 }
 
 .value-field  {
-  /* width: 50%;
-  float: right; */
   text-align: right;
-  /* text-decoration: underline dotted; */
   border-bottom: dotted 1px;
   
 }
@@ -156,15 +160,13 @@ footer {
   width: 100%;
   float: left;
 }
-.column {
-  padding-left: 5px;
-  padding-right: 5px;
+.sidebar-column {
+  padding: 30px 5px 0 5px;
 }
 
 .container {
   padding-left: 0;
   padding-right: 0;
-  /* margin: 0; */
 }
 .line-container {
   padding-left: 0;
@@ -204,9 +206,33 @@ footer {
   justify-content: flex-end;
 }
 
+.eye {
+  position: absolute;
+  color: rgb(145, 145, 115);
+}
 
 .login-field {
   text-align: center;
+}
+
+.login-btn {
+  background-color: rgb(175, 175, 145);
+  border-color: rgb(175, 175, 145);
+  line-height: 1.2;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+  color: #fff;
+  background-color: rgb(190, 190, 165);
+  border-color: rgb(175, 175, 145);
+  box-shadow: 0 0 0 0.2rem rgb(215, 215, 195);
+  line-height: 1.2;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: rgb(190, 190, 165);
+  border-color: rgb(215, 215, 195);
 }
 
 .placeholder-text {
@@ -215,9 +241,6 @@ footer {
   font-style: italic;
   font-size: 0.8rem;
 }
-.Footer {
-  background-color: aqua;
-}
 
 .bug {
   display: flex;
@@ -225,6 +248,7 @@ footer {
   margin: 0 2px;
   z-index: 10;
   height: 38px;
+  color: rgb(145, 145, 115);
 }
 
 .bug-field{
@@ -241,23 +265,60 @@ footer {
 
 
 .Roller {
-  border: 2px solid purple;
+  border: 2px solid #afad90;
   border-radius: 10px;
   padding: 0;
 }
 
 .dice-selection {
-  border: 1px solid purple;
+  display: inline;
   border-radius: 9px;
   padding: 0;
-  /* margin-left: 15px; */
-  margin: 0 15px;
+  margin: 0;
 }
 
 .roll-results {
-  border: 1px solid purple;
+  display: inline;
   border-radius: 9px;
   padding: 0;
-  /* margin-right: 15px; */
-  margin: 0 15px;
+  margin: 0;
 }
+
+
+button.character-list {
+  border: none;
+  background-color: #eeebd7;
+  text-align: left;
+  display: block;
+  font-size: 0.8rem;
+  width: 100%
+}
+.saved-dice{
+  display: inline-grid;
+  margin: 0 2px 5px 2px;
+}
+
+.roller-row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.dice-button {
+  border: none;
+  background-color: #eeebd7;
+  text-align: center;
+  display: block;
+  font-size: 1rem;
+}
+.tick_col {
+  padding: 0 5px 0 15px;
+}
+
+.label_col {
+  padding: 0 5px;
+}
+
+.value_col {
+  padding: 0 15px 0 5px;
+}
+

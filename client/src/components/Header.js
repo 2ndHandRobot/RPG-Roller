@@ -16,12 +16,12 @@ function Header (props) {
     return (
   
             <div className="Header">
-                <Link to='/'>Home</Link><br/>
+                {/* <Link to='/'>Home</Link><br/> */}
                 {  
                     loggedIn ? (
-                        <button onClick={logout}>Log Out</button>
+                        <button className="btn btn-primary login-btn" onClick={logout}>Log Out</button>
                     ) : (
-                        <button onClick={()=>setShowAccess(!showAccess)}>Log In/Register</button>
+                        <button className="btn btn-primary login-btn" onClick={()=>setShowAccess(!showAccess)}>Log In/Register</button>
                     )
                 }
                 {
