@@ -153,7 +153,8 @@ export default function KnightSheet(props) {
                             </Col>
                         </Row>
                     </div>
-                        <h6>Distinctive Features</h6>
+                    
+                    <h6>Distinctive Features</h6>
                     <div key="distinctiveFeatures" className="charsheet-box">
                         {props.activeKnight.knightData.distinctiveFeatures.map((item, index)=>{
                             return (
@@ -313,6 +314,72 @@ export default function KnightSheet(props) {
                                 />
                             )
                         })}
+                        <h6>Directed Traits</h6>
+                        {props.activeKnight.knightData.directedTraits.map((item, index)=>{
+                            return (
+                                <Row  className="lv-pair">
+                                    <Col md={1} className="tick_col">
+                                        <input 
+                                            type="checkbox" 
+                                            id={item._id+"_tick"} 
+                                            name="directedTraits" 
+                                            className="entry_tick" 
+                                            onClick={(event)=>{handleBoxTick(event, item._id)}} 
+                                            defaultChecked={item.isTicked}
+                                        />
+                                    </Col>
+                                    <Col md={9} className="label_col">
+                                        <ViewEdit
+                                            key={item._id+"_lab"} 
+                                            id={item._id+"_lab"+index}
+                                            name={item._id}
+                                            group="directedTraits"
+                                            field="label"
+                                            value={item.label}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                    </Col>
+                                    <Col  md={2} className="value_col">
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"+index}
+                                            name={item._id}
+                                            group="directedTraits"
+                                            field="value"
+                                            value={"+"+item.value}
+                                            placeHolderText="+0"
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                    </Col>
+                                </Row>
+                            )
+                        })}
+                        <Row  className="lv-pair">
+                            <Col>
+                                <ViewEdit
+                                    key={"directedTraits_new_lab"} 
+                                    id={"directedTraits_new_lab"}
+                                    name={''}
+                                    group="directedTraits"
+                                    field="new"
+                                    value={''}
+                                    placeHolderText="Click to add a passion"
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
+                                />
+                            </Col>
+                        </Row>
                     </div>
                     <h6>Passions</h6>
                     <div className="charsheet-box">

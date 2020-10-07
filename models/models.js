@@ -71,6 +71,7 @@ const CharacterSchema = new mongoose.Schema ({
     },
     personalInfo: [LabelStringPairSchema],
     personalityTraits: [PersonalityTraitPairSchema],
+    directedTraits: [LabelNumberPairSchema],
     passions: [LabelNumberPairSchema],
     statistics: [LabelNumberPairSchema],
     distinctiveFeatures: [String],

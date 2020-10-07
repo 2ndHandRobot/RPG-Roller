@@ -1,3 +1,5 @@
+html {background-color: rgb(245, 245, 235);}
+
 p {
   margin: 0;
 }
@@ -12,6 +14,10 @@ h6 {
   font-size: 1.1rem;
 }
 
+.charsheet-box h6 {
+  margin-left: 2px
+}
+
 footer {
   position: fixed;
   left: 0;
@@ -23,7 +29,9 @@ footer {
   text-align: center;
   z-index: 1;
 }
-
+.fixed-bottom {
+  z-index: 99;
+}
 .footbar {
   float: right;
 }
@@ -57,6 +65,7 @@ footer {
 
 .main {
   margin: 10px 0 60px 0;
+  background-color: rgb(245, 245, 235);
 }
 .hidden {
   visibility: hidden;
@@ -149,6 +158,7 @@ footer {
    border: none;
    border-radius: 5px;
    box-shadow:0 0 0 1600px rgba(140, 140, 140, 0.66);/* dark around it */
+   z-index: 1000;
 }
 
 .text-only-field {
@@ -268,6 +278,10 @@ footer {
   border: 2px solid #afad90;
   border-radius: 10px;
   padding: 0;
+}
+
+.Roller h2, .Roller .row {
+  background: border-box;
 }
 
 .dice-selection {
