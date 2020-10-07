@@ -67,11 +67,11 @@ export default function KnightSheet(props) {
         const unconscious = Math.round((STR+CON) / 4)
 
         return ([
-            {label:"damage", value: damage},
-            {label:"healRate", value: healRate},
-            {label:"moveRate", value: moveRate},
-            {label:"totalHitPoints", value: totalHitPoints},
-            {label:"unconscious", value: unconscious}
+            {label:"Damage", value: damage},
+            {label:"Heal Rate", value: healRate},
+            {label:"Move Rate", value: moveRate},
+            {label:"Total Hit Points", value: totalHitPoints},
+            {label:"Unconscious", value: unconscious}
         ])
     }
     console.log("DERIVED STATS:",derivedStats)
@@ -108,7 +108,7 @@ export default function KnightSheet(props) {
                                                 name={item._id}
                                                 group="personalInfo"
                                                 field="label"
-                                                value={_.startCase(item.label)}
+                                                value={item.label}
                                                 addWindowClickListener={addWindowClickListener}
                                                 removeWindowClickListeners={removeWindowClickListeners}
                                                 editInProgress={editInProgress}
@@ -244,7 +244,7 @@ export default function KnightSheet(props) {
                                                 group="statistics"
                                                 field="label"
                                                 lockEdit={true}
-                                                value={_.startCase(item.label)}
+                                                value={item.label}
                                                 editInProgress={editInProgress}
                                             />
                                             </Col>
@@ -255,7 +255,7 @@ export default function KnightSheet(props) {
                                                 name={item._id}
                                                 group="statistics"
                                                 field="value"
-                                                value={_.startCase(item.value)}
+                                                value={item.value}
                                                 placeHolderText="Click to add personal info"
                                                 addWindowClickListener={addWindowClickListener}
                                                 removeWindowClickListeners={removeWindowClickListeners}
@@ -279,7 +279,7 @@ export default function KnightSheet(props) {
                                             group="statistics"
                                             field="label"
                                             lockEdit={true}
-                                            value={_.startCase(item.label)}
+                                            value={item.label}
                                             editInProgress={editInProgress}
                                         />
                                         </Col>
@@ -403,7 +403,7 @@ export default function KnightSheet(props) {
                                             name={item._id}
                                             group="passions"
                                             field="label"
-                                            value={_.startCase(item.label)}
+                                            value={item.label}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
@@ -476,7 +476,7 @@ export default function KnightSheet(props) {
                                             name={item._id}
                                             group="combatSkills.general"
                                             field="label"
-                                            value={_.startCase(item.label)}
+                                            value={item.label}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
@@ -542,7 +542,7 @@ export default function KnightSheet(props) {
                                             name={item._id}
                                             group="combatSkills.weapons"
                                             field="label"
-                                            value={_.startCase(item.label)}
+                                            value={item.label}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
@@ -611,7 +611,7 @@ export default function KnightSheet(props) {
                                             name={item._id}
                                             group="skills"
                                             field="label"
-                                            value={_.startCase(item.label)}
+                                            value={item.label}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}

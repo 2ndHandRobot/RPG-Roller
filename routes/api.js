@@ -281,7 +281,7 @@ router.post('/edit-entry', (req, res) => {
 
    console.log('ROUTING: Editing post. Body:',req.body)
    const data = req.body;
-   let value = (data.field==="label")?_.camelCase(data.value):data.value;
+   let value = data.value;
    let updateObject = {};
    let options = {};
 

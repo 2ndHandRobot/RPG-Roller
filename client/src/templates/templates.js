@@ -3,87 +3,87 @@ const squire = {
         age: 15,
         skills:
             [
-                {label:"first_aid", value: 0},
-                {label:"battle", value: 0},
-                {label:"horsemanship", value: 0}
+                {label:"First Aid", value: 0},
+                {label:"Battle", value: 0},
+                {label:"Horsemanship", value: 0}
             ]
     }
 
 const personalInfo = [
-    {label: 'name',value: ''},
-    {label: 'player',value: ''},
-    {label: 'homeland',value: ''},
-    {label: 'culture',value: ''},
-    {label: 'religion',value: ''},
-    {label: 'class',value: ''},
-    {label: 'home',value: ''},
-    {label: 'age',value: ''},
-    {label: 'yearBorn',value: ''},
-    {label: 'sonNumber',value: ''},
-    {label: 'fatherName',value: ''},
-    {label: 'fatherClass',value: ''},
-    {label: 'lord',value: ''}
+    {label: 'Name',value: ''},
+    {label: 'Player',value: ''},
+    {label: 'Homeland',value: ''},
+    {label: 'Culture',value: ''},
+    {label: 'Religion',value: ''},
+    {label: 'Class',value: ''},
+    {label: 'Home',value: ''},
+    {label: 'Age',value: ''},
+    {label: 'Year Born',value: ''},
+    {label: 'Son Number',value: ''},
+    {label: "Father's Name",value: ''},
+    {label: "Father's Class",value: ''},
+    {label: 'Lord',value: ''}
 ]
 
 const personality= [
     {
-        trait1:{label:"chaste",isTicked: false},
-        trait2:{label:"lustful",isTicked: false},
+        trait1:{label:"Chaste",isTicked: false},
+        trait2:{label:"Lustful",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"energetic",isTicked: false},
-        trait2:{label:"lazy",isTicked: false},
+        trait1:{label:"Energetic",isTicked: false},
+        trait2:{label:"Lazy",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"forgiving",isTicked: false},
-        trait2:{label:"vengeful",isTicked: false},
+        trait1:{label:"Forgiving",isTicked: false},
+        trait2:{label:"Vengeful",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"generous",isTicked: false},
-        trait2:{label:"selfish",isTicked: false},
+        trait1:{label:"Generous",isTicked: false},
+        trait2:{label:"Selfish",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"honest",isTicked: false},
-        trait2:{label:"deceitful",isTicked: false},
+        trait1:{label:"Honest",isTicked: false},
+        trait2:{label:"Deceitful",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"merciful",isTicked: false},
-        trait2:{label:"cruel",isTicked: false},
+        trait1:{label:"Merciful",isTicked: false},
+        trait2:{label:"Cruel",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"modest",isTicked: false},
-        trait2:{label:"proud",isTicked: false},
+        trait1:{label:"Modest",isTicked: false},
+        trait2:{label:"Proud",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"spiritual",isTicked: false},
-        trait2:{label:"worldly",isTicked: false},
+        trait1:{label:"Spiritual",isTicked: false},
+        trait2:{label:"Worldly",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"prudent",isTicked: false},
-        trait2:{label:"reckless",isTicked: false},
+        trait1:{label:"Prudent",isTicked: false},
+        trait2:{label:"Reckless",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"temperate",isTicked: false},
-        trait2:{label:"indulgent",isTicked: false},
+        trait1:{label:"Temperate",isTicked: false},
+        trait2:{label:"Indulgent",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"trusting",isTicked: false},
-        trait2:{label:"suspiscious",isTicked: false},
+        trait1:{label:"Trusting",isTicked: false},
+        trait2:{label:"Suspiscious",isTicked: false},
         value: 10
     },
     {
-        trait1:{label:"valorous",isTicked: false},
-        trait2:{label:"cowardly",isTicked: false},
+        trait1:{label:"Valorous",isTicked: false},
+        trait2:{label:"Cowardly",isTicked: false},
         value: 10
     }
 ]
@@ -91,18 +91,18 @@ const personality= [
 const passions=
 [
     {
-        label: "loyalty_lord",
+        label: "Loyalty (lord)",
         value: 15
     },
     {
-        label: "love_family",
+        label: "Love (family)",
         value: 15
     },
-    {   label: "hospitality",
+    {   label: "Hospitality",
         value: 15
     },
     {
-        label: "honor",
+        label: "Honor",
         value: 15
     }
 ]
@@ -134,47 +134,47 @@ const stats=
 
 const skills=
     [
-        {label:"awareness", value: 0},
-        {label:"boating", value: 0},
-        {label:"chirurgery", value: 0},
-        {label:"compose", value: 0},
-        {label:"courtesy", value: 0},
-        {label:"dancing", value: 0},
-        {label:"faerie_lore", value: 0},
-        {label:"falconry", value: 0},
-        {label:"first_aid", value: 0},
-        {label:"flirting", value: 0},
-        {label:"folk_lore", value: 0},
-        {label:"gaming", value: 0},
-        {label:"heraldry", value: 0},
-        {label:"hunting", value: 0},
-        {label:"industry", value: 0},
-        {label:"intrigue", value: 0},
-        {label:"orate", value: 0},
-        {label:"play ()", value: 0},
-        {label:"read ()", value: 0},
-        {label:"recognise", value: 0},
-        {label:"religion ()", value: 0},
-        {label:"romance", value: 0},
-        {label:"singing", value: 0},
-        {label:"stewardship", value: 0},
-        {label:"swimming", value: 0},
-        {label:"tourney", value: 0}
+        {label:"Awareness", value: 0},
+        {label:"Boating", value: 0},
+        {label:"Chirurgery", value: 0},
+        {label:"Compose", value: 0},
+        {label:"Courtesy", value: 0},
+        {label:"Dancing", value: 0},
+        {label:"Faerie_lore", value: 0},
+        {label:"Falconry", value: 0},
+        {label:"First_aid", value: 0},
+        {label:"Flirting", value: 0},
+        {label:"Folk_lore", value: 0},
+        {label:"Gaming", value: 0},
+        {label:"Heraldry", value: 0},
+        {label:"Hunting", value: 0},
+        {label:"Industry", value: 0},
+        {label:"Intrigue", value: 0},
+        {label:"Orate", value: 0},
+        {label:"Play ()", value: 0},
+        {label:"Read ()", value: 0},
+        {label:"Recognise", value: 0},
+        {label:"Religion ()", value: 0},
+        {label:"Romance", value: 0},
+        {label:"Singing", value: 0},
+        {label:"Stewardship", value: 0},
+        {label:"Swimming", value: 0},
+        {label:"Tourney", value: 0}
     ]
 
 const combatSkills=
     {
         general:
             [
-                {label:"battle", value: 0},
-                {label:"horsemanship", value: 0}
+                {label:"Battle", value: 0},
+                {label:"Horsemanship", value: 0}
             ],
         weapons:
             [
-                {label:"sword", value: 0},
-                {label:"lance", value: 0},
-                {label:"spear", value: 0},
-                {label:"dagger", value: 0}
+                {label:"Sword", value: 0},
+                {label:"Lance", value: 0},
+                {label:"Spear", value: 0},
+                {label:"Dagger", value: 0}
             ]
     }
 
