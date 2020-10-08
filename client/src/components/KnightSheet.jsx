@@ -59,7 +59,7 @@ export default function KnightSheet(props) {
         const STR = getStat("STR");
         const SIZ = getStat("SIZ");
         const DEX = getStat("DEX");
-        const CON = getStat("SIZ");
+        const CON = getStat("CON");
 
         const damage = Math.round((STR + SIZ) / 6) + "d6"
         const healRate = Math.round((STR + CON) / 6)
