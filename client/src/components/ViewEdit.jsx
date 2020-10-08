@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useRef } from 'react';
 import _ from 'lodash';
 
 // DESCRIPTION
@@ -32,28 +32,12 @@ import _ from 'lodash';
         
         let fallBackValue = '';
         
-        // console.log("_listeners array:",props._listeners)
-
-        // EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener;
-        // EventTarget.prototype.addClickListener = function (listener) {
-        //     console.log("Pushing to props._listeners array:", listener)
-        //     props.set_Listeners(prev=>[...prev, listener])
-        //     // props._listeners.push({ target: this, listener: listener });
-        //     console.log("Checking props._listeners array:",props._listeners.length," found.")
-        //     this.addEventListenerBase("click", listener);
-        // };
-        // EventTarget.prototype.removeClickListeners = function () {
-        //     console.log("Removing 'click' listeners. (",props._listeners.length,"found)")
-        //     for (var index = 0; index !== props._listeners.length; index++) {
-        //         var item = props._listeners[index];
-        //         console.log("Listener:",item);
-        //         var target = item.target;
-        //         var type = "click";
-        //         var listener = item.listener;
+        const textInput = useRef()
         
-        //         this.removeEventListener(type, listener);
-        //     }
-        //   };
+        function focusTextInput () {
+            textInput.current.focus()
+        }
+
 
         function confirmEdit() {
             console.log("DOING THIS: confirmEdit")
@@ -119,7 +103,20 @@ import _ from 'lodash';
             }
 
         }
-    
+        function checkFocus(){
+            var focused_element = null;
+            if (
+                document.hasFocus() &&
+                document.activeElement !== document.body &&
+                document.activeElement !== document.documentElement
+            ) {
+                focused_element = document.activeElement;
+            }
+            
+            return focused_element
+        }
+
+        
         function handleParaClick(ev){
             console.log("DOING THIS: handleParaClick")
             ev.stopPropagation();
@@ -127,8 +124,15 @@ import _ from 'lodash';
             fallBackValue=value;
             console.log("fallBack:",fallBackValue);
             setEditMode(true);
-            enterEditMode(ev.target)
+            enterEditMode(ev.target);
+            
             handleClickOutside(props.group+"_"+props.field+"_"+fieldId)
+            console.log("Current focus:",checkFocus())
+            let paraEl = document.getElementById(fieldId+"_"+props.field+"_p");
+            let inputEl = document.getElementById(fieldId+"_"+props.field+"_i");
+            console.log("Para El:",paraEl," ; Input El:",inputEl);
+            // inputEl.focus();
+            console.log("Focus set to:",checkFocus())
         }
 
         function handleClickOutside(elId) {
@@ -149,8 +153,6 @@ import _ from 'lodash';
             props.addWindowClickListener(outsideClickListener)
         }
 
-
-
         return (
             <div 
                 key={props.field+"_"+fieldId+"_d"} 
@@ -161,14 +163,16 @@ import _ from 'lodash';
                 {
                     editMode
                     ? <input 
+                        autoFocus
                         key={fieldId+"_"+props.field+"_i"}
-                        id={fieldId+"_"+props.field+"_p"}
+                        id={fieldId+"_"+props.field+"_i"}
                         name={props.field}
                         className={props.field+"-edit"}
                         // update valueState
                         onChange={(ev)=>setValue(ev.target.value)} 
                         // check if [Enter] (save) or [Esc] (cancel)
                         onKeyPress={handeKeyPress} 
+                        ref={textInput}
                         value={value}    
                     />
                     : <p 

@@ -166,15 +166,15 @@ const combatSkills=
     {
         general:
             [
-                {label:"Battle", value: 0},
-                {label:"Horsemanship", value: 0}
+                {label:"Battle"},
+                {label:"Horsemanship"}
             ],
         weapons:
             [
-                {label:"Sword", value: 0},
-                {label:"Lance", value: 0},
-                {label:"Spear", value: 0},
-                {label:"Dagger", value: 0}
+                {label:"Sword"},
+                {label:"Lance"},
+                {label:"Spear"},
+                {label:"Dagger"}
             ]
     }
 
@@ -187,7 +187,7 @@ const knight= {
     distinctiveFeatures:[],
     equipment: [],
     skills: skills,
-    combat_skills: combatSkills,
+    combatSkills: combatSkills,
     squire: squire
 }
     

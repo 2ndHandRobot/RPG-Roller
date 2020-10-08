@@ -193,14 +193,14 @@ export default function Access(props) {
                 </Row>
                 <Link to='/protected'>
                 <button
-                    className="btn btn-primary login-btn"
+                    className="btn btn-primary shadow-none login-btn"
                     type="button"
                     id="email-button"
                     onClick={handleLoginClick}
                 >Login</button>
                 </Link>
                 <button
-                    className="btn btn-primary login-btn"
+                    className="btn btn-primary shadow-none login-btn"
                     type="button"
                     id="reg-button"
                     dataToggle="collapse"

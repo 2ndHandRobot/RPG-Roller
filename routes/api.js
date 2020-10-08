@@ -219,6 +219,7 @@ router.post('/create', (req, res) => {
    console.log('API :: ROUTING: Creating new Knight character. Body:',req.body)
    const data = req.body;
    const newKnight = new models.Knights(data);
+   console.log("New knight:",JSON.stringify(newKnight))
 
    // function getAdmins() {
       let admins = [];

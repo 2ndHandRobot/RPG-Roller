@@ -82,7 +82,7 @@ const Protected = (props) => {
         console.log("DOING THIS: createKnight")
         const payload = templates.knight;
         payload.playerInfo = {isOwner: props.userId}
-
+        console.log("New Knight data:",JSON.stringify(payload));
         axios({
             url: '/api/create',
             method: 'POST',
@@ -116,84 +116,6 @@ const Protected = (props) => {
         return listData;
     }
 
-    // function saveValue(group, fieldId, newVal){
-    //     console.log("DOING THIS: saveValue. Props: g=", group,", f=", fieldId," v:", newVal)
-        
-    //     const payload = {group: group, fieldId: fieldId, newVal: newVal} 
-    //     console.log("Payload: ",JSON.stringify(payload));
-
-    //     axios({
-    //         url: '/api/update-val',
-    //         method: 'POST',
-    //         data: payload
-    //      })
-    //      .then(() => {
-    //         console.log("Data sent to server");
-    //         getData(); 
-    //      })
-    //      .catch((err) => {
-    //         console.log("Internal server error.", err);
-    //      });
-    // }
-
-    
-    // function saveEntry(group, fieldId, newLab, newVal, type){
-    //     console.log("DOING THIS: saveValue. Props: g=", group,", f=", fieldId," v:", newVal,", t=",type)
-    //     // Update activeKnight state object
-    //     let knightObj = activeKnight.knightData;
-    //     let objectToEdit = tunnel(knightObj, group)
-
-    //     const valChange = ()=>{
-    //         if ((typeof newVal) === "number") {
-    //             console.log("newVal is a number");
-    //             return true;
-    //         } else if ((typeof newVal) === "string") {
-    //             console.log("newVal is a string");
-    //             return true;
-    //             }
-    //         }
-        
-    //             objectToEdit.forEach(entry=>{
-    //                 console.log("entry:",entry)
-    //                 if (entry._id === fieldId) { 
-    //                     if (newLab&&valChange){
-    //                         console.log("both found")
-    //                         entry.label = newLab;
-    //                         entry.value = newVal
-    //                     } else if (newLab) {
-    //                         console.log("newLab found")
-    //                         entry.label = newLab;
-    //                     } else if (valChange) {
-    //                         console.log("newVal found")
-    //                         entry.value = newVal;
-    //                     }
-    //                 }
-    //             })
-            
-    //     let updateObj = {...activeKnight};
-    //     updateObj.knightData = knightObj;
-    //     console.log("Active knight update object: ",JSON.stringify(updateObj))
-    //     setActiveKnight(updateObj);
-    //     // console.log("Active knight updated to: ",JSON.stringify(activeKnight))
-    //     // Update database
-    //     const payload = {group: group, fieldId: fieldId, newLab: newLab, newVal: newVal, type: type} 
-    //     console.log("Payload: ",JSON.stringify(payload));
-
-    //     axios({
-    //         url: '/api/update-entry',
-    //         method: 'POST',
-    //         data: payload
-    //      })
-    //      .then(() => {
-    //         console.log("Data sent to server");
-    //         getData(); 
-    //      })
-    //      .catch((err) => {
-    //         console.log("Internal server error.", err);
-    //      });
-    // }
-
-
     function saveEdit(props){
         console.log("DOING THIS: saveEdit: ",props)
 
@@ -225,50 +147,7 @@ const Protected = (props) => {
 
    function saveEntry(group, fieldId, newVal, field){
     console.log("DOING THIS: saveValue. Props: g=", group,", f_id=", fieldId," v:", newVal,", f=",field)
-    // Update activeKnight state object
-    // let knightObj = activeKnight.knightData;
-    // let objectToEdit = tunnel(knightObj, group)
-
-    // const valChange = ()=>{
-    //     if ((typeof newVal) === "number") {
-    //         console.log("newVal is a number");
-    //         return true;
-    //     } else if ((typeof newVal) === "string") {
-    //         console.log("newVal is a string");
-    //         return true;
-    //         }
-    //     }
     
-    // objectToEdit.forEach(entry=>{
-    //     console.log("entry:",entry)
-    //     if (entry._id === fieldId) { 
-    //         if (newLab&&valChange){
-    //             console.log("both found")
-    //             entry.label = newLab;
-    //             entry.value = newVal
-    //         } else if (newLab) {
-    //             console.log("newLab found")
-    //             entry.label = newLab;
-    //         } else if (valChange) {
-    //             console.log("newVal found")
-    //             entry.value = newVal;
-    //         }
-    //     }
-    // })
-
-    // if (field) {
-
-    // } else {
-
-    // }
-        
-    // let updateObj = {...activeKnight};
-    // updateObj.knightData = knightObj;
-    // console.log("Active knight update object: ",JSON.stringify(updateObj))
-    // setActiveKnight(updateObj);
-
-    // console.log("Active knight updated to: ",JSON.stringify(activeKnight))
-    // Update database
     const payload = {knightId: activeKnight.knightId, group: group, fieldId: fieldId, newVal: newVal, field: field} 
     
     console.log("Payload: ",JSON.stringify(payload));

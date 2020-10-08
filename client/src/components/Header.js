@@ -19,9 +19,9 @@ function Header (props) {
                 {/* <Link to='/'>Home</Link><br/> */}
                 {  
                     loggedIn ? (
-                        <button className="btn btn-primary login-btn" onClick={logout}>Log Out</button>
+                        <button className="btn btn-primary shadow-none login-btn" onClick={logout}>Log Out</button>
                     ) : (
-                        <button className="btn btn-primary login-btn" onClick={()=>setShowAccess(!showAccess)}>Log In/Register</button>
+                        <button className="btn btn-primary shadow-none login-btn" onClick={()=>setShowAccess(!showAccess)}>Log In/Register</button>
                     )
                 }
                 {

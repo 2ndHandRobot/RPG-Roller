@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
@@ -12,7 +12,8 @@ export default function KnightSheet(props) {
     const [_listeners, set_Listeners] = useState([]);
 
     console.log("_listeners array:",_listeners)
-    
+
+
     EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener;
     EventTarget.prototype.addClickListener = function (listener) {
         console.log("Pushing to _listeners array:", listener)
@@ -45,7 +46,7 @@ export default function KnightSheet(props) {
       function removeWindowClickListeners(){
         window.removeClickListeners();
     }
-    
+
     
     function getStat(statName){
         const stat = props.activeKnight.knightData.statistics.filter(stat=>stat.label=== statName)[0]
@@ -108,6 +109,7 @@ export default function KnightSheet(props) {
                                                 name={item._id}
                                                 group="personalInfo"
                                                 field="label"
+                                                lockEdit={true}
                                                 value={item.label}
                                                 addWindowClickListener={addWindowClickListener}
                                                 removeWindowClickListeners={removeWindowClickListeners}

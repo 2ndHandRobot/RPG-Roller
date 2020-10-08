@@ -206,7 +206,7 @@ footer {
 
 .traitVals {
   text-align: center;
-  margin: 0;
+  margin: 0 auto;
 }
 
 .trait2 {
@@ -243,6 +243,17 @@ footer {
   color: #fff;
   background-color: rgb(190, 190, 165);
   border-color: rgb(215, 215, 195);
+}
+
+.btn-primary:not(:disabled):not(.disabled):active {
+  color: #fff;
+  background-color:rgb(215, 215, 195);
+  border-color: rgb(190, 190, 165);
+}
+
+.btn:focus, .btn:active {
+  outline: none !important;
+   box-shadow: none;
 }
 
 .placeholder-text {
