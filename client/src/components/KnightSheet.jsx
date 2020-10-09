@@ -295,7 +295,7 @@ export default function KnightSheet(props) {
                             group="family"
                             field="family"
                             value={''}
-                            placeHolderText="Click to add family member"
+                            placeHolderText="click to add family member (father, brother, sister...)"
                             addWindowClickListener={addWindowClickListener}
                             removeWindowClickListeners={removeWindowClickListeners}
                             editInProgress={editInProgress}

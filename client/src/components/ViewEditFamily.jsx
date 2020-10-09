@@ -4,7 +4,8 @@ import ViewEdit from './ViewEdit';
 
 // Import fontawesome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSkullCrossbones, faHeart, faMars, faVenus, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faSkullCrossbones, faHeart, faMars, faVenus, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 import _ from 'lodash';
 
@@ -161,12 +162,27 @@ import _ from 'lodash';
                     </Col>
                     <Col md={1} className="family-col" >
                         <FontAwesomeIcon 
-                            icon={faChevronDown} 
+                            icon={faStar} 
                             name="deceased" 
                             aria-expanded={props.showStatus}
                             aria-controls={"rep_block"+personId}
                             onClick={()=>setShowReputation(!showReputation)}
                         />
+                        {showReputation 
+                        ?   <FontAwesomeIcon 
+                            icon={faChevronUp} 
+                            name="deceased" 
+                            aria-expanded={props.showStatus}
+                            aria-controls={"rep_block"+personId}
+                            onClick={()=>setShowReputation(!showReputation)}
+                        />
+                        : <FontAwesomeIcon 
+                            icon={faChevronDown} 
+                            name="deceased" 
+                            aria-expanded={props.showStatus}
+                            aria-controls={"rep_block"+personId}
+                            onClick={()=>setShowReputation(!showReputation)}
+                        />}
                     </Col>
                 </Row>
                 <Collapse in={showReputation}>
