@@ -120,7 +120,7 @@ const Protected = (props) => {
         console.log("DOING THIS: saveEdit: ",props)
 
         const payload = {
-            knightId: activeKnight.knightId,
+            knightId: props.itemId || activeKnight.knightId,
             group: props.group,
             field: props.field,
             value: props.value,
@@ -129,7 +129,8 @@ const Protected = (props) => {
         console.log("Payload: ",JSON.stringify(payload));
     
         axios({
-            url: '/api/edit-entry',
+            // url: '/api/edit-entry',
+            url: '/api/edit-family-entry',
             method: 'POST',
             data: payload
          })

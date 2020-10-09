@@ -286,11 +286,17 @@ router.post('/edit-entry', (req, res) => {
    let updateObject = {};
    let options = {};
 
+   console.log("FieldId:", data.fieldId)
+   console.log("FieldId length:", data.fieldId.length)
    
-   if (!data.fieldId.length > 0) {
+   // if (!data.fieldId.length > 0) {
+   if (!data.fieldId) {
       console.log("No fieldId found. Creating new entry.")
       if (data.field === "single") {
          updateObject = {$push: {[`${data.group}`]:`${value}`}};
+      } else if (data.field === "family") {
+         const newId = new mongoose.Types.ObjectId
+         updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`"${value}"`,"value":""}}}};
       } else {
          const newId = new mongoose.Types.ObjectId
          updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
@@ -302,12 +308,21 @@ router.post('/edit-entry', (req, res) => {
       }
    } else {
       console.log("fieldId found. Updating new entry.")
-      updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};
-      options = { 
-         arrayFilters: [{ 'entry._id' : data.fieldId }], 
-         useFindAndModify: false,
-         upsert: true, 
-         new: true
+      if (data.field === "single") {
+         updateObject = {$set: {[`${data.group}.${data.fieldId}`]:`${value}`}};
+         options = { 
+            useFindAndModify: false,
+            upsert: true, 
+            new: true
+         }
+      } else {
+         updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};  
+         options = {
+            arrayFilters: [{ 'entry._id' : data.fieldId }], 
+            useFindAndModify: false,
+            upsert: true, 
+            new: true
+         }
       }
    }
 
@@ -329,6 +344,111 @@ router.post('/edit-entry', (req, res) => {
       });
    
 })
+
+router.post('/edit-family-entry', (req, res) => {
+   // PROPS:
+   // knightId: the _id of the Knight document to update
+   // personId: the _id of the family member
+   // group: path to the nested data array (e.g. "personalInfo" or "combatSkills.general")
+   // field: key for values in nested objects (e.g. "label" or "value")
+   // value: the new/edited value to save
+   // fieldId: the _id of the entry to be updated :: if null, save will be treated as a new entry
+   
+      console.log('ROUTING: Editing post. Body:',req.body)
+      const data = req.body;
+      let value = data.value;
+      let updateObject = {};
+      let options = {};
+      let filter = {}
+      
+
+      console.log("Group:", data.group)
+      
+      
+      if (data.group === "family.reputation") {
+         console.log("Saving Family reputation")
+         filter = {"family._id": data.knightId}
+         if (!data.fieldId) {
+            console.log("No fieldId found. Creating new entry.")
+         
+            updateObject = {$push: {"family.$.reputation":`${value}`}};
+            options = {
+               // arrayFilters: [{ 'person._id' : data.fieldId }], 
+               useFindAndModify: false,
+               upsert: true, 
+               new: true
+            }
+         
+         } else {
+            console.log("fieldId found. Updating existing entry.")
+            
+            updateObject = {$set: {[`family.$.reputation.${data.fieldId}`]:`${value}`}};
+            options = { 
+               useFindAndModify: false,
+               upsert: true, 
+               new: true
+            }
+         }
+      } else { 
+         console.log("Saving non Family-Reputation entry")
+         filter = {"_id": data.knightId}
+
+         if (!data.fieldId) {
+            console.log("No fieldId found. Creating new entry.")
+            if (data.field === "single") {
+               updateObject = {$push: {[`${data.group}`]:`${value}`}};
+            } else if (data.field === "family") {
+               const newId = new mongoose.Types.ObjectId
+               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`"${value}"`,"value":""}}}};
+            } else {
+               const newId = new mongoose.Types.ObjectId
+               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
+            }
+            options = { 
+               useFindAndModify: false,
+               upsert: true, 
+               new: true
+            }
+         } else {
+            console.log("fieldId found. Updating existing entry.")
+            if (data.field === "single") {
+               updateObject = {$set: {[`${data.group}.${data.fieldId}`]:`${value}`}};
+               options = { 
+                  useFindAndModify: false,
+                  upsert: true, 
+                  new: true
+               }
+            } else {
+               updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};  
+               options = {
+                  arrayFilters: [{ 'entry._id' : data.fieldId }], 
+                  useFindAndModify: false,
+                  upsert: true, 
+                  new: true
+               }
+            }
+         }
+      }
+   
+      console.log("knightId:",data.knightId,". Update object:",updateObject,". options:",options)
+         Knights.findOneAndUpdate(
+            filter,
+            updateObject,
+            options,
+            (err, resp)=>{
+               if (err) {
+                  console.log("Update failed:",err)
+                  res.send(err)
+               } else if (resp) {
+                  console.log("Update succeeded:",resp)
+                  res.send(resp)
+               } else {
+                  console.log("No error or response returned by server")
+               }
+         });
+      
+   })
+   
 
 router.post('/update-entry', (req, res) => {
    console.log('API :: ROUTING: Updating field value. Body:',req.body)

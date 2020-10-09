@@ -17,17 +17,20 @@ const DiceSetSchema = new mongoose.Schema ({
 })
 
 const LabelNumberPairSchema = new mongoose.Schema ({
+    index: Number,
     label: { type: String, default: '' },
     value: { type: Number, min: [0, 'cannot be negative'], default: 0 },
     isTicked: { type: Boolean, default: false }
 })
 
 const LabelStringPairSchema = new mongoose.Schema ({
+    index: Number,
     label: { type: String, default: '' },
     value: { type: String, default: '' }
 })
 
 const PersonalityTraitPairSchema = new mongoose.Schema ({
+    index: Number,
     trait1: { 
         label: String, 
         isTicked: {
@@ -48,7 +51,18 @@ const PersonalityTraitPairSchema = new mongoose.Schema ({
     },
 })
 
+const FamilyMemberSchema = new mongoose.Schema({
+    index: Number,
+    who: LabelStringPairSchema,
+    male: Boolean,
+    age: Number,
+    glory: Number,
+    deceased: Boolean,
+    reputation: [String]
+})
+
 const SquireSchema = new mongoose.Schema ({
+    index: Number,
     name: {
         type: String,
         default: ''
@@ -60,6 +74,7 @@ const SquireSchema = new mongoose.Schema ({
     skills:[LabelNumberPairSchema]
 })
 const CharacterSchema = new mongoose.Schema ({
+    index: Number,
     playerInfo: {
         isOwner: {
             type: String,
@@ -81,6 +96,7 @@ const CharacterSchema = new mongoose.Schema ({
         weapons: [LabelNumberPairSchema]
     },
     equipment: [String],
+    family: [FamilyMemberSchema],
     squire: SquireSchema
 });
 

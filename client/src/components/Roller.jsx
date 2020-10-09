@@ -190,8 +190,9 @@ export default function Roller(props){
                         <h2>Roller</h2>
                         
                         <label for="add-dice">Add a Die</label>
-                        <input type="number" min="2" id="add-dice" onChange={handeDiceInput} onKeyPress={handleKeyPress} value={diceInput} autocomplete="off"></input>
-
+                        <div className="die-input-div">
+                            <input type="number" className="die-input" min="2" id="add-dice" onChange={handeDiceInput} onKeyPress={handleKeyPress} value={diceInput} autocomplete="off"></input>
+                        </div>
                         <button type="button" onClick={clearDice}>clear</button>                        
                         <button type="button" onClick={()=>{saveDice(diceSet)}}>save</button>
                         

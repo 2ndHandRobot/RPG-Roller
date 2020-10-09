@@ -294,6 +294,13 @@ footer {
 .Roller h2, .Roller .row {
   background: border-box;
 }
+.die-input-div {
+  width: 40%;
+  display: inline-block;
+}
+.die-input {
+  width: -webkit-fill-available;
+}
 
 .dice-selection {
   display: inline;
@@ -347,3 +354,22 @@ button.character-list {
   padding: 0 15px 0 5px;
 }
 
+/* .family-block{
+  font-size: 0.8rem;
+} */
+
+.family-row {
+  margin-left: 0px;
+  margin-right: 0px;
+  font-size: 0.8rem;
+}
+
+.family-col {
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+}
+
+.family-stat {
+  display: inline-flex;
+}

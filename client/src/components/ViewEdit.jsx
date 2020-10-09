@@ -33,24 +33,29 @@ import _ from 'lodash';
         let fallBackValue = '';
         
         const textInput = useRef()
-        
-        function focusTextInput () {
-            textInput.current.focus()
-        }
-
-
+      
         function confirmEdit() {
             console.log("DOING THIS: confirmEdit")
             // Switch back to View mode
-            document.getElementById(props.group+"_"+props.field+"_"+fieldId).classList.remove("edit-in-progress")
+            console.log("Edit-in-progress element (before):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
+            document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId).classList.remove("edit-in-progress")
+            console.log("Edit-in-progress element (after):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
             exitEditMode()
             // Save the edited value to DB
-            const payload = {
+           
+            let payload = {
                 group: props.group,
                 field: props.field,
                 value: value,
                 fieldId: fieldId
             }
+
+            if (props.nestedId) {
+                payload.itemId = props.nestedId;
+            }
+
+            console.log("VE: Save payload:",payload)
+
             props.saveEdit(payload);
             // Disable or nullify the click-outside event listener
             props.removeWindowClickListeners();
@@ -126,7 +131,7 @@ import _ from 'lodash';
             setEditMode(true);
             enterEditMode(ev.target);
             
-            handleClickOutside(props.group+"_"+props.field+"_"+fieldId)
+            handleClickOutside(props.group+"_"+props.field+"_"+fieldId+props.nestedId)
             console.log("Current focus:",checkFocus())
             let paraEl = document.getElementById(fieldId+"_"+props.field+"_p");
             let inputEl = document.getElementById(fieldId+"_"+props.field+"_i");
@@ -146,7 +151,9 @@ import _ from 'lodash';
                 console.log("OUTSIDE CLICK check triggered. event.target: ",event.target)
                 if ( !element.contains(event.target)) {
                     console.log("Click in ",event.target," is not inside element: ",element);
+                    console.log("Edit-in-progress element (before):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
                     document.getElementById(element.id).classList.remove("edit-in-progress");
+                    console.log("Edit-in-progress element (after):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
                     cancelEdit();
                 }
             }
@@ -156,7 +163,7 @@ import _ from 'lodash';
         return (
             <div 
                 key={props.field+"_"+fieldId+"_d"} 
-                id={props.group+"_"+props.field+"_"+fieldId} 
+                id={props.group+"_"+props.field+"_"+fieldId+props.nestedId} 
                 className={props.field+"-field"}
             >
                 

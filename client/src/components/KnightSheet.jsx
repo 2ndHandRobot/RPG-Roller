@@ -2,11 +2,25 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
+import ViewEditFamily from './ViewEditFamily';
 import ViewEditPersonality from './ViewEditPersonality';
 
 export default function KnightSheet(props) {
     console.log("LOADING KnightSheet")
     console.log("Knight data: ",props.activeKnight.knightData);
+
+    const sPersonalInfo = sortByIndex(props.activeKnight.knightData.personalInfo);
+    const sStatistics = sortByIndex(props.activeKnight.knightData.statistics);
+    const sPersonality = sortByIndex(props.activeKnight.knightData.personalityTraits);
+    const sPassions = sortByIndex(props.activeKnight.knightData.passions);
+    const sCombatSkillsGeneral = sortByIndex(props.activeKnight.knightData.combatSkills.general);
+    const sCombatSkillsWeapons = sortByIndex(props.activeKnight.knightData.combatSkills.weapons);
+    const sSkills = sortByIndex(props.activeKnight.knightData.skills);
+    const sFamily = sortByIndex(props.activeKnight.knightData.family) || [];
+
+
+
+
 
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
@@ -91,6 +105,28 @@ export default function KnightSheet(props) {
         
     }
 
+    function sortByIndex(array) {
+        function sortPair(a,b){
+            if ( a.index < b.index ) {
+                return -1
+            } else if ( a.index > b.index ) {
+                return 1
+            };
+            return 0;
+        }
+        if (Array.isArray(array)) {
+            return array.sort(sortPair)
+        } else {
+            return array
+        }
+    }
+
+    // function saveNewFam(props) {
+    //     let payload = props;
+
+    //     props.saveEdit(payload)
+    // }
+
     return (
         <div className="Charsheet" key={props.activeKnight.knightData._id}>
         {/* <h1>{"Active Knight _id:",props.activeKnight.knightId}</h1> */}
@@ -99,7 +135,7 @@ export default function KnightSheet(props) {
                 <Col className="charsheet-column">
                 <h6>Personal Information</h6>
                     <div className="charsheet-box">
-                        {props.activeKnight.knightData.personalInfo.map((item, index)=>{
+                        {sPersonalInfo.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                     <Col md={6}>
@@ -230,12 +266,50 @@ export default function KnightSheet(props) {
                             saveEdit={props.saveEdit}
                         />
                     </div>
+
+                    <h6>Family</h6>
+                    <div key="family" className="charsheet-box family-block">
+                        {sFamily.map((item, index)=>{
+                            return (
+                                    <div>
+                                        <ViewEditFamily
+                                            key={"family_"+index} 
+                                            id={"family_"+index} 
+                                            name={index}
+                                            group="family"
+                                            value={item}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                        <hr />
+                                    </div>
+                                    )
+                        })}
+                        <ViewEdit
+                            key={"family_new"} 
+                            id={"family_new"} 
+                            name={''}
+                            group="family"
+                            field="family"
+                            value={''}
+                            placeHolderText="Click to add family member"
+                            addWindowClickListener={addWindowClickListener}
+                            removeWindowClickListeners={removeWindowClickListeners}
+                            editInProgress={editInProgress}
+                            setEditInProgress={setEditInProgress}
+                            saveEdit={props.saveEdit}
+                        />
+                    </div>
                 </Col>
+
  
                 <Col className="charsheet-column">
                 <h6>Statistics</h6>
                     <div key="statistics" className="charsheet-box">
-                        {props.activeKnight.knightData.statistics.map((item, index)=>{
+                        {sStatistics.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                             <Col md={6}>
@@ -303,7 +377,7 @@ export default function KnightSheet(props) {
                     </div>
                     <h6>Personality Traits</h6>
                     <div className="charsheet-box">
-                        {props.activeKnight.knightData.personalityTraits.map((item, index)=>{
+                        {sPersonality.map((item, index)=>{
                             return (
                                 <ViewEditPersonality 
                                     key={item._id} 
@@ -385,7 +459,7 @@ export default function KnightSheet(props) {
                     </div>
                     <h6>Passions</h6>
                     <div className="charsheet-box">
-                        {props.activeKnight.knightData.passions.map((item, index)=>{
+                        {sPassions.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                     <Col md={1} className="tick_col">
@@ -458,7 +532,7 @@ export default function KnightSheet(props) {
                 <Col className="charsheet-column">
                 <h6>Combat Skills</h6>
                     <div key="combatSkills" className="charsheet-box">
-                        {props.activeKnight.knightData.combatSkills.general.map((item, index)=>{
+                        {sCombatSkillsGeneral.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                     <Col md={1} className="tick_col">
@@ -524,7 +598,7 @@ export default function KnightSheet(props) {
                             </Col>
                         </Row>
                         <hr></hr>
-                        {props.activeKnight.knightData.combatSkills.weapons.map((item, index)=>{
+                        {sCombatSkillsWeapons.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                 <Col md={1} className="tick_col">
@@ -593,7 +667,7 @@ export default function KnightSheet(props) {
                     <h6>Skills</h6>
                     <div key="skills" className="charsheet-box">
                         
-                            {props.activeKnight.knightData.skills.map((item, index)=>{
+                            {sSkills.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                 <Col md={1} className="tick_col">

@@ -1,13 +1,3 @@
-const squire = {
-        name: '',
-        age: 15,
-        skills:
-            [
-                {label:"First Aid", value: 0},
-                {label:"Battle", value: 0},
-                {label:"Horsemanship", value: 0}
-            ]
-    }
 
 const personalInfo = [
     {label: 'Name',value: ''},
@@ -178,6 +168,30 @@ const combatSkills=
             ]
     }
 
+    const family = [
+        {
+            index: 0,
+            who: {label: "Father", value: ''},
+            male: true
+        },
+        {
+            index: 1,
+            who: {label: "Mother", value: ''},
+            male: false
+        }
+    ]
+
+    const squire = {
+        name: '',
+        age: 15,
+        skills:
+            [
+                {label:"First Aid", value: 0},
+                {label:"Battle", value: 0},
+                {label:"Horsemanship", value: 0}
+            ]
+    }
+
 
 const knight= {
     personalInfo: personalInfo,
@@ -188,6 +202,7 @@ const knight= {
     equipment: [],
     skills: skills,
     combatSkills: combatSkills,
+    family: family,
     squire: squire
 }
     
