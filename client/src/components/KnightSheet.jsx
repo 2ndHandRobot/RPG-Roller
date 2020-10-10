@@ -196,23 +196,23 @@ export default function KnightSheet(props) {
                     <div key="distinctiveFeatures" className="charsheet-box">
                         {props.activeKnight.knightData.distinctiveFeatures.map((item, index)=>{
                             return (
-                                    <Col xs={12}>
-                                        <ViewEdit
-                                            key={"dF_"+index} 
-                                            id={"dF_"+index} 
-                                            name={index}
-                                            group="distinctiveFeatures"
-                                            field="single"
-                                            value={item}
-                                            addWindowClickListener={addWindowClickListener}
-                                            removeWindowClickListeners={removeWindowClickListeners}
-                                            editInProgress={editInProgress}
-                                            setEditInProgress={setEditInProgress}
-                                            saveEdit={props.saveEdit}
-                                        />
-                                        
-                                    </Col>
-                                    )
+                                <Col xs={12}>
+                                    <ViewEdit
+                                        key={"dF_"+index} 
+                                        id={"dF_"+index} 
+                                        name={index}
+                                        group="distinctiveFeatures"
+                                        field="single"
+                                        value={item}
+                                        addWindowClickListener={addWindowClickListener}
+                                        removeWindowClickListeners={removeWindowClickListeners}
+                                        editInProgress={editInProgress}
+                                        setEditInProgress={setEditInProgress}
+                                        saveEdit={props.saveEdit}
+                                    />
+                                    
+                                </Col>
+                            )
                         })}
                         <ViewEdit
                             key={"dF_new"} 
@@ -346,7 +346,7 @@ export default function KnightSheet(props) {
                         {derivedStats().map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col xs={6} lg={6}>
+                                    <Col xs={6} lg={6} className="stat-col-left">
                                         <ViewEdit
                                             key={"derivedStats_lab"+index} 
                                             id={"derivedStats_lab"+index}
@@ -358,7 +358,7 @@ export default function KnightSheet(props) {
                                             editInProgress={editInProgress}
                                         />
                                     </Col>
-                                    <Col xs={6} lg={6}>
+                                    <Col xs={6} lg={6} className="stat-col-right">
                                         <ViewEdit
                                             key={"derivedStats_val"+index} 
                                             id={"derivedStats_val"+index}
