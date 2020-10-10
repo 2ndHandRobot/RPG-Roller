@@ -344,7 +344,7 @@ export default function KnightSheet(props) {
                                 </Row>
                             )
                         })}
-                        <hr />
+                        <hr className="double-hr" />
                         {derivedStats().map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">

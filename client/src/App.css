@@ -385,3 +385,10 @@ button.character-list {
 .char-col-right {
   padding-left: 5px;
 }
+
+.double-hr {
+  padding-top: 3px;
+  margin-top: 9px;
+  border: 3px double;
+  border-color: rgba(140, 140, 140, 0.66);
+}
