@@ -30,6 +30,7 @@ const Protected = (props) => {
     
     async function getData() {
         console.log("DOING THIS: getData (own knights)");
+        console.log("Active knight before 'getData':",activeKnight)
             axios.get('/api/users/'+props.userId)
                 .then((response)=>{
                     ownKnights = response.data.knights;
@@ -42,7 +43,12 @@ const Protected = (props) => {
                 })
                 .then(r=>{
                     console.log("Updated knightsData: ",JSON.stringify(knightsData));
-                    // console.log("Data reloaded. State updated.");
+                    
+                    if (activeKnight.access === "own") {
+                        console.log("Refreshing Active Knight (own): (",activeKnight,")");
+                        openSheet(activeKnight.knightId, activeKnight.access);
+                    }
+                
                     console.log("DOING THIS: getData (other knights)");
             axios.get('/api/can-edit/'+props.userId)
                 .then((response)=>{
@@ -67,6 +73,12 @@ const Protected = (props) => {
                     console.log("Updated editOnlyKnightsData: ",editOnlyKnightsData);
                     console.log("Data reloaded. State updated.");
                     
+                })
+                .then(()=>{
+                    if (activeKnight.access === "edit") {
+                        console.log("Refreshing Active Knight (other): (",activeKnight,")");
+                        openSheet(activeKnight.knightId, activeKnight.access);
+                    }
                 })
                 .catch((error)=>{
                     alert("Error retrieving data (other knights): ", error);
@@ -134,15 +146,19 @@ const Protected = (props) => {
             method: 'POST',
             data: payload
          })
-        .then(() => {
-            console.log("Data sent to server");
-            getData();
+        .then((result) => {
+            console.log("Data sent to server. Knight updated:", result);
+            setActiveKnight(prev=>({...prev, knightData: result.data}))
+            // recordActiveKnightData();
+            // getData();
         })
         .then(() => {
-            openSheet(activeKnight.knightId, activeKnight.access); 
+            // openSheet(activeKnight.knightId, activeKnight.access); 
+            return true;
         })
          .catch((err) => {
             console.log("Internal server error.", err);
+            return false;
          });
     }
 
@@ -206,10 +222,28 @@ const Protected = (props) => {
          });
     }
 
-    
+   
+    useEffect(()=> {
+        console.log("Updating knightsData from activeKnight.")
+        let ksd = knightsData
+        console.log("ksd:",ksd)
+        ksd.forEach((k, i)=>{
+            console.log("k:",k)
+            console.log("Checking knight record:",k._id," versus activeKnight id:",activeKnight.knightId)
+
+            if (k._id === activeKnight.knightId) {
+                console.log("match found.")
+                ksd[i] = activeKnight.knightData
+            }
+        })
+        console.log("knightsData to record:",ksd)
+        setKnightsData(ksd);
+    });
+
     function openSheet(knightId, access){
         console.log("Opening sheet for knightId: ", knightId);
         console.log("Permission: ", access);
+        
         let kd;
         switch (access) {
             case 'own':

@@ -56,7 +56,11 @@ import _ from 'lodash';
 
             console.log("VE: Save payload:",payload)
 
-            props.saveEdit(payload);
+            let saved = props.saveEdit(payload);
+            if (!fieldId) {
+                console.log("New item save completed. Resetting value to:",props.value)
+                setValue(props.value)
+            }
             // Disable or nullify the click-outside event listener
             props.removeWindowClickListeners();
         }

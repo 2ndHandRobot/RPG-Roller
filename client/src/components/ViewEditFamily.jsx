@@ -40,14 +40,14 @@ import _ from 'lodash';
 // })
 
     function ViewEditFamily (props) {   
-        console.log("LOADING ViewEditFamily. Props:",props)
+        // console.log("LOADING ViewEditFamily. Props:",props)
 
         const [showReputation, setShowReputation] = useState(false)
         
         const index = props.value.index
         // console.log("index:",index);
         const personId = props.value._id
-        console.log("personId:",personId);
+        // console.log("personId:",personId);
         const who = props.value.who;
         // console.log("who:",who);
         const male = props.value.male;
