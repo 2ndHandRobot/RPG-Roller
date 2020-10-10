@@ -130,44 +130,44 @@ export default function KnightSheet(props) {
     return (
         <div className="Charsheet" key={props.activeKnight.knightData._id}>
         {/* <h1>{"Active Knight _id:",props.activeKnight.knightId}</h1> */}
-        <div>
+        <Container fluid>
             <Row>
-                <Col className="charsheet-column">
+                <Col className="charsheet-column" xs={12} lg={4}>
                 <h6>Personal Information</h6>
                     <div className="charsheet-box">
                         {sPersonalInfo.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col md={6}>
-                                            <ViewEdit
-                                                key={item._id+"_lab"} 
-                                                id={item._id+"_lab"}
-                                                name={item._id}
-                                                group="personalInfo"
-                                                field="label"
-                                                lockEdit={true}
-                                                value={item.label}
-                                                addWindowClickListener={addWindowClickListener}
-                                                removeWindowClickListeners={removeWindowClickListeners}
-                                                editInProgress={editInProgress}
-                                                setEditInProgress={setEditInProgress}
-                                                saveEdit={props.saveEdit}
-                                            />
-                                            </Col>
-                                            <Col md={6}>
-                                            <ViewEdit
-                                                key={item._id+"_val"} 
-                                                id={item._id+"_val"}
-                                                name={item._id}
-                                                group="personalInfo"
-                                                field="value"
-                                                value={item.value}
-                                                addWindowClickListener={addWindowClickListener}
-                                                removeWindowClickListeners={removeWindowClickListeners}
-                                                editInProgress={editInProgress}
-                                                setEditInProgress={setEditInProgress}
-                                                saveEdit={props.saveEdit}
-                                            />
+                                    <Col xs={6} lg={6}>
+                                        <ViewEdit
+                                            key={item._id+"_lab"} 
+                                            id={item._id+"_lab"}
+                                            name={item._id}
+                                            group="personalInfo"
+                                            field="label"
+                                            lockEdit={true}
+                                            value={item.label}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                    </Col>
+                                    <Col xs={6} lg={6}>
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"}
+                                            name={item._id}
+                                            group="personalInfo"
+                                            field="value"
+                                            value={item.value}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
                                     </Col>            
                                 </Row>
                             )
@@ -196,7 +196,7 @@ export default function KnightSheet(props) {
                     <div key="distinctiveFeatures" className="charsheet-box">
                         {props.activeKnight.knightData.distinctiveFeatures.map((item, index)=>{
                             return (
-                                    <div>
+                                    <Col xs={12}>
                                         <ViewEdit
                                             key={"dF_"+index} 
                                             id={"dF_"+index} 
@@ -211,7 +211,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         
-                                    </div>
+                                    </Col>
                                     )
                         })}
                         <ViewEdit
@@ -233,7 +233,7 @@ export default function KnightSheet(props) {
                     <div key="equipment" className="charsheet-box">
                         {props.activeKnight.knightData.equipment.map((item, index)=>{
                             return (
-                                    <div>
+                                    <Col xs={12}>
                                         <ViewEdit
                                             key={"equip_"+index} 
                                             id={"equip_"+index} 
@@ -248,7 +248,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         
-                                    </div>
+                                    </Col>
                                     )
                         })}
                         <ViewEdit
@@ -271,7 +271,7 @@ export default function KnightSheet(props) {
                     <div key="family" className="charsheet-box family-block">
                         {sFamily.map((item, index)=>{
                             return (
-                                    <div>
+                                    <Col xs={12}>
                                         <ViewEditFamily
                                             key={"family_"+index} 
                                             id={"family_"+index} 
@@ -285,7 +285,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         <hr />
-                                    </div>
+                                    </Col>
                                     )
                         })}
                         <ViewEdit
@@ -306,40 +306,39 @@ export default function KnightSheet(props) {
                 </Col>
 
  
-                <Col className="charsheet-column">
+                <Col className="charsheet-column"  xs={12} lg={4}>
                 <h6>Statistics</h6>
                     <div key="statistics" className="charsheet-box">
                         {sStatistics.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                            <Col md={6}>
-                                            <ViewEdit
-                                                key={item._id+"_lab"} 
-                                                id={item._id+"_lab"}
-                                                name={item._id}
-                                                group="statistics"
-                                                field="label"
-                                                lockEdit={true}
-                                                value={item.label}
-                                                editInProgress={editInProgress}
-                                            />
-                                            </Col>
-                                            <Col md={6}>
-                                            <ViewEdit
-                                                key={item._id+"_val"} 
-                                                id={item._id+"_val"}
-                                                name={item._id}
-                                                group="statistics"
-                                                field="value"
-                                                value={item.value}
-                                                placeHolderText="Click to add personal info"
-                                                addWindowClickListener={addWindowClickListener}
-                                                removeWindowClickListeners={removeWindowClickListeners}
-                                                editInProgress={editInProgress}
-                                                setEditInProgress={setEditInProgress}
-                                                saveEdit={props.saveEdit}
-                                            />
-                                        
+                                    <Col xs={6} lg={6}>
+                                        <ViewEdit
+                                            key={item._id+"_lab"} 
+                                            id={item._id+"_lab"}
+                                            name={item._id}
+                                            group="statistics"
+                                            field="label"
+                                            lockEdit={true}
+                                            value={item.label}
+                                            editInProgress={editInProgress}
+                                        />
+                                    </Col>
+                                    <Col xs={6} lg={6}>
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"}
+                                            name={item._id}
+                                            group="statistics"
+                                            field="value"
+                                            value={item.value}
+                                            placeHolderText="Click to add personal info"
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
                                     </Col>
                                 </Row>
                             )
@@ -347,7 +346,7 @@ export default function KnightSheet(props) {
                         {derivedStats().map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                <Col md={6}>
+                                    <Col xs={6} lg={6}>
                                         <ViewEdit
                                             key={"derivedStats_lab"+index} 
                                             id={"derivedStats_lab"+index}
@@ -358,8 +357,8 @@ export default function KnightSheet(props) {
                                             value={item.label}
                                             editInProgress={editInProgress}
                                         />
-                                        </Col>
-                                            <Col md={6}>
+                                    </Col>
+                                    <Col xs={6} lg={6}>
                                         <ViewEdit
                                             key={"derivedStats_val"+index} 
                                             id={"derivedStats_val"+index}
@@ -370,7 +369,7 @@ export default function KnightSheet(props) {
                                             value={item.value}
                                             editInProgress={editInProgress}
                                         />
-                                     </Col>
+                                    </Col>
                                 </Row>
                             )
                         })}
@@ -394,7 +393,7 @@ export default function KnightSheet(props) {
                         {props.activeKnight.knightData.directedTraits.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col md={1} className="tick_col">
+                                    <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -404,7 +403,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={9} className="label_col">
+                                    <Col xs={9} lg={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"+index}
@@ -419,7 +418,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                     </Col>
-                                    <Col  md={2} className="value_col">
+                                    <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"+index}
@@ -447,7 +446,7 @@ export default function KnightSheet(props) {
                                     group="directedTraits"
                                     field="new"
                                     value={''}
-                                    placeHolderText="Click to add a passion"
+                                    placeHolderText="Click to add a directed trait"
                                     addWindowClickListener={addWindowClickListener}
                                     removeWindowClickListeners={removeWindowClickListeners}
                                     editInProgress={editInProgress}
@@ -462,7 +461,7 @@ export default function KnightSheet(props) {
                         {sPassions.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col md={1} className="tick_col">
+                                    <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -472,7 +471,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={9} className="label_col">
+                                    <Col xs={9} lg={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"+index}
@@ -487,7 +486,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                     </Col>
-                                    <Col  md={2} className="value_col">
+                                    <Col  xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"+index}
@@ -529,13 +528,13 @@ export default function KnightSheet(props) {
                     
                 </Col>
 
-                <Col className="charsheet-column">
+                <Col className="charsheet-column" xs={12} lg={4}>
                 <h6>Combat Skills</h6>
                     <div key="combatSkills" className="charsheet-box">
                         {sCombatSkillsGeneral.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col md={1} className="tick_col">
+                                    <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -545,7 +544,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={9} className="label_col">
+                                    <Col xs={9} lg={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -560,7 +559,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         </Col>
-                                    <Col md={2} className="value_col">
+                                    <Col xs={2} d={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -601,7 +600,7 @@ export default function KnightSheet(props) {
                         {sCombatSkillsWeapons.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                <Col md={1} className="tick_col">
+                                    <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -611,7 +610,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={9} className="label_col">
+                                    <Col xs={9} lg={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -626,7 +625,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         </Col>
-                                    <Col md={2} className="value_col">
+                                    <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -670,7 +669,7 @@ export default function KnightSheet(props) {
                             {sSkills.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                <Col md={1} className="tick_col">
+                                <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
@@ -680,7 +679,7 @@ export default function KnightSheet(props) {
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
-                                    <Col md={9} className="label_col">
+                                    <Col xs={9} lg={9} className="label_col">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -695,7 +694,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                         </Col>
-                                    <Col md={2} className="value_col">
+                                    <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -735,7 +734,7 @@ export default function KnightSheet(props) {
                     </div>
                 </Col>
             </Row>
-        </div>
+        </Container>
         </div>
     )
 }

@@ -76,7 +76,7 @@ import _ from 'lodash';
         return (
             <div>
                 <Row  className="lv-pair">
-                    <Col md={6}>
+                    <Col xs={6} lg={6}>
                         <ViewEdit 
                             key={"who_label_"+personId} 
                             id={"who_label_"+personId} 
@@ -92,7 +92,7 @@ import _ from 'lodash';
                         />
                         
                     </Col>
-                    <Col md={6}>
+                    <Col xs={6} lg={6}>
                         <ViewEdit 
                             key={"who_value_"+personId} 
                             id={"who_value_"+personId} 
@@ -110,19 +110,19 @@ import _ from 'lodash';
                     </Col>            
                 </Row>
                 <Row className="family-row" >
-                    <Col md={1} className="family-col" >
+                    <Col xs={1} lg={1} className="family-col" >
                         { male
                             ? <FontAwesomeIcon icon={faMars} name="gender" onClick={()=>toggleData("male",false)}/>
                             : <FontAwesomeIcon icon={faVenus} name="gender" onClick={()=>toggleData("male",true)}/>
                         }
                     </Col>
-                    <Col md={1} className="family-col" >
+                    <Col xs={1} lg={1} className="family-col" >
                         { deceased
                             ? <FontAwesomeIcon icon={faSkullCrossbones} name="dead" onClick={()=>toggleData("deceased",false)}/>
                             : <FontAwesomeIcon icon={faHeart} name="dead" onClick={()=>toggleData("deceased",true)}/>
                         }
                     </Col>
-                    <Col md={4}className="family-col" >
+                    <Col xs={4} lg={4}className="family-col" >
                         <div className="family-stat" >
                             <p>Age:</p>
                             <ViewEdit 
@@ -141,7 +141,7 @@ import _ from 'lodash';
                             />
                         </div>
                     </Col>
-                    <Col md={5}className="family-col" >
+                    <Col xs={5} lg={5}className="family-col" >
                         <div className="family-stat" >
                         <p>Glory:</p>
                             <ViewEdit 
@@ -160,7 +160,7 @@ import _ from 'lodash';
                             />
                         </div>
                     </Col>
-                    <Col md={1} className="family-col" >
+                    <Col xs={1} lg={1} className="family-col" >
                         <FontAwesomeIcon 
                             icon={faStar} 
                             name="deceased" 

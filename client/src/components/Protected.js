@@ -269,7 +269,7 @@ const Protected = (props) => {
                 
             </Row> */}
             <Row>
-                <Col md={1} className="sidebar-column">
+                <Col xs={12} lg={1} className="sidebar-column">
                     <button type="button" onClick={()=>createKnight()}>New Knight</button>
                     <KnightsList
                         key="myKnights"
@@ -288,7 +288,7 @@ const Protected = (props) => {
                         />
                     }
                 </Col>
-                <Col md={9} className="column">
+                <Col xs={12} lg={9} className="column">
                     {(activeKnight.access!=='')&&
                     <KnightSheet 
                         key={activeKnight.knightId} 
@@ -300,7 +300,7 @@ const Protected = (props) => {
                         _listeners={_listeners}
                     />}
                 </Col>
-                <Col md={2} className="sidebar-column">
+                <Col xs={12} lg={2} className="sidebar-column">
                     <Roller key="roller" diceSets={diceSets} getData={getData}/>
                 </Col>
             </Row>

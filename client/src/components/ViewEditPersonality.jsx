@@ -82,7 +82,7 @@ export default function ViewEdit(props) {
         
         return (
             <Row  className="pt-pair">
-                {/* <Col md={1} className="line-container">
+                {/* <Col lg={1} className="line-container">
                     <input 
                         type="checkbox" 
                         id={props.entry._id+"_tick1"} 
@@ -92,7 +92,7 @@ export default function ViewEdit(props) {
                         defaultChecked={personalityPair.tick1}
                     />
                 </Col> */}
-                <Col md={4} className="line-container trait">
+                <Col xs={4} lg={4} className="line-container trait">
                     <input 
                         type="checkbox" 
                         id={props.entry._id+"_tick1"} 
@@ -103,20 +103,20 @@ export default function ViewEdit(props) {
                     />
                     <p className="trait trait1">{_.startCase(personalityPair.trait1)}</p>
                 </Col>
-                <Col md={1} className="line-container">
+                <Col xs={1} lg={1} className="line-container text-right">
                     <div className="traitVals">
                         <FontAwesomeIcon icon={faPlusSquare} onClick={()=>changeValue("+")}/>
                     </div>
                 </Col>
-                <Col md={2} className="line-container">
+                <Col xs={2} lg={2} className="line-container">
                     <p className="traitVals">{personalityPair.val1+"/"+personalityPair.val2}</p>
                 </Col>
-                <Col md={1} className="line-container">
+                <Col xs={1} lg={1} className="line-container text-left">
                     <div className="traitVals">
                         <FontAwesomeIcon icon={faPlusSquare} className="traitVals" onClick={()=>changeValue("-")}/>
                     </div>
                 </Col>
-                <Col md={4} className="line-container trait trait2">
+                <Col xs={4} lg={4} className="line-container trait trait2">
                     <p className="trait trait2">{_.startCase(personalityPair.trait2)}</p>
                     <input 
                         type="checkbox" 
@@ -127,7 +127,7 @@ export default function ViewEdit(props) {
                         defaultChecked={personalityPair.tick2}
                     />
                 </Col>
-                {/* <Col md={1} className="line-container">
+                {/* <Col lg={1} className="line-container">
                 <input 
                         type="checkbox" 
                         id={props.entry._id+"_tick2"} 

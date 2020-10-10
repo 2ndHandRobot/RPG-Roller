@@ -189,7 +189,7 @@ export default function Roller(props){
                     
                         <h2>Roller</h2>
                         
-                        <label for="add-dice">Add a Die</label>
+                        <label for="add-dice">Add a Die:</label>
                         <div className="die-input-div">
                             <input type="number" className="die-input" min="2" id="add-dice" onChange={handeDiceInput} onKeyPress={handleKeyPress} value={diceInput} autocomplete="off"></input>
                         </div>
