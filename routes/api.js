@@ -399,7 +399,7 @@ router.post('/edit-family-entry', (req, res) => {
                updateObject = {$push: {[`${data.group}`]:`${value}`}};
             } else if (data.field === "family") {
                const newId = new mongoose.Types.ObjectId
-               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`"${value}"`,"value":""}}}};
+               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`${value}`,"value":""}}}};
             } else {
                const newId = new mongoose.Types.ObjectId
                updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
