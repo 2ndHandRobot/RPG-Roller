@@ -138,7 +138,7 @@ export default function KnightSheet(props) {
                         {sPersonalInfo.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col xs={6} lg={6}>
+                                    <Col xs={6} lg={6} className="char-col-left">
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
@@ -154,7 +154,7 @@ export default function KnightSheet(props) {
                                             saveEdit={props.saveEdit}
                                         />
                                     </Col>
-                                    <Col xs={6} lg={6}>
+                                    <Col xs={6} lg={6} className="char-col-right">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -312,7 +312,7 @@ export default function KnightSheet(props) {
                         {sStatistics.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col xs={6} lg={6} className="stat-col-left">
+                                    <Col xs={6} lg={6} className="char-col-left">
                                     
                                         <ViewEdit
                                             key={item._id+"_lab"} 
@@ -325,7 +325,7 @@ export default function KnightSheet(props) {
                                             editInProgress={editInProgress}
                                         />
                                     </Col>
-                                    <Col xs={6} lg={6} className="stat-col-right">
+                                    <Col xs={6} lg={6} className="char-col-right">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
@@ -344,10 +344,11 @@ export default function KnightSheet(props) {
                                 </Row>
                             )
                         })}
+                        <hr />
                         {derivedStats().map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
-                                    <Col xs={6} lg={6} className="stat-col-left">
+                                    <Col xs={6} lg={6} className="char-col-left">
                                         <ViewEdit
                                             key={"derivedStats_lab"+index} 
                                             id={"derivedStats_lab"+index}
@@ -359,7 +360,7 @@ export default function KnightSheet(props) {
                                             editInProgress={editInProgress}
                                         />
                                     </Col>
-                                    <Col xs={6} lg={6} className="stat-col-right">
+                                    <Col xs={6} lg={6} className="char-col-right">
                                         <ViewEdit
                                             key={"derivedStats_val"+index} 
                                             id={"derivedStats_val"+index}

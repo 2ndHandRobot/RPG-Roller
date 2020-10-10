@@ -378,10 +378,10 @@ button.character-list {
   display: inline-flex;
 }
 
-.stat-col-left {
+.char-col-left {
   padding-right: 5px;
 }
 
-.stat-col-right {
+.char-col-right {
   padding-left: 5px;
 }
