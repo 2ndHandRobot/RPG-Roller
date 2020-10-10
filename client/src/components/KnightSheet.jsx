@@ -76,10 +76,10 @@ export default function KnightSheet(props) {
         const CON = getStat("CON");
 
         const damage = Math.round((STR + SIZ) / 6) + "d6"
-        const healRate = Math.round((STR + CON) / 6)
+        const healRate = Math.round((STR + CON) / 10)
         const moveRate = Math.round((STR + DEX) / 10)
-        const totalHitPoints = STR + CON
-        const unconscious = Math.round((STR+CON) / 4)
+        const totalHitPoints = SIZ + CON
+        const unconscious = Math.round((SIZ+CON) / 4)
 
         return ([
             {label:"Damage", value: damage},
