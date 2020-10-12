@@ -51,6 +51,12 @@ const PersonalityTraitPairSchema = new mongoose.Schema ({
     },
 })
 
+const HorseSchema = new mongoose.Schema({
+    index: Number,
+    desc: [LabelStringPairSchema],
+    stats: [LabelNumberPairSchema]
+})
+
 const FamilyMemberSchema = new mongoose.Schema({
     index: Number,
     who: LabelStringPairSchema,
@@ -90,14 +96,18 @@ const CharacterSchema = new mongoose.Schema ({
     passions: [LabelNumberPairSchema],
     statistics: [LabelNumberPairSchema],
     distinctiveFeatures: [String],
+    description: [String],
     skills: [LabelNumberPairSchema],
     combatSkills: {
         general: [LabelNumberPairSchema],
         weapons: [LabelNumberPairSchema]
     },
+    armour: [LabelNumberPairSchema],
     equipment: [String],
+    horses: [HorseSchema],
     family: [FamilyMemberSchema],
-    squire: SquireSchema
+    squire: [SquireSchema],
+    history: [LabelNumberPairSchema]
 });
 
 const BugReportSchema = new mongoose.Schema ({

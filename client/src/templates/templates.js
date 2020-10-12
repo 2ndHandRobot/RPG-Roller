@@ -130,11 +130,11 @@ const skills=
         {label:"Compose", value: 0},
         {label:"Courtesy", value: 0},
         {label:"Dancing", value: 0},
-        {label:"Faerie_lore", value: 0},
+        {label:"Faerie Lore", value: 0},
         {label:"Falconry", value: 0},
-        {label:"First_aid", value: 0},
+        {label:"First Aid", value: 0},
         {label:"Flirting", value: 0},
-        {label:"Folk_lore", value: 0},
+        {label:"Folk Lore", value: 0},
         {label:"Gaming", value: 0},
         {label:"Heraldry", value: 0},
         {label:"Hunting", value: 0},
@@ -192,6 +192,22 @@ const combatSkills=
             ]
     }
 
+    const horse = {
+        desc: [
+            {label: "name", value: ""},
+            {label: "type", value: ""},
+            {label: "breed", value: ""}
+        ],
+        stats: [
+            {label: "SIZ", value: 0},
+            {label: "CON", value: 0},
+            {label: "DEX", value: 0},
+            {label: "HP", value: 0},
+            {label: "attack", value: 0},
+            {label: "damage", value: 0},
+            {label: "armour", value: 0}
+        ]
+    }
 
 const knight= {
     personalInfo: personalInfo,
@@ -200,21 +216,18 @@ const knight= {
     statistics: stats,
     distinctiveFeatures:[],
     equipment: [],
+    horses: horse,
     skills: skills,
     combatSkills: combatSkills,
     family: family,
-    squire: squire
+    squires: squire
 }
     
 const templates = {
-    personalInfo:personalInfo,
-    personality:personality,
-    passions:passions,
-    stats:stats,
-    skills:skills,
-    combatSkills:combatSkills,
     knight:knight,
-    squire:squire
+    family:family,
+    squire:squire,
+    horse:horse
 }
 
 module.exports = templates;

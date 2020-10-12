@@ -1,7 +1,7 @@
 html {background-color: rgb(245, 245, 235);}
 
 p {
-  margin: 0;
+  margin: 0;  overflow-wrap: break-word;
 }
 
 hr {
@@ -109,7 +109,22 @@ footer {
 .value-field  {
   text-align: right;
   border-bottom: dotted 1px;
+}
+
+
+.desc-field {
+  border-bottom: none;
   
+}
+
+.desc-edit {
+  border-bottom: none;
+  width: 100%;
+}
+
+.history .value-field, .history .new-field {
+  text-align: center;
+  border-bottom: dotted 1px;
 }
 
 .single-view {
@@ -142,6 +157,27 @@ footer {
   width: 100%;
   height: 100%;
 } */
+
+.lv-headers {
+  font-style: italic;
+  font-size: 0.7rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.lv-headers div {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.lv-headers .tick_col, .lv-headers .val_col, .lv-headers .year_col {
+  text-align: center;
+}
+
+.lv-headers div {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 .value-view {
   width: 100%;
@@ -351,13 +387,19 @@ button.character-list {
 }
 
 .label_col {
-  padding: 0 5px;
+  padding: 0 10px;
 }
 
 .value_col {
   padding: 0 15px 0 5px;
 }
 
+.year_col {
+  padding: 0 5px 0 15px;
+}
+.event_col {
+padding: 0 15px 0 5px;
+}
 /* .family-block{
   font-size: 0.8rem;
 } */
@@ -391,4 +433,8 @@ button.character-list {
   margin-top: 9px;
   border: 3px double;
   border-color: rgba(140, 140, 140, 0.66);
+}
+
+.armour-total {
+  text-align: center;
 }

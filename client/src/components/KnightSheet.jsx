@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
-import ViewEditFamily from './ViewEditFamily';
+import ViewEditTextArea from './ViewEditTextArea';
+import FamilyMember from './FamilyMember';
+import Horse from './Horse';
+
 import ViewEditPersonality from './ViewEditPersonality';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShieldAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function KnightSheet(props) {
     console.log("LOADING KnightSheet")
-    console.log("Knight data: ",props.activeKnight.knightData);
+    // console.log("Knight data: ",props.activeKnight.knightData);
 
     const sPersonalInfo = sortByIndex(props.activeKnight.knightData.personalInfo);
     const sStatistics = sortByIndex(props.activeKnight.knightData.statistics);
@@ -16,33 +22,38 @@ export default function KnightSheet(props) {
     const sCombatSkillsGeneral = sortByIndex(props.activeKnight.knightData.combatSkills.general);
     const sCombatSkillsWeapons = sortByIndex(props.activeKnight.knightData.combatSkills.weapons);
     const sSkills = sortByIndex(props.activeKnight.knightData.skills);
+    const sHorses = sortByIndex(props.activeKnight.knightData.horses) || [];
     const sFamily = sortByIndex(props.activeKnight.knightData.family) || [];
+    const sSquires = sortByIndex(props.activeKnight.knightData.squires) || [];
+    const sArmour = sortByIndex(props.activeKnight.knightData.armour) || [];
+    const sHistory = sortByValue(props.activeKnight.knightData.history) || [];
 
+    const arDescription = props.activeKnight.knightData.description;
 
-
-
+    const [armourVal, setArmourVal] = useState(0);
+    useEffect(()=>{console.log("Initial Armour Calculation");setArmourVal(calcArmourValue())},[]);
 
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
 
-    console.log("_listeners array:",_listeners)
+    // console.log("_listeners array:",_listeners)
 
 
     EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener;
     EventTarget.prototype.addClickListener = function (listener) {
-        console.log("Pushing to _listeners array:", listener)
+        // console.log("Pushing to _listeners array:", listener)
         const listenObject = { target: this, listener: listener };
         set_Listeners(prev=>{ return ([...prev, listenObject]) })
         
-        console.log("Checking _listeners array:",_listeners.length," found.")
+        // console.log("Checking _listeners array:",_listeners.length," found.")
         this.addEventListenerBase("click", listener);
     };
     EventTarget.prototype.removeClickListeners = function () {
-        console.log("Removing 'click' listeners. (",_listeners.length,"found)")
+        // console.log("Removing 'click' listeners. (",_listeners.length,"found)")
         
         for (var index = 0; index !== _listeners.length; index++) {
             var item = _listeners[index];
-            console.log("Listener:",item);
+            // console.log("Listener:",item);
             var target = item.target;
             var type = "click";
             var listener = item.listener;
@@ -89,12 +100,26 @@ export default function KnightSheet(props) {
             {label:"Unconscious", value: unconscious}
         ])
     }
-    console.log("DERIVED STATS:",derivedStats)
+    // console.log("DERIVED STATS:",derivedStats)
 
     function handleBoxTick(event, fieldId){
         console.log("Handling Tick Event on",fieldId)
         console.log("checked:",event.target.checked)
         
+        if (event.target.name === "armour") {
+            console.log("ticked an armour box. Updating total")
+            
+            for (var a of sArmour) {
+                console.log("sArmour item:",a)
+                if (a._id === event.target.id) {
+                    console.log("sArmour matched:",a)
+                    a.isTicked=!a.isTicked;
+                }
+            }
+            
+            setArmourVal(calcArmourValue())
+        }
+
         const payload = {
             group: event.target.name,
             field: "isTicked",
@@ -102,6 +127,7 @@ export default function KnightSheet(props) {
             fieldId: fieldId
         }
         props.saveEdit(payload);
+        
         
     }
 
@@ -120,77 +146,107 @@ export default function KnightSheet(props) {
             return array
         }
     }
+    function sortByValue(array) {
+        function sortPair(a,b){
+            if ( a.value < b.value ) {
+                return -1
+            } else if ( a.value > b.value ) {
+                return 1
+            };
+            return 0;
+        }
+        if (Array.isArray(array)) {
+            return array.sort(sortPair)
+        } else {
+            return array
+        }
+    }
 
-    // function saveNewFam(props) {
-    //     let payload = props;
 
-    //     props.saveEdit(payload)
-    // }
+    function calcArmourValue() {
+        console.log("calculating current armour value")
+        const equippedArmour = sArmour.filter(a=>a.isTicked).map(a=>a.value)
+        let sumArmour = 0;
+        console.log("equippedArmour:",equippedArmour)
+        if (equippedArmour.length>0){
+            sumArmour = equippedArmour.reduce((a,b)=>a+b);
+        }
+        console.log("new armour value is:",sumArmour)
+        return sumArmour;
+    }
+
+    const VEFuncs = {
+        addWindowClickListener: addWindowClickListener,
+        removeWindowClickListeners: removeWindowClickListeners,
+        editInProgress: editInProgress,
+        setEditInProgress: setEditInProgress,
+        saveEdit: props.saveEdit
+    }
 
     return (
         <div className="Charsheet" key={props.activeKnight.knightData._id}>
         {/* <h1>{"Active Knight _id:",props.activeKnight.knightId}</h1> */}
         <Container fluid>
-            <Row>
+            <Row className="page1">
                 <Col className="charsheet-column" xs={12} lg={4}>
-                <h6>Personal Information</h6>
-                    <div className="charsheet-box">
-                        {sPersonalInfo.map((item, index)=>{
-                            return (
-                                <Row  className="lv-pair">
-                                    <Col xs={6} lg={6} className="char-col-left">
-                                        <ViewEdit
-                                            key={item._id+"_lab"} 
-                                            id={item._id+"_lab"}
-                                            name={item._id}
-                                            group="personalInfo"
-                                            field="label"
-                                            lockEdit={true}
-                                            value={item.label}
-                                            addWindowClickListener={addWindowClickListener}
-                                            removeWindowClickListeners={removeWindowClickListeners}
-                                            editInProgress={editInProgress}
-                                            setEditInProgress={setEditInProgress}
-                                            saveEdit={props.saveEdit}
-                                        />
-                                    </Col>
-                                    <Col xs={6} lg={6} className="char-col-right">
-                                        <ViewEdit
-                                            key={item._id+"_val"} 
-                                            id={item._id+"_val"}
-                                            name={item._id}
-                                            group="personalInfo"
-                                            field="value"
-                                            value={item.value}
-                                            addWindowClickListener={addWindowClickListener}
-                                            removeWindowClickListeners={removeWindowClickListeners}
-                                            editInProgress={editInProgress}
-                                            setEditInProgress={setEditInProgress}
-                                            saveEdit={props.saveEdit}
-                                        />
-                                    </Col>            
-                                </Row>
-                            )
-                        })}
-                        <Row  className="lv-pair">
-                            <Col>
-                                <ViewEdit
-                                    key={"personalInfo_new_lab"} 
-                                    id={"personalInfo_new_lab"}
-                                    name={''}
-                                    group="personalInfo"
-                                    field="new"
-                                    value={''}
-                                    placeHolderText="Click to add an entry"
-                                    addWindowClickListener={addWindowClickListener}
-                                    removeWindowClickListeners={removeWindowClickListeners}
-                                    editInProgress={editInProgress}
-                                    setEditInProgress={setEditInProgress}
-                                    saveEdit={props.saveEdit}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
+                    <h6>Personal Information</h6>
+                        <div className="charsheet-box">
+                            {sPersonalInfo.map((item, index)=>{
+                                return (
+                                    <Row  className="lv-pair">
+                                        <Col xs={6} lg={6} className="char-col-left">
+                                            <ViewEdit
+                                                key={item._id+"_lab_"+index} 
+                                                id={item._id+"_lab"}
+                                                name={item._id}
+                                                group="personalInfo"
+                                                field="label"
+                                                lockEdit={true}
+                                                value={item.label}
+                                                addWindowClickListener={addWindowClickListener}
+                                                removeWindowClickListeners={removeWindowClickListeners}
+                                                editInProgress={editInProgress}
+                                                setEditInProgress={setEditInProgress}
+                                                saveEdit={props.saveEdit}
+                                            />
+                                        </Col>
+                                        <Col xs={6} lg={6} className="char-col-right">
+                                            <ViewEdit
+                                                key={item._id+"_val"} 
+                                                id={item._id+"_val"}
+                                                name={item._id}
+                                                group="personalInfo"
+                                                field="value"
+                                                value={item.value}
+                                                addWindowClickListener={addWindowClickListener}
+                                                removeWindowClickListeners={removeWindowClickListeners}
+                                                editInProgress={editInProgress}
+                                                setEditInProgress={setEditInProgress}
+                                                saveEdit={props.saveEdit}
+                                            />
+                                        </Col>            
+                                    </Row>
+                                )
+                            })}
+                            <Row  className="lv-pair">
+                                <Col>
+                                    <ViewEdit
+                                        key={"personalInfo_new_lab"} 
+                                        id={"personalInfo_new_lab"}
+                                        name={''}
+                                        group="personalInfo"
+                                        field="new"
+                                        value={''}
+                                        placeHolderText="Click to add an entry"
+                                        addWindowClickListener={addWindowClickListener}
+                                        removeWindowClickListeners={removeWindowClickListeners}
+                                        editInProgress={editInProgress}
+                                        setEditInProgress={setEditInProgress}
+                                        saveEdit={props.saveEdit}
+                                    />
+                                </Col>
+                            </Row>
+                        </div>
                     
                     <h6>Distinctive Features</h6>
                     <div key="distinctiveFeatures" className="charsheet-box">
@@ -229,80 +285,79 @@ export default function KnightSheet(props) {
                             saveEdit={props.saveEdit}
                         />
                     </div>
-                    <h6>Equipment</h6>
-                    <div key="equipment" className="charsheet-box">
-                        {props.activeKnight.knightData.equipment.map((item, index)=>{
-                            return (
-                                    <Col xs={12}>
-                                        <ViewEdit
-                                            key={"equip_"+index} 
-                                            id={"equip_"+index} 
-                                            name={index}
-                                            group="equipment"
-                                            field="single"
-                                            value={item}
-                                            addWindowClickListener={addWindowClickListener}
-                                            removeWindowClickListeners={removeWindowClickListeners}
-                                            editInProgress={editInProgress}
-                                            setEditInProgress={setEditInProgress}
-                                            saveEdit={props.saveEdit}
-                                        />
-                                        
-                                    </Col>
-                                    )
-                        })}
-                        <ViewEdit
-                            key={"equip_new"} 
-                            id={"equip_new"} 
-                            name={''}
-                            group="equipment"
-                            field="single"
-                            value={''}
-                            placeHolderText="Click to add equipment"
-                            addWindowClickListener={addWindowClickListener}
-                            removeWindowClickListeners={removeWindowClickListeners}
-                            editInProgress={editInProgress}
-                            setEditInProgress={setEditInProgress}
-                            saveEdit={props.saveEdit}
-                        />
-                    </div>
 
-                    <h6>Family</h6>
-                    <div key="family" className="charsheet-box family-block">
-                        {sFamily.map((item, index)=>{
+                    <h6>Description</h6>
+                    <div key="description" className="charsheet-box character-description">
+                        {arDescription.map(description=>{
                             return (
-                                    <Col xs={12}>
-                                        <ViewEditFamily
-                                            key={"family_"+index} 
-                                            id={"family_"+index} 
-                                            name={index}
-                                            group="family"
-                                            value={item}
-                                            addWindowClickListener={addWindowClickListener}
-                                            removeWindowClickListeners={removeWindowClickListeners}
-                                            editInProgress={editInProgress}
-                                            setEditInProgress={setEditInProgress}
-                                            saveEdit={props.saveEdit}
-                                        />
-                                        <hr />
-                                    </Col>
-                                    )
-                        })}
-                        <ViewEdit
-                            key={"family_new"} 
-                            id={"family_new"} 
-                            name={''}
-                            group="family"
-                            field="family"
-                            value={''}
-                            placeHolderText="click to add family member (father, mother...)"
-                            addWindowClickListener={addWindowClickListener}
-                            removeWindowClickListeners={removeWindowClickListeners}
-                            editInProgress={editInProgress}
-                            setEditInProgress={setEditInProgress}
-                            saveEdit={props.saveEdit}
-                        />
+                                <ViewEditTextArea
+                                    key={"description"} 
+                                    id={"description"} 
+                                    name={"0"}
+                                    group="description"
+                                    field="desc"
+                                    value={description}
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
+                                />
+                                )
+                            })}
+                        {!arDescription[0]&&<ViewEditTextArea
+                                key={"description_new"} 
+                                id={"description_new"} 
+                                name={""}
+                                group="description"
+                                field="desc"
+                                value={''}
+                                placeHolderText="click to write a character description"
+                                addWindowClickListener={addWindowClickListener}
+                                removeWindowClickListeners={removeWindowClickListeners}
+                                editInProgress={editInProgress}
+                                setEditInProgress={setEditInProgress}
+                                saveEdit={props.saveEdit}
+                            />}
                     </div>
+                    <h6>Equipment</h6>
+                        <div key="equipment" className="charsheet-box">
+                            {props.activeKnight.knightData.equipment.map((item, index)=>{
+                                return (
+                                        <Col xs={12}>
+                                            <ViewEdit
+                                                key={"equip_"+index} 
+                                                id={"equip_"+index} 
+                                                name={index}
+                                                group="equipment"
+                                                field="single"
+                                                value={item}
+                                                addWindowClickListener={addWindowClickListener}
+                                                removeWindowClickListeners={removeWindowClickListeners}
+                                                editInProgress={editInProgress}
+                                                setEditInProgress={setEditInProgress}
+                                                saveEdit={props.saveEdit}
+                                            />
+                                            
+                                        </Col>
+                                        )
+                            })}
+                            <ViewEdit
+                                key={"equip_new"} 
+                                id={"equip_new"} 
+                                name={''}
+                                group="equipment"
+                                field="single"
+                                value={''}
+                                placeHolderText="Click to add equipment"
+                                addWindowClickListener={addWindowClickListener}
+                                removeWindowClickListeners={removeWindowClickListeners}
+                                editInProgress={editInProgress}
+                                setEditInProgress={setEditInProgress}
+                                saveEdit={props.saveEdit}
+                            />
+                        </div>
+                    
                 </Col>
 
  
@@ -375,6 +430,88 @@ export default function KnightSheet(props) {
                                 </Row>
                             )
                         })}
+                    </div>
+                    <h6>Armour</h6>
+                    <div className="charsheet-box">
+                        <h5 className="armour-total">Current Armour: {armourVal}</h5>
+                        <hr className="double-hr" />
+                        <Row className="lv-headers">
+                            <Col xs={2} className="tick_col">
+                                <p>equip</p>
+                            </Col>
+                            <Col xs={8} className="lab_col">
+                                <p>armour type</p>
+                            </Col>
+                            <Col xs={2} className="val_col">
+                                <FontAwesomeIcon icon={faShieldAlt} />
+                            </Col>
+                        </Row>
+                        {sArmour.map((item, index)=>{
+                            return (
+                                <Row  className="lv-pair">
+                                <Col xs={1} lg={1} className="tick_col">
+                                        <input 
+                                            type="checkbox" 
+                                            id={item._id} 
+                                            name="armour" 
+                                            className="entry_tick" 
+                                            onClick={(event)=>{handleBoxTick(event, item._id)}} 
+                                            defaultChecked={item.isTicked}
+                                        />
+                                    </Col>
+                                    <Col xs={9} lg={9} className="label_col">
+                                        <ViewEdit
+                                            key={item._id+"_lab"} 
+                                            id={item._id+"_lab"}
+                                            name={item._id}
+                                            group="armour"
+                                            field="label"
+                                            value={item.label}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                        </Col>
+                                    <Col xs={2} lg={2} className="value_col">
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"}
+                                            name={item._id}
+                                            group="armour"
+                                            field="value"
+                                            value={item.value}
+                                            placeHolderText="0"
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />    
+                                    </Col>
+                                    
+                                </Row>
+                            )
+                        })}
+                        <Row  className="lv-pair">
+                            <Col>
+                                <ViewEdit
+                                    key={"armour_new_lab"} 
+                                    id={"armour_new_lab"}
+                                    name={''}
+                                    group="armour"
+                                    field="new"
+                                    value={''}
+                                    placeHolderText="Click to add armour"
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
+                                />
+                            </Col>
+                        </Row>
                     </div>
                     <h6>Personality Traits</h6>
                     <div className="charsheet-box">
@@ -458,6 +595,7 @@ export default function KnightSheet(props) {
                             </Col>
                         </Row>
                     </div>
+                    
                     <h6>Passions</h6>
                     <div className="charsheet-box">
                         {sPassions.map((item, index)=>{
@@ -598,7 +736,7 @@ export default function KnightSheet(props) {
                                 />
                             </Col>
                         </Row>
-                        <hr></hr>
+                        <hr className="double-hr" />
                         {sCombatSkillsWeapons.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
@@ -735,6 +873,152 @@ export default function KnightSheet(props) {
                         </Row>
                     </div>
                 </Col>
+            </Row>
+            <hr className="double-hr"/>
+            <Row className="page2">
+                <Col className="charsheet-column" xs={12} lg={4}>
+                    <h6>Personal Information</h6>
+                    <div className="charsheet-box">
+                    <h6>Family</h6>
+                        <div key="family" className="charsheet-box family-block">
+                            {sFamily.map((item, index)=>{
+                                return (
+                                        <Col xs={12}>
+                                            <FamilyMember
+                                                key={"family_"+index} 
+                                                id={"family_"+index} 
+                                                name={index}
+                                                group="family"
+                                                value={item}
+                                                addWindowClickListener={addWindowClickListener}
+                                                removeWindowClickListeners={removeWindowClickListeners}
+                                                editInProgress={editInProgress}
+                                                setEditInProgress={setEditInProgress}
+                                                saveEdit={props.saveEdit}
+                                            />
+                                            <hr />
+                                        </Col>
+                                        )
+                            })}
+                            <ViewEdit
+                                key={"family_new"} 
+                                id={"family_new"} 
+                                name={''}
+                                group="family"
+                                field="family"
+                                value={''}
+                                placeHolderText="click to add family member (father, mother...)"
+                                addWindowClickListener={addWindowClickListener}
+                                removeWindowClickListeners={removeWindowClickListeners}
+                                editInProgress={editInProgress}
+                                setEditInProgress={setEditInProgress}
+                                saveEdit={props.saveEdit}
+                            />
+                        </div>
+                    <h6>Squires</h6>
+                        <div key="squires" className="charsheet-box family-block">
+                            
+                        </div>
+                        {/* <h6>Horses</h6>
+                    <div key="horses" className="charsheet-box family-block">
+                        {sHorses.map((horse, horseIndex)=>{
+                            return (
+                                <Horse data={horse} funcs={VEFuncs} />
+                            )
+                        })}
+
+                    </div> */}
+                    
+                    </div>
+                </Col>
+                <Col className="charsheet-column" xs={12} lg={8}>
+                <h6>Character History</h6>
+                    <div className="charsheet-box history">
+                        <Row className="lv-headers">
+                            <Col xs={2} className="year_col">
+                                <p>year</p>
+                            </Col>
+                            <Col xs={10} lg={10} className="event_col">
+                                <p>event</p>
+                            </Col>
+                        </Row>
+                        {sHistory.map((item, index)=>{
+                            return (
+                                <Row  className="lv-pair">
+                                    <Col xs={2} className="year_col">
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"}
+                                            name={item._id}
+                                            group="history"
+                                            field="value"
+                                            value={item.value}
+                                            placeHolderText="0"
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />    
+                                    </Col>
+                                    <Col xs={10} lg={10} className="event_col">
+                                        <ViewEdit
+                                            key={item._id+"_lab"} 
+                                            id={item._id+"_lab"}
+                                            name={item._id}
+                                            group="history"
+                                            field="label"
+                                            value={item.label}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                    </Col>
+                                   
+                                    
+                                </Row>
+                            )
+                        })}
+
+                        <Row className="lv-pair">
+                            <Col xs={2} lg={2} className="year_col">
+                                <ViewEdit
+                                    key="new_year_val"
+                                    id="new_year_val"
+                                    name="new_year"
+                                    group="history"
+                                    field="new"
+                                    value=''
+                                    placeHolderText="-"
+                                    lockEdit={true}
+                                    // addWindowClickListener={addWindowClickListener}
+                                    // removeWindowClickListeners={removeWindowClickListeners}
+                                    // editInProgress={editInProgress}
+                                    // setEditInProgress={setEditInProgress}
+                                    // saveEdit={props.saveEdit}
+                                />    
+                            </Col>
+                            <Col xs={10} lg={10} className="event_col">
+                                <ViewEdit
+                                    key={"history_new_lab"} 
+                                    id={"history_new_lab"}
+                                    name={''}
+                                    group="history"
+                                    field="new"
+                                    value={''}
+                                    placeHolderText="Click to add a new event"
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
+                                />
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>   
             </Row>
         </Container>
         </div>

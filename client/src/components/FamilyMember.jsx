@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSkullCrossbones, faHeart, faMars, faVenus, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 
-import _ from 'lodash';
+// import _ from 'lodash';
 
 // DESCRIPTION
 // This ViewEdit Group component displays details about individuals

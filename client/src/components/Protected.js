@@ -115,7 +115,7 @@ const Protected = (props) => {
         let listData = []
         if (knightList.length>0){knightList.forEach(k=>{
             
-            console.log("k: ",k)
+            // console.log("k: ",k)
             listData.push({name: k.personalInfo[Object.keys(k.personalInfo)[0]].value, _id:k._id})
             // k.personalInfo.forEach(key=>{
             //     // console.log("key: ",key)
@@ -142,7 +142,7 @@ const Protected = (props) => {
     
         axios({
             // url: '/api/edit-entry',
-            url: '/api/edit-family-entry',
+            url: '/api/edit-entry',
             method: 'POST',
             data: payload
          })
@@ -184,59 +184,59 @@ const Protected = (props) => {
 }
 
 
-    function saveNewEntry(knightId, group, newLab, newVal, type){
-        console.log("DOING THIS: saveValue. Props: k=", knightId,",g=", group,", l:",newLab,", v:", newVal,", t:",type)
-        // Update activeKnight state object
-        let knightObj = activeKnight.knightData;
-        let objectToEdit = tunnel(knightObj, group)
+//     function saveNewEntry(knightId, group, newLab, newVal, type){
+//         console.log("DOING THIS: saveValue. Props: k=", knightId,",g=", group,", l:",newLab,", v:", newVal,", t:",type)
+//         // Update activeKnight state object
+//         let knightObj = activeKnight.knightData;
+//         let objectToEdit = tunnel(knightObj, group)
 
-        const itemToAdd = {
-            label: newLab,
-            value: newVal
-        }
+//         const itemToAdd = {
+//             label: newLab,
+//             value: newVal
+//         }
         
-        objectToEdit.push(itemToAdd)
+//         objectToEdit.push(itemToAdd)
             
-        let updateObj = {...activeKnight};
-        updateObj.knightData = knightObj;
-        console.log("Active knight update object: ",JSON.stringify(updateObj))
-        setActiveKnight(updateObj);
-        // console.log("Active knight updated to: ",JSON.stringify(activeKnight))
+//         let updateObj = {...activeKnight};
+//         updateObj.knightData = knightObj;
+//         console.log("Active knight update object: ",JSON.stringify(updateObj))
+//         setActiveKnight(updateObj);
+//         // console.log("Active knight updated to: ",JSON.stringify(activeKnight))
 
-        // Update database
-        const payload = {knightId: activeKnight.knightId, group: group, newLab: newLab, newVal: newVal, type: type} 
-        console.log("Payload: ",JSON.stringify(payload));
+//         // Update database
+//         const payload = {knightId: activeKnight.knightId, group: group, newLab: newLab, newVal: newVal, type: type} 
+//         console.log("Payload: ",JSON.stringify(payload));
 
-        axios({
-            url: '/api/create-entry',
-            method: 'POST',
-            data: payload
-         })
-         .then(() => {
-            console.log("Data sent to server");
-            getData(); 
-            openSheet(activeKnight.knightId, activeKnight.access)
-         })
-         .catch((err) => {
-            console.log("Internal server error.", err);
-         });
-    }
+//         axios({
+//             url: '/api/create-entry',
+//             method: 'POST',
+//             data: payload
+//          })
+//          .then(() => {
+//             console.log("Data sent to server");
+//             getData(); 
+//             openSheet(activeKnight.knightId, activeKnight.access)
+//          })
+//          .catch((err) => {
+//             console.log("Internal server error.", err);
+//          });
+//     }
 
    
     useEffect(()=> {
         console.log("Updating knightsData from activeKnight.")
         let ksd = knightsData
-        console.log("ksd:",ksd)
+        // console.log("ksd:",ksd)
         ksd.forEach((k, i)=>{
-            console.log("k:",k)
-            console.log("Checking knight record:",k._id," versus activeKnight id:",activeKnight.knightId)
+            // console.log("k:",k)
+            // console.log("Checking knight record:",k._id," versus activeKnight id:",activeKnight.knightId)
 
             if (k._id === activeKnight.knightId) {
                 console.log("match found.")
                 ksd[i] = activeKnight.knightData
             }
         })
-        console.log("knightsData to record:",ksd)
+        // console.log("knightsData to record:",ksd)
         setKnightsData(ksd);
     });
 
@@ -294,7 +294,7 @@ const Protected = (props) => {
                         key={activeKnight.knightId} 
                         saveEdit={saveEdit} 
                         saveEntry={saveEntry}
-                        saveNewEntry={saveNewEntry} 
+                        // saveNewEntry={saveNewEntry} 
                         activeKnight={activeKnight} 
                         setActiveKnight={setActiveKnight} 
                         _listeners={_listeners}
