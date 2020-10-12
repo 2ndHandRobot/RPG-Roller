@@ -31,15 +31,17 @@ import _ from 'lodash';
         const canEdit = props.lockEdit ? false : true
         
         let fallBackValue = '';
+        const nestedId = props.nestedId;
+        
         
         const textInput = useRef()
       
         function confirmEdit() {
             console.log("DOING THIS: confirmEdit")
             // Switch back to View mode
-            console.log("Edit-in-progress element (before):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
-            document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId).classList.remove("edit-in-progress")
-            console.log("Edit-in-progress element (after):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
+            console.log("Edit-in-progress element (before):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+nestedId))
+            document.getElementById(props.group+"_"+props.field+"_"+fieldId+nestedId).classList.remove("edit-in-progress")
+            console.log("Edit-in-progress element (after):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+nestedId))
             exitEditMode()
             // Save the edited value to DB
            
@@ -49,9 +51,11 @@ import _ from 'lodash';
                 value: value,
                 fieldId: fieldId
             }
-
-            if (props.nestedId) {
-                payload.itemId = props.nestedId;
+            
+            // console.log("nestedId length:",nestedId.length);
+            // console.log("!(nestedId length === 0):",!(nestedId.length===0));
+            if (nestedId) {
+                payload.itemId = nestedId;
             }
 
             console.log("VE: Save payload:",payload)
@@ -135,7 +139,7 @@ import _ from 'lodash';
             setEditMode(true);
             enterEditMode(ev.target);
             
-            handleClickOutside(props.group+"_"+props.field+"_"+fieldId+props.nestedId)
+            handleClickOutside(props.group+"_"+props.field+"_"+fieldId+nestedId)
             console.log("Current focus:",checkFocus())
             let paraEl = document.getElementById(fieldId+"_"+props.field+"_p");
             let inputEl = document.getElementById(fieldId+"_"+props.field+"_i");
@@ -155,9 +159,9 @@ import _ from 'lodash';
                 console.log("OUTSIDE CLICK check triggered. event.target: ",event.target)
                 if ( !element.contains(event.target)) {
                     console.log("Click in ",event.target," is not inside element: ",element);
-                    console.log("Edit-in-progress element (before):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
+                    console.log("Edit-in-progress element (before):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+nestedId))
                     document.getElementById(element.id).classList.remove("edit-in-progress");
-                    console.log("Edit-in-progress element (after):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+props.nestedId))
+                    console.log("Edit-in-progress element (after):",document.getElementById(props.group+"_"+props.field+"_"+fieldId+nestedId))
                     cancelEdit();
                 }
             }
@@ -167,7 +171,7 @@ import _ from 'lodash';
         return (
             <div 
                 key={props.field+"_"+fieldId+"_d"} 
-                id={props.group+"_"+props.field+"_"+fieldId+props.nestedId} 
+                id={props.group+"_"+props.field+"_"+fieldId+nestedId} 
                 className={props.field+"-field"}
             >
                 

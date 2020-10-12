@@ -81,8 +81,8 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
                             key={"who_label_"+personId} 
                             id={"who_label_"+personId} 
                             name={personId}
-                            group="family"
-                            field="who.label"
+                            group="family.who"
+                            field="label"
                             value={who.label}
                             addWindowClickListener={props.addWindowClickListener}
                             removeWindowClickListeners={props.removeWindowClickListeners}
@@ -97,8 +97,9 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
                             key={"who_value_"+personId} 
                             id={"who_value_"+personId} 
                             name={personId}
-                            group="family"
-                            field="who.value"
+                            group="family.who"
+                            nestedId={personId}
+                            field="value"
                             value={who.value}
                             placeHolderText="add name"
                             addWindowClickListener={props.addWindowClickListener}
@@ -129,8 +130,9 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
                                 key={"age_"+personId} 
                                 id={"age_"+personId} 
                                 name={personId}
-                                group={"family"}
-                                field="age"
+                                group={"family.age"}
+                                nestedId={personId}
+                                field="single"
                                 value={age}
                                 placeHolderText="___"
                                 addWindowClickListener={props.addWindowClickListener}
@@ -147,9 +149,10 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
                             <ViewEdit 
                                 key={"glory_"+personId} 
                                 id={"glory_"+personId} 
-                                name={''}
-                                group={"family"}
-                                field="glory"
+                                name={personId}
+                                group={"family.glory"}
+                                nestedId={personId}
+                                field="single"
                                 value={glory}
                                 placeHolderText="_____"
                                 addWindowClickListener={props.addWindowClickListener}

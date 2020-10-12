@@ -127,6 +127,10 @@ footer {
   border-bottom: dotted 1px;
 }
 
+.new-edit {
+  width: 100%;
+}
+
 .single-view {
   width: 100%;
   border-bottom: dotted 1px;

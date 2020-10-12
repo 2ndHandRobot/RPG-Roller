@@ -368,13 +368,18 @@ router.post('/edit-entry', (req, res) => {
       console.log("Group:", data.group)
       
       
-      if (data.group === "family.reputation") {
-         console.log("Saving Family reputation")
+      // if (data.group === "family.reputation") {
+      if (data.group.substring(0,7) === "family.") {
+         console.log("Saving Family sub-element")
          filter = {"family._id": data.knightId}
          if (!data.fieldId) {
             console.log("No fieldId found. Creating new entry.")
          
-            updateObject = {$push: {"family.$.reputation":`${value}`}};
+            // updateObject = {$push: {"family.$.reputation":`${value}`}};
+            let groupString = data.group.replace(".",".$.")
+            // updateObject = {$push: {"family.$.reputation":`${value}`}};
+           
+            updateObject = {$push: {[`${groupString}`]:`${value}`}};
             options = {
                // arrayFilters: [{ 'person._id' : data.fieldId }], 
                useFindAndModify: false,
@@ -385,7 +390,16 @@ router.post('/edit-entry', (req, res) => {
          } else {
             console.log("fieldId found. Updating existing entry.")
             
-            updateObject = {$set: {[`family.$.reputation.${data.fieldId}`]:`${value}`}};
+            let groupString = data.group.replace(".",".$.")
+            if (!(data.field==="single")) {
+               groupString = groupString + "." + data.field;
+            }
+            // updateObject = {$set: {[`family.$.reputation.${data.fieldId}`]:`${value}`}};
+            if (data.group.substring(7)==="reputation") {
+               updateObject = {$set: {[`${groupString}.${data.fieldId}`]:`${value}`}};
+            } else {
+               updateObject = {$set: {[`${groupString}`]:`${value}`}};
+            }
             options = { 
                useFindAndModify: false,
                upsert: true, 
@@ -393,7 +407,7 @@ router.post('/edit-entry', (req, res) => {
             }
          }
       } else { 
-         console.log("Saving non Family-Reputation entry")
+         console.log("Saving non Family-Sub entry")
          filter = {"_id": data.knightId}
 
          if (!data.fieldId) {
@@ -438,7 +452,7 @@ router.post('/edit-entry', (req, res) => {
          }
       }
    
-      console.log("knightId:",data.knightId,". Update object:",updateObject,". options:",options)
+      console.log("knightId:",data.knightId,". Filter object:",filter,". Update object:",updateObject,". options:",options)
          Knights.findOneAndUpdate(
             filter,
             updateObject,

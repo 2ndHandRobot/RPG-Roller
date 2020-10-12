@@ -13,7 +13,7 @@ import { faShieldAlt } from "@fortawesome/free-solid-svg-icons";
 
 export default function KnightSheet(props) {
     console.log("LOADING KnightSheet")
-    // console.log("Knight data: ",props.activeKnight.knightData);
+    console.log("Knight data: ",props.activeKnight.knightData);
 
     const sPersonalInfo = sortByIndex(props.activeKnight.knightData.personalInfo);
     const sStatistics = sortByIndex(props.activeKnight.knightData.statistics);
@@ -433,7 +433,7 @@ export default function KnightSheet(props) {
                     </div>
                     <h6>Armour</h6>
                     <div className="charsheet-box">
-                        <h5 className="armour-total">Current Armour: {armourVal}</h5>
+                        <h5 className="armour-total">Current Armour: {armourVal || 0}</h5>
                         <hr className="double-hr" />
                         <Row className="lv-headers">
                             <Col xs={2} className="tick_col">
