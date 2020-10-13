@@ -372,7 +372,7 @@ router.post('/edit-entry', (req, res) => {
       if (data.group.substring(0,7) === "family.") {
          console.log("Saving Family sub-element")
          filter = {"family._id": data.knightId}
-         if (!data.fieldId) {
+         if (!data.fieldId && !(data.fieldId==0)) {
             console.log("No fieldId found. Creating new entry.")
          
             // updateObject = {$push: {"family.$.reputation":`${value}`}};
@@ -410,7 +410,7 @@ router.post('/edit-entry', (req, res) => {
          console.log("Saving non Family-Sub entry")
          filter = {"_id": data.knightId}
 
-         if (!data.fieldId) {
+         if (!data.fieldId && !(data.fieldId==0)) {
             console.log("No fieldId found. Creating new entry.")
             if (data.field === "single" || data.field === "desc") {
                console.log("single/description")

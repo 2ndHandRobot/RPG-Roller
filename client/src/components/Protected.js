@@ -16,6 +16,8 @@ import { Prev } from 'react-bootstrap/esm/PageItem';
 const Protected = (props) => {
     console.log("LOADING Protected")
 
+    const [mainMode, setMainMode] = useState('welcome')
+
     const [knightsData, setKnightsData] = useState([]);
     const [editOnlyKnightsData, setEditOnlyKnightsData] = useState([]);
     const [activeKnight, setActiveKnight] = useState({knightId:'',access:'', knightData:{}});
@@ -93,6 +95,26 @@ const Protected = (props) => {
     async function createKnight () {
         console.log("DOING THIS: createKnight")
         const payload = templates.knight;
+        payload.playerInfo = {isOwner: props.userId}
+        console.log("New Knight data:",JSON.stringify(payload));
+        axios({
+            url: '/api/create',
+            method: 'POST',
+            data: payload
+         })
+         .then(() => {
+            console.log("Data sent to server");
+            getData(); 
+         })
+         .catch((err) => {
+            console.log("Internal server error.", err);
+         });
+         
+    }
+
+    async function createKnight (template) {
+        console.log("DOING THIS: createKnight")
+        const payload = template;
         payload.playerInfo = {isOwner: props.userId}
         console.log("New Knight data:",JSON.stringify(payload));
         axios({
@@ -222,7 +244,6 @@ const Protected = (props) => {
 //          });
 //     }
 
-   
     useEffect(()=> {
         console.log("Updating knightsData from activeKnight.")
         let ksd = knightsData
@@ -256,10 +277,60 @@ const Protected = (props) => {
         }
         console.log("adding kd: ",JSON.stringify(kd))
         setActiveKnight({knightId: knightId, access: access, knightData: kd});
+        setMainMode('editKnight');
         // console.log("Updated active knight: ",JSON.stringify(activeKnight));
     }
 
+    function MainBlock () {
+        console.log("PROTECTED:: Building Main Block")
+        let mainBlock;
+        switch (mainMode) {
+            case "welcome":
+                console.log("Building 'welcome' block")
+                mainBlock = (
+                    <h1>RPG Roller</h1>
+                    )
+                break;
+            case "editKnight":
+                console.log("Building 'edit knight' block")
+                mainBlock =(
+                    (activeKnight.access!=='')
+                    && <KnightSheet 
+                        key={activeKnight.knightId} 
+                        saveEdit={saveEdit} 
+                        saveEntry={saveEntry}
+                        activeKnight={activeKnight} 
+                        setActiveKnight={setActiveKnight} 
+                        _listeners={_listeners}
+                    />
+                    )
+                break;
+            case "createKnight":
+                console.log("Building 'create knight' block")
+                mainBlock = (
+                    <div>
+                        <button  
+                            type="button" 
+                            onClick={()=>{createKnight(templates.knight)}}
+                            >
+                                Create "Blank" Knight
+                            </button>
+                        <button  
+                            type="button" 
+                            onClick={()=>{createKnight(templates.knightAnarchy)}}
+                            >
+                                Create "Anarchy" Knight
+                            </button>
+                        </div>
+                    )
+                break;
+            default:
+        }
 
+
+        return mainBlock
+    }
+   
     return (
         <Container>
             {/* <Row>
@@ -270,35 +341,31 @@ const Protected = (props) => {
             </Row> */}
             <Row>
                 <Col xs={12} lg={1} className="sidebar-column">
-                    <button type="button" onClick={()=>createKnight()}>New Knight</button>
+                    <button 
+                            type="button" 
+                            onClick={()=>setMainMode("createKnight")}
+                        >
+                            New Knight
+                        </button>
                     <KnightsList
-                        key="myKnights"
-                        listName="My Knights"
-                        permission="own"
-                        listData={knightListData(knightsData)}
-                        openSheet={openSheet}    
-                    />
-                    {(editOnlyKnightsData.length>0)&&
-                        <KnightsList
-                            key="editOnlyKnights"
-                            listName="Other Knights"
-                            permission="edit"
-                            listData={knightListData(editOnlyKnightsData)}
+                            key="myKnights"
+                            listName="My Knights"
+                            permission="own"
+                            listData={knightListData(knightsData)}
                             openSheet={openSheet}    
                         />
-                    }
+                    {(editOnlyKnightsData.length>0)&&
+                        <KnightsList
+                                key="editOnlyKnights"
+                                listName="Other Knights"
+                                permission="edit"
+                                listData={knightListData(editOnlyKnightsData)}
+                                openSheet={openSheet}    
+                            />
+                        }
                 </Col>
                 <Col xs={12} lg={9} className="column">
-                    {(activeKnight.access!=='')&&
-                    <KnightSheet 
-                        key={activeKnight.knightId} 
-                        saveEdit={saveEdit} 
-                        saveEntry={saveEntry}
-                        // saveNewEntry={saveNewEntry} 
-                        activeKnight={activeKnight} 
-                        setActiveKnight={setActiveKnight} 
-                        _listeners={_listeners}
-                    />}
+                    <MainBlock />
                 </Col>
                 <Col xs={12} lg={2} className="sidebar-column">
                     <Roller key="roller" diceSets={diceSets} getData={getData}/>

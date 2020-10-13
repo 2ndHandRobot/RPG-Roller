@@ -151,6 +151,29 @@ const skills=
         {label:"Swimming", value: 0},
         {label:"Tourney", value: 0}
     ]
+const skillsAnarchy =
+    [
+        {label:"Awareness", value: 6},
+        {label:"Boating", value: 1},
+        {label:"Chirurgery", value: 1},
+        {label:"Courtesy", value: 3},
+        {label:"Dancing", value: 2},
+        {label:"Faerie Lore", value: 1},
+        {label:"Falconry", value: 3},
+        {label:"First Aid", value: 10},
+        {label:"Flirting", value: 4},
+        {label:"Folk Lore", value: 2},
+        {label:"Gaming", value: 3},
+        {label:"Hunting", value: 2},
+        {label:"Intrigue", value: 5},
+        {label:"Orate", value: 3},
+        {label:"Play ()", value: 3},
+        {label:"Recognise", value: 5},
+        {label:"Religion ()", value: 2},
+        {label:"Singing", value: 2},
+        {label:"Stewardship", value: 2},
+        {label:"Swimming", value: 2}
+    ]
 
 const combatSkills=
     {
@@ -209,7 +232,7 @@ const combatSkills=
         ]
     }
 
-const knight= {
+const knight = {
     personalInfo: personalInfo,
     personalityTraits: personality,
     passions:passions,
@@ -223,8 +246,23 @@ const knight= {
     squires: squire
 }
     
+const knightAnarchy = {
+    personalInfo: personalInfo,
+    personalityTraits: personality,
+    passions:passions,
+    statistics: stats,
+    distinctiveFeatures:[],
+    equipment: [],
+    horses: horse,
+    skills: skillsAnarchy,
+    combatSkills: combatSkills,
+    family: family,
+    squires: squire
+}
+
 const templates = {
     knight:knight,
+    knightAnarchy:knightAnarchy,
     family:family,
     squire:squire,
     horse:horse
