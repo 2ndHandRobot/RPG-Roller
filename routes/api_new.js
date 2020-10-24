@@ -272,7 +272,7 @@ router.post('/edit-entry', (req, res) => {
           console.log("Saving non-nested entry")
           filter = {"_id": data.characterId}
  
-          if (data.field==="glory" ) {
+          if (data.group==="glory" ) {
             console.log("updating glory")
             updateObject = {$set: { "glory" : `${value}`}}
             options = { 
