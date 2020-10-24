@@ -21,21 +21,21 @@ export default function Roller(props){
         setDiceInput(event.target.value);
     }
 
-    async function getSetsData(){
+    function getSetsData(){
          
             console.log("DOING THIS: getData (dice sets)");
-                axios.get('/api/users/'+Auth.userId)
+                axios.get('/api/users/'+Auth.userId+'/dicesets')
                     .then((response)=>{
                         const data = response.data;
-                        // console.log("Initial sets data received.");
+                        console.log("Initial sets data received:",data);
                         // console.log(data.diceSets.length," dice sets found");
                         // console.log(JSON.stringify(data.diceSets));
-                        setSavedDiceSets(data.diceSets);
+                        setSavedDiceSets(data);
                         // console.log("Updated saved dice sets: ",savedDiceSets);
                         // console.log("Data reloaded. State updated.");
                     })
                     .catch((error)=>{
-                        alert("Error retrieving data (dice sets): ", error);
+                        console.log("Error retrieving data (dice sets): ", error);
                     });
     }
 
@@ -89,12 +89,18 @@ export default function Roller(props){
         setDiceInput('');
     }
     function rollDice(rollThis){
-        setRoll([])
-        rollThis.forEach(d=>{
+        // 
+        document.getElementById("roll_result").classList.remove("fade-in")
+        setTimeout(()=>{
+            setRoll([]);
+            rollThis.forEach(d=>{
             const result = Math.floor(Math.random()*d)+1;
             console.log("Rolled ",result," on a D",d);
             setRoll(prev=>[...prev, result]);
-        })
+            document.getElementById("roll_result").classList.add("fade-in")
+            
+        })},100);
+        
     }
 
     function compactSet(set){
@@ -154,7 +160,7 @@ export default function Roller(props){
 
     function DiceSets(props) {
         // console.log("Set: ",JSON.stringify(props.set));
-        if (props.set.length>0) {
+        if (Array.isArray(props.set)&&(props.set.length>0)) {
             if (props.type==="button"){
                 // console.log("Saved set:", JSON.stringify(props.set));
 
@@ -208,8 +214,8 @@ export default function Roller(props){
                         </Row>
             
                 <Row className="roll-results">
-                    
                     <h3>Result:</h3>
+                    <div id="roll_result">
                         {(roll.length>0) && 
                         (<h4>{"Total: "+roll.reduce((a,b)=>{return a+b})}</h4>)}
                         <p>
@@ -220,7 +226,7 @@ export default function Roller(props){
                             })}
                         
                         </p>
-                    
+                    </div>
             </Row>
             <Row className="roller-row">
             <hr />

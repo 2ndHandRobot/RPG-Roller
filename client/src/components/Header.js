@@ -16,7 +16,6 @@ function Header (props) {
     return (
   
             <div className="Header">
-                {/* <Link to='/'>Home</Link><br/> */}
                 {  
                     loggedIn ? (
                         <button className="btn btn-primary shadow-none login-btn" onClick={logout}>Log Out</button>
@@ -27,7 +26,7 @@ function Header (props) {
                 {
                     showAccess && (<Access userId={props.userState.userId} setUserId={props.setUserId} setShowThis={setShowAccess}/>)
                 }
-                {/* <button onClick={()=>{bypass();console.log("auth: ",Auth.getAuth())}}>Bypass</button> */}
+                <hr className="hr-stripe" />
             </div>
  
         )

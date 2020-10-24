@@ -12,7 +12,8 @@ const personalInfo = [
     {label: 'Son Number',value: ''},
     {label: "Father's Name",value: ''},
     {label: "Father's Class",value: ''},
-    {label: 'Lord',value: ''}
+    {label: 'Lord',value: ''},
+    {label: 'Glory',value: ''}
 ]
 
 const personality= [
@@ -87,18 +88,18 @@ const passions=
 [
     {
         label: "Loyalty (lord)",
-        value: 15
+        value: 13
     },
     {
         label: "Love (family)",
-        value: 15
+        value: 12
     },
     {   label: "Hospitality",
-        value: 15
+        value: 12
     },
     {
         label: "Honor",
-        value: 15
+        value: 10
     }
 ]
 
@@ -196,6 +197,22 @@ const combatSkills=
             ]
     }
 
+    const combatSkillsAnarchy=
+    {
+        general:
+            [
+                {label:"Battle", value: 4},
+                {label:"Horsemanship", value: 4}
+            ],
+        weapons:
+            [
+                {label:"Sword", value: 8},
+                {label:"Lance", value: 2},
+                {label:"Spear", value: 2},
+                {label:"Dagger", value: 4}
+            ]
+    }
+
     const family = [
         {
             index: 0,
@@ -209,10 +226,25 @@ const combatSkills=
         }
     ]
 
+    const familyMember = {
+        owner: '',
+        who: [{label:'',value:''}],
+        about: [
+            { label: "Age", value: 0 },
+            { label: "Glory", value: 0 },
+        ],
+        status: [
+            { label: "male", value: true },
+            { label: "deceased", value: false },
+        ],
+        aux_armour: [],
+        aux_equipment: [],
+        aux_reputation: [],
+    }
+
     const squire = {
-        who: [
-                {label:'Name', value: ''}
-            ],
+        owner: '',
+        who: {label:'', value: '(unnamed)'},
         about: [
                 {label:'Born', value: 0},
                 {label:'Age', value: 15},
@@ -220,8 +252,8 @@ const combatSkills=
             ],
         status: [
                 {label: "male", value: true},
-                {label: "deceased", value: true},
-                {label: "retired", value: true}
+                {label: "deceased", value: false},
+                {label: "retired", value: false}
             ],
         skills:
             [
@@ -229,23 +261,27 @@ const combatSkills=
                 {label:"Battle", value: 0},
                 {label:"Horsemanship", value: 0}
             ],
-        reputation:[]
+        armour:[],
+        aux_reputation:[],
+        aux_equipment:[]
     }
 
     const horse = {
-        desc: [
-            {label: "name", value: ""},
-            {label: "type", value: ""},
-            {label: "breed", value: ""}
+        owner: '',
+        who: 
+            {label: "(unknown type)", value: ""},
+        about: [
+            {label: "Breed", value: ""},
+            {label: "Name", value: ""},
         ],
         stats: [
             {label: "SIZ", value: 0},
             {label: "CON", value: 0},
             {label: "DEX", value: 0},
             {label: "HP", value: 0},
-            {label: "attack", value: 0},
-            {label: "damage", value: 0},
-            {label: "armour", value: 0}
+            {label: "Attack", value: 0},
+            {label: "Damage", value: 0},
+            {label: "Armour", value: 0},
         ]
     }
 
@@ -256,11 +292,11 @@ const knight = {
     statistics: stats,
     distinctiveFeatures:[],
     equipment: [],
-    horses: horse,
+    horses: [],
     skills: skills,
     combatSkills: combatSkills,
-    family: family,
-    squires: squire
+    family: [],
+    squires: []
 }
     
 const knightAnarchy = {
@@ -270,17 +306,17 @@ const knightAnarchy = {
     statistics: stats,
     distinctiveFeatures:[],
     equipment: [],
-    horses: horse,
+    horses: [],
     skills: skillsAnarchy,
-    combatSkills: combatSkills,
-    family: family,
-    squires: squire
+    combatSkills: combatSkillsAnarchy,
+    family: [],
+    squires: []
 }
 
 const templates = {
     knight:knight,
     knightAnarchy:knightAnarchy,
-    family:family,
+    familyMember:familyMember,
     squire:squire,
     horse:horse
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ResponsiveEmbed } from 'react-bootstrap';
 
 const Auth = {
     isAuthenticated: false,
@@ -13,12 +14,16 @@ const Auth = {
         })
         .then((resp) => {
             console.log("Data sent to server. Response: ", resp);
-            this.isAuthenticated = true;
-            this.userId = resp.data.userId;
-            this.userName = resp.data.userName;
-            console.log("userId:",this.userId, ". userName:",this.userName);
-            func(this.userId);
-            return "login successful"
+            if (resp.data.userId){
+                this.isAuthenticated = true;
+                this.userId = resp.data.userId;
+                this.userName = resp.data.userName;
+                console.log("userId:",this.userId, ". userName:",this.userName);
+                func(this.userId);
+                return "login successful"
+            } else {
+                return "login failed: " + resp.data.msg
+            }
         })
         .catch((err) => {
             console.log("Internal server error.", err);

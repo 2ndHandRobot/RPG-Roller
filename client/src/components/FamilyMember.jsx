@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Collapse } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
 
+import Disp from '../DisplayState';
+
 // Import fontawesome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSkullCrossbones, faHeart, faMars, faVenus, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faShieldAlt, faGem, faSkullCrossbones, faHeart, faMars, faVenus, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 // import _ from 'lodash';
@@ -39,196 +41,505 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 //     reputation: [String]
 // })
 
-    function ViewEditFamily (props) {   
-        // console.log("LOADING ViewEditFamily. Props:",props)
+    function FamilyMember (props) {   
+        console.log("LOADING FamilyMember. Props:",props)
 
-        const [showReputation, setShowReputation] = useState(false)
         
-        const index = props.value.index
-        // console.log("index:",index);
-        const personId = props.value._id
-        // console.log("personId:",personId);
-        const who = props.value.who;
-        // console.log("who:",who);
-        const male = props.value.male;
-        // console.log("male:",male);
-        const age = props.value.age || 0;
-        // console.log("age:",age);
-        const glory = props.value.glory || 0;
-        // console.log("glory:",glory);
-        const deceased = props.value.deceased;
-        // console.log("deceased:",deceased);
-        const reputation = props.value.reputation || [];
-        // console.log("reputation:",reputation);
+        
+        // const [auxData, setAuxData] = useState(props.data);
+        const personId = props.data._id
+        let isMale = getStatus("male")
+        let isDeceased = getStatus("deceased")
+        
+        const [showEquipment, setShowEquipment] = useState(Disp.getToggleState("eqpt_block_"+personId))
+        const [showReputation, setShowReputation] = useState(Disp.getToggleState("rep_block_"+personId))
+        
+        const [armourVal, setArmourVal] = useState();
+        useEffect(()=>{
+            console.log("FAMILYMEMBER :: useEffect Armour Calculation");
+            const armCalc = calcArmourValue();
+            if (armourVal!==armCalc){
+                setArmourVal(calcArmourValue)
+            }
+        },[]);
+        useEffect(()=>{console.log("FAMILYMEMBER :: useEffect View Toggles");setViewToggles()},[props.data._id])
+        
+        function setViewToggles() {
+            setShowEquipment(Disp.getToggleState("eqpt_block_"+personId))
+            setShowReputation(Disp.getToggleState("rep_block_"+personId))
+        }
+        function calcArmourValue() {
+            console.log("FAMILYMEMBER :: DOING: calcArmourValue: ")
+            const equippedArmour = props.data.aux_armour.filter(a=>a.isTicked).map(a=>a.value)
+            let sumArmour = 0;
+            console.log("FAMILYMEMBER :: calcArmourValue: equippedArmour:",equippedArmour)
+            if (equippedArmour.length>0){
+                sumArmour = equippedArmour.reduce((a,b)=>a+b);
+            }
+            console.log("FAMILYMEMBER :: calcArmourValue: new armour value is:",sumArmour)
+            return sumArmour;
+        }
 
-        function toggleData(toggle, newVal) {
+        function handleBoxTick(event, fieldId){
+            console.log("FAMILYMEMBER :: DOING: handleBoxTick on",fieldId)
+            console.log("FAMILYMEMBER :: handleBoxTick: checked:",event.target.checked)
+            
+            if (event.target.name === "armour") {
+                console.log("FAMILYMEMBER :: handleBoxTick: ticked an armour box. Updating total")
+                
+                for (var a of props.data.aux_armour) {
+                    console.log("FAMILYMEMBER :: handleBoxTick: (loop) armour item:",a)
+                    if (a._id === event.target.id) {
+                        console.log("FAMILYMEMBER :: handleBoxTick: (loop) armour matched:",a)
+                        a.isTicked=!a.isTicked;
+                    }
+                }
+                
+                setArmourVal(calcArmourValue())
+            }
+    
+            const payload = {
+                group: event.target.name,
+                field: "isTicked",
+                value: event.target.checked,
+                fieldId: fieldId
+            }
+            saveFamilyMemberEdit(payload);
+            
+            
+        }
+        function getStatus(findStatus) {
+            console.log("FAMILYMEMBER :: DOING: getStatus")
+            for (var stts of props.data.status) {
+                if (stts.label===findStatus) {
+                    // console.log("Status value (",findStatus,") :",stts.value)
+                    return (stts.value)
+                }
+            }
+        }
+        
+        function getStatusId(findStatus) {
+            console.log("FAMILYMEMBER :: DOING: getStatusId")
+            for (var stts of props.data.status) {
+                if (stts.label===findStatus) {
+                    // console.log("Status _id (",findStatus,") :",stts._id)
+                    return (stts._id)
+                }
+            }
+        }
+        
+
+        async function saveFamilyMemberEdit(thisprops){
+            console.log("FAMILYMEMBER :: DOING: saveFamilyMember. props:",thisprops)
+            const payload = {
+                auxId: personId,
+                auxType: "familyMembers",
+                group: thisprops.group,
+                field: thisprops.field,
+                value: thisprops.value,
+                fieldId: thisprops.fieldId
+            }
+            const newData = await props.saveAuxiliary(payload)
+            // console.log("Data returned from save:",newData)
+            // setAuxData(newData);
+        }
+        
+        function toggleData(field, newVal) {
+            console.log("FAMILYMEMBER :: DOING: toggleData. field/newVal:",field,"/", newVal)
             const data = {
-                group: "family",
-                field: toggle,
+                auxId: personId,
+                auxType: "familyMembers",
+                group: "status",
+                field: "value",
                 value: newVal,
-                fieldId: personId
+                fieldId: getStatusId(field)
             };
             
             console.log("Toggle data:",data)
-            props.saveEdit(data)
+            saveFamilyMemberEdit(data)
+        }
+        
+        function handleToggleClick(eventTarget) {
+            console.log("FAMILYMEMBER :: DOING: saveFamilyMember. eventTarget:",eventTarget)
+            const toggleId = eventTarget
+            const toggleState = Disp.getToggleState(toggleId)
+            
+            console.log("FAMILYMEMBER :: handleToggleClick: saving toggle state for", toggleId,". CHanging from",toggleState)
+            console.log("FAMILYMEMBER :: handleToggleClick: Event target:",eventTarget)
+            if (toggleState) {
+                Disp.clearToggleState(toggleId)
+            } else {
+                Disp.setToggleState(toggleId)
+            }
+            
+            console.log("FAMILYMEMBER :: handleToggleClick: Saved toggle state now", Disp.getToggleState(toggleId))
+            
         }
 
         return (
-            <div>
-                <Row  className="lv-pair">
-                    <Col xs={6} lg={6}>
-                        <ViewEdit 
-                            key={"who_label_"+personId} 
-                            id={"who_label_"+personId} 
-                            name={personId}
-                            group="family.who"
-                            field="label"
-                            value={who.label}
-                            addWindowClickListener={props.addWindowClickListener}
-                            removeWindowClickListeners={props.removeWindowClickListeners}
-                            editInProgress={props.editInProgress}
-                            setEditInProgress={props.setEditInProgress}
-                            saveEdit={props.saveEdit}
-                        />
+            <Row>
+                <Col xs={12} lg={6}> {/* Aux Sheet left column */}
+                    <div name="who_block" className="ghost-div">
+                        {props.data.who.map((whoItem,whoIndex)=>{
+                            return(
+                                <Row key={whoItem._id+"_row_"+whoIndex} className="lv-pair">
+                                    <Col xs={6} lg={6} className="char-col-left">
+                                        <ViewEdit 
+                                            key={whoItem._id+"_lab"} 
+                                            id={whoItem._id+"_lab"} 
+                                            name={"who_lab"}
+                                            group="who"
+                                            field="label"
+                                            fieldId={whoItem._id}
+                                            value={whoItem.label}
+                                            placeHolderText="add relation type"
+                                            addWindowClickListener={props.addWindowClickListener}
+                                            removeWindowClickListeners={props.removeWindowClickListeners}
+                                            editInProgress={props.editInProgress}
+                                            setEditInProgress={props.setEditInProgress}
+                                            saveEdit={saveFamilyMemberEdit}
+                                        />
+                                    </Col>
+                                    <Col xs={6} lg={6} className="char-col-right">
+                                        <ViewEdit 
+                                            key={whoItem._id+"_val"} 
+                                            id={whoItem._id+"_val"} 
+                                            name={"who_val"}
+                                            group="who"
+                                            field="value"
+                                            fieldId={whoItem._id}
+                                            value={whoItem.value}
+                                            placeHolderText="add name"
+                                            addWindowClickListener={props.addWindowClickListener}
+                                            removeWindowClickListeners={props.removeWindowClickListeners}
+                                            editInProgress={props.editInProgress}
+                                            setEditInProgress={props.setEditInProgress}
+                                            saveEdit={saveFamilyMemberEdit}
+                                        />
+                                    </Col>            
+                                </Row>
+                            )
+                        })}
+                    </div>
                         
-                    </Col>
-                    <Col xs={6} lg={6}>
-                        <ViewEdit 
-                            key={"who_value_"+personId} 
-                            id={"who_value_"+personId} 
-                            name={personId}
-                            group="family.who"
-                            nestedId={personId}
-                            field="value"
-                            value={who.value}
-                            placeHolderText="add name"
-                            addWindowClickListener={props.addWindowClickListener}
-                            removeWindowClickListeners={props.removeWindowClickListeners}
-                            editInProgress={props.editInProgress}
-                            setEditInProgress={props.setEditInProgress}
-                            saveEdit={props.saveEdit}
-                        />
-                    </Col>            
-                </Row>
-                <Row className="family-row" >
-                    <Col xs={1} lg={1} className="family-col" >
-                        { male
-                            ? <FontAwesomeIcon icon={faMars} name="gender" onClick={()=>toggleData("male",false)}/>
-                            : <FontAwesomeIcon icon={faVenus} name="gender" onClick={()=>toggleData("male",true)}/>
-                        }
-                    </Col>
-                    <Col xs={1} lg={1} className="family-col" >
-                        { deceased
-                            ? <FontAwesomeIcon icon={faSkullCrossbones} name="dead" onClick={()=>toggleData("deceased",false)}/>
-                            : <FontAwesomeIcon icon={faHeart} name="dead" onClick={()=>toggleData("deceased",true)}/>
-                        }
-                    </Col>
-                    <Col xs={4} lg={4}className="family-col" >
-                        <div className="family-stat" >
-                            <p>Age:</p>
-                            <ViewEdit 
-                                key={"age_"+personId} 
-                                id={"age_"+personId} 
-                                name={personId}
-                                group={"family.age"}
-                                nestedId={personId}
-                                field="single"
-                                value={age}
-                                placeHolderText="___"
-                                addWindowClickListener={props.addWindowClickListener}
-                                removeWindowClickListeners={props.removeWindowClickListeners}
-                                editInProgress={props.editInProgress}
-                                setEditInProgress={props.setEditInProgress}
-                                saveEdit={props.saveEdit}
-                            />
+                    <div name="status_block" className="ghost-div">
+                        <Row>
+                            <Col xs={3}></Col>
+                            <Col xs={3} className="family-col" >
+                                { (isMale===true)
+                                    ? <FontAwesomeIcon icon={faMars} name="gender" data-toggle="tooltip" title="male" onClick={()=>toggleData("male",false)}/>
+                                    : <FontAwesomeIcon icon={faVenus} name="gender" data-toggle="tooltip" title="female" onClick={()=>toggleData("male",true)}/>
+                                }
+                            </Col>
+                            <Col xs={3} className="family-col" >
+                                { (isDeceased===true)
+                                    ? <FontAwesomeIcon icon={faSkullCrossbones} name="dead" data-toggle="tooltip" title="deceased" onClick={()=>toggleData("deceased",false)}/>
+                                    : <FontAwesomeIcon icon={faHeart} name="dead" data-toggle="tooltip" title="alive" onClick={()=>toggleData("deceased",true)}/>
+                                }
+                            </Col>
+                            <Col xs={3}></Col>
+                        </Row>
+                    </div>
+            
+                    <div name="about_block" className="ghost-div">
+                        {props.data.about.map((aboutItem,aboutIndex)=>{
+                            return(
+                                <Row key={aboutItem._id+"_row_"+aboutIndex}  className="lv-pair">
+                                    <Col xs={6} lg={6} className="char-col-left">
+                                        <ViewEdit 
+                                            key={aboutItem._id+"_lab"} 
+                                            id={aboutItem._id+"_lab"} 
+                                            name={"about_lab"}
+                                            group="about"
+                                            field="label"
+                                            fieldId={aboutItem._id}
+                                            value={aboutItem.label}
+                                            placeHolderText="add info"
+                                            addWindowClickListener={props.addWindowClickListener}
+                                            removeWindowClickListeners={props.removeWindowClickListeners}
+                                            editInProgress={props.editInProgress}
+                                            setEditInProgress={props.setEditInProgress}
+                                            saveEdit={saveFamilyMemberEdit}
+                                        />
+                                        
+                                    </Col>
+                                    <Col xs={6} lg={6} className="char-col-right">
+                                        <ViewEdit 
+                                            key={aboutItem._id+"_val"} 
+                                            id={aboutItem._id+"_val"} 
+                                            name={"about_val"}
+                                            group="about"
+                                            field="value"
+                                            fieldId={aboutItem._id}
+                                            value={aboutItem.value}
+                                            addWindowClickListener={props.addWindowClickListener}
+                                            removeWindowClickListeners={props.removeWindowClickListeners}
+                                            editInProgress={props.editInProgress}
+                                            setEditInProgress={props.setEditInProgress}
+                                            saveEdit={saveFamilyMemberEdit}
+                                        />
+                                    </Col>            
+                                </Row>
+                            )
+                        })}
+                    </div>
+                    
+                    <div name="reputation_block" className="ghost-div">
+                        <div 
+                            className="aligned-div" 
+                            name={"rep_block_"+personId} onClick={()=>{
+                                handleToggleClick("rep_block_"+personId);
+                                setShowReputation(!showReputation);}
+                            }
+                        >
+                            <Col xs={1} lg={1} className="family-col ghost-div icon-pair" >
+                                <FontAwesomeIcon 
+                                    icon={faStar} 
+                                    size="xs"
+                                    // name={"rep_block"+personId}
+                                    aria-expanded={props.showStatus}
+                                    aria-controls={"rep_block"+personId}
+                                    // onClick={()=>setShowReputation(!showReputation)}
+                                    
+                                />
+                                {showReputation 
+                                ?   <FontAwesomeIcon 
+                                    icon={faChevronUp} 
+                                    size="xs"
+                                    // name={"rep_block"+personId}
+                                    aria-expanded={props.showStatus}
+                                    aria-controls={"rep_block"+personId}
+                                    // onClick={()=>setShowReputation(!showReputation)}
+                                    // onClick={(ev)=>{handleToggleClick(ev);setShowReputation(!showReputation);}}
+                                />
+                                : <FontAwesomeIcon 
+                                    icon={faChevronDown} 
+                                    size="xs"
+                                    // name={"rep_block"+personId}
+                                    aria-expanded={props.showStatus}
+                                    aria-controls={"rep_block"+personId}
+                                    // onClick={()=>setShowReputation(!showReputation)}
+                                    // onClick={(ev)=>{handleToggleClick(ev);setShowReputation(!showReputation);}}
+                                />}
+                            </Col>
+                            <h6>Reputation</h6>
                         </div>
-                    </Col>
-                    <Col xs={5} lg={5}className="family-col" >
-                        <div className="family-stat" >
-                        <p>Glory:</p>
-                            <ViewEdit 
-                                key={"glory_"+personId} 
-                                id={"glory_"+personId} 
-                                name={personId}
-                                group={"family.glory"}
-                                nestedId={personId}
-                                field="single"
-                                value={glory}
-                                placeHolderText="_____"
-                                addWindowClickListener={props.addWindowClickListener}
-                                removeWindowClickListeners={props.removeWindowClickListeners}
-                                editInProgress={props.editInProgress}
-                                setEditInProgress={props.setEditInProgress}
-                                saveEdit={props.saveEdit}
-                            />
+                        <div>
+                            <Collapse in={showReputation} timeout={10} >
+                                <div id={"rep_block"+personId} >
+                                    {props.data.aux_reputation.map((repItem,repIndex)=>{
+                                        return(
+                                            <div key={"rep"+repIndex+"_item_row"} className="lv-pair">
+                                                <Col xs={12} lg={12}>
+                                                    <ViewEdit 
+                                                        key={personId+"_"+repIndex+"_item"} 
+                                                        id={personId+"_"+repIndex+"_item"} 
+                                                        name={"rep_item"}
+                                                        group="aux_reputation"
+                                                        field="single"
+                                                        fieldId={repIndex}
+                                                        value={repItem}
+                                                        placeHolderText="add reputation"
+                                                        addWindowClickListener={props.addWindowClickListener}
+                                                        removeWindowClickListeners={props.removeWindowClickListeners}
+                                                        editInProgress={props.editInProgress}
+                                                        setEditInProgress={props.setEditInProgress}
+                                                        saveEdit={saveFamilyMemberEdit}
+                                                    />
+                                                </Col>    
+                                            </div>
+                                        )
+                                    })}
+                                    <ViewEdit
+                                        key={"rep_new"+personId} 
+                                        id={"rep_new"+personId} 
+                                        fieldId={''}
+                                        group="aux_reputation"
+                                        field="single"
+                                        value={''}
+                                        placeHolderText="Click to add reputation"
+                                        addWindowClickListener={props.addWindowClickListener}
+                                        removeWindowClickListeners={props.removeWindowClickListeners}
+                                        editInProgress={props.editInProgress}
+                                        setEditInProgress={props.setEditInProgress}
+                                        saveEdit={saveFamilyMemberEdit}
+                                    />
+                                </div>
+                            </Collapse>
                         </div>
-                    </Col>
-                    <Col xs={1} lg={1} className="family-col" >
-                        <FontAwesomeIcon 
-                            icon={faStar} 
-                            name="deceased" 
-                            aria-expanded={props.showStatus}
-                            aria-controls={"rep_block"+personId}
-                            onClick={()=>setShowReputation(!showReputation)}
-                        />
-                        {showReputation 
-                        ?   <FontAwesomeIcon 
-                            icon={faChevronUp} 
-                            name="deceased" 
-                            aria-expanded={props.showStatus}
-                            aria-controls={"rep_block"+personId}
-                            onClick={()=>setShowReputation(!showReputation)}
-                        />
-                        : <FontAwesomeIcon 
-                            icon={faChevronDown} 
-                            name="deceased" 
-                            aria-expanded={props.showStatus}
-                            aria-controls={"rep_block"+personId}
-                            onClick={()=>setShowReputation(!showReputation)}
-                        />}
-                    </Col>
-                </Row>
-                <Collapse in={showReputation}>
-                    <div id={"rep_block"+personId} >
-                        {(reputation.length>0)&&(<p>Reputation:</p>)}
-                        {reputation.map((famousTrait, index)=>{
-                            return (
-                                <ViewEdit 
-                                    key={"reputation_"+index+"_"+personId} 
-                                    id={"reputation_"+index+"_"+personId} 
-                                    name={index}
-                                    group={"family.reputation"}
-                                    nestedId={personId}
+                    </div>
+            
+                </Col>
+                <Col xs={12} lg={6}> {/* Aux Sheet right column */}
+                
+                    <div name="armour_block">
+                        <div className="charsheet-box">
+                            <h5 className="armour-total">Current Armour: {armourVal || 0}</h5>
+                            <hr className="double-hr" />
+                            <Row className="lv-headers">
+                                <Col xs={2} className="tick_col">
+                                    <p>equip</p>
+                                </Col>
+                                <Col xs={8} className="lab_col">
+                                    <p>armour type</p>
+                                </Col>
+                                <Col xs={2} className="val_col">
+                                    <FontAwesomeIcon icon={faShieldAlt} />
+                                </Col>
+                            </Row>
+                            {props.data.aux_armour.map((item, index)=>{
+                                return (
+                                    <Row key={item._id+"_item_row"}  className="lv-pair">
+                                        <Col xs={1} lg={1} className="tick_col">
+                                            <input 
+                                                type="checkbox" 
+                                                id={item._id} 
+                                                name="aux_armour" 
+                                                className="entry_tick" 
+                                                onClick={(event)=>{handleBoxTick(event, item._id)}} 
+                                                defaultChecked={item.isTicked}
+                                            />
+                                        </Col>
+                                        <Col xs={9} lg={9} className="label_col">
+                                            <ViewEdit
+                                                key={item._id+"_lab"} 
+                                                id={item._id+"_lab"}
+                                                fieldId={item._id}
+                                                group="aux_armour"
+                                                field="label"
+                                                value={item.label || ''}
+                                                addWindowClickListener={props.addWindowClickListener}
+                                                removeWindowClickListeners={props.removeWindowClickListeners}
+                                                editInProgress={props.editInProgress}
+                                                setEditInProgress={props.setEditInProgress}
+                                                saveEdit={saveFamilyMemberEdit}
+                                                deleteEntry={props.deleteEntry}
+                                            />
+                                            </Col>
+                                        <Col xs={2} lg={2} className="value_col">
+                                            <ViewEdit
+                                                key={item._id+"_val"} 
+                                                id={item._id+"_val"}
+                                                fieldId={item._id}
+                                                group="aux_armour"
+                                                field="value"
+                                                value={item.value || 0}
+                                                placeHolderText="0"
+                                                addWindowClickListener={props.addWindowClickListener}
+                                                removeWindowClickListeners={props.removeWindowClickListeners}
+                                                editInProgress={props.editInProgress}
+                                                setEditInProgress={props.setEditInProgress}
+                                                saveEdit={saveFamilyMemberEdit}
+                                                deleteEntry={props.deleteEntry}
+                                            />    
+                                        </Col>
+                                        
+                                    </Row>
+                                )
+                            })}
+                            <Row  className="lv-pair">
+                                <Col>
+                                    <ViewEdit
+                                        key={"aux_armour_new_lab"} 
+                                        id={"aux_armour_new_lab"}
+                                        fieldId={''}
+                                        group="aux_armour"
+                                        field="new"
+                                        value={''}
+                                        placeHolderText="Click to add armour"
+                                        addWindowClickListener={props.addWindowClickListener}
+                                        removeWindowClickListeners={props.removeWindowClickListeners}
+                                        editInProgress={props.editInProgress}
+                                        setEditInProgress={props.setEditInProgress}
+                                        saveEdit={saveFamilyMemberEdit}
+                                        deleteEntry={props.deleteEntry}
+                                    />
+                                </Col>
+                            </Row>
+                        </div>
+                    </div>
+                
+                    <div name="eqpt_block" className="ghost-div">
+                        <div className="aligned-div"  name={"eqpt_block_"+personId} onClick={()=>{handleToggleClick("eqpt_block_"+personId);setShowEquipment(!showEquipment);}}>
+                            <Col xs={1} lg={1} className="family-col ghost-div icon-pair" >
+                                <FontAwesomeIcon 
+                                    icon={faGem} 
+                                    size="xs"
+                                    // name={"eqpt_block_"+personId}
+                                    aria-expanded={props.showStatus}
+                                    aria-controls={"eqpt_block"+personId}
+                                    // onClick={(ev)=>{handleToggleClick(ev);setShowEquipment(!showEquipment);}}
+                                />
+                                {showEquipment 
+                                ?   <FontAwesomeIcon 
+                                    icon={faChevronUp} 
+                                    size="xs"
+                                    // name={"eqpt_block_"+personId}
+                                    aria-expanded={props.showStatus}
+                                    aria-controls={"eqpt_block"+personId}
+                                    // onClick={(ev)=>{handleToggleClick(ev);setShowEquipment(!showEquipment);}}
+                                />
+                                : <FontAwesomeIcon 
+                                    icon={faChevronDown} 
+                                    size="xs"
+                                    // name={"eqpt_block_"+personId}
+                                    aria-expanded={props.showStatus}
+                                    aria-controls={"eqpt_block"+personId}
+                                    // onClick={()=>{handleToggleClick("eqpt_block_"+personId);setShowEquipment(!showEquipment);}}
+                                />}
+                            </Col>
+                            <Col>
+                                <h6>Valuables</h6>
+                            </Col>
+                        </div>
+                        <div>
+                            <Collapse in={showEquipment} timeout={10}>
+                                <div id={"eqpt_block_"+personId} >
+                                    {props.data.aux_equipment.map((eqptItem,eqptIndex)=>{
+                                        return(
+                                            <Row key={"eqpt"+eqptIndex+"_item_row"}  className="lv-pair">
+                                                <Col xs={12} lg={12}>
+                                                    <ViewEdit 
+                                                        key={personId+"_"+eqptIndex+"_item"} 
+                                                        id={personId+"_"+eqptIndex+"_item"} 
+                                                        name={"eqpt_item"}
+                                                        group="aux_equipment"
+                                                        field="single"
+                                                        fieldId={eqptIndex}
+                                                        value={eqptItem}
+                                                        placeHolderText="add equipment"
+                                                        addWindowClickListener={props.addWindowClickListener}
+                                                        removeWindowClickListeners={props.removeWindowClickListeners}
+                                                        editInProgress={props.editInProgress}
+                                                        setEditInProgress={props.setEditInProgress}
+                                                        saveEdit={saveFamilyMemberEdit}
+                                                    />
+                                                </Col>    
+                                            </Row>
+                                        )
+                                    })}
+                                    <ViewEdit
+                                    key={"equip_new"+personId} 
+                                    id={"equip_new"+personId} 
+                                    fieldId={''}
+                                    group="aux_equipment"
                                     field="single"
-                                    value={famousTrait}
+                                    value={''}
+                                    placeHolderText="Click to add equipment"
                                     addWindowClickListener={props.addWindowClickListener}
                                     removeWindowClickListeners={props.removeWindowClickListeners}
                                     editInProgress={props.editInProgress}
                                     setEditInProgress={props.setEditInProgress}
-                                    saveEdit={props.saveEdit}
+                                    saveEdit={saveFamilyMemberEdit}
                                 />
-                            )
-                        })}
-                        <ViewEdit 
-                            key={"reputation_new_"+personId} 
-                            id={"reputation_new_"+personId} 
-                            name={''}
-                            group={"family.reputation"}
-                            nestedId={personId}
-                            field="single"
-                            value={''}
-                            placeHolderText="add reputation"
-                            addWindowClickListener={props.addWindowClickListener}
-                            removeWindowClickListeners={props.removeWindowClickListeners}
-                            editInProgress={props.editInProgress}
-                            setEditInProgress={props.setEditInProgress}
-                            saveEdit={props.saveEdit}
-                        />
+                                </div>
+                            </Collapse>
+                        </div>
                     </div>
-                </Collapse>
-            </div>
+                </Col>                
+            </Row>
         )
     }
 
 
-export default ViewEditFamily;
+export default FamilyMember;

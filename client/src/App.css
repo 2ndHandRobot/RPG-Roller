@@ -3,10 +3,12 @@ html {background-color: rgb(245, 245, 235);}
 p {
   margin: 0;  overflow-wrap: break-word;
 }
+.Charsheet h3 {
+  font-family: 'MedievalSharp', cursive;
+  text-align: center;
+  font-size: 2.7vw;
+ }
 
-hr {
-  margin: 6px 0;
-}
 h6 {
   margin: 6px 0 2px 10px;
   text-decoration: underline;
@@ -14,8 +16,12 @@ h6 {
   font-size: 1.1rem;
 }
 
-.charsheet-box h6 {
-  margin-left: 2px
+button {
+  border-radius: 4px;
+}
+
+ul {
+  list-style-type: circle;
 }
 
 footer {
@@ -81,14 +87,24 @@ footer {
   margin: 0 3px;
 }
 
+.charsheet-box h6 {
+  margin-left: 2px
+}
 
+.charsheet-column {
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
 .Header {
   background-color: #eeebd7;
   line-height: 1.2;
   padding: 10px 0;
 }
-
+.ghost-div {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 .label-field  {
   /* width: 50%;
@@ -183,6 +199,7 @@ footer {
   padding-right: 0;
 }
 
+
 .value-view {
   width: 100%;
   height: 100%;
@@ -228,10 +245,7 @@ footer {
   align-items: center;
 }
 
-.charsheet-column {
-  padding-left: 5px;
-  padding-right: 5px;
-}
+
 
 .pt-pair {
   margin: 0;
@@ -361,7 +375,32 @@ footer {
 }
 
 
-button.character-list {
+.sidebar-column button {
+  border: none;
+  background-color: #eeebd7;
+  text-align: left;
+  display: block;
+  font-size: 0.8rem;
+  width: 100%;
+  height: 2.5rem;
+}
+
+.aux-block button {
+
+  height: 1.6rem;
+  margin: auto 3px;
+}
+
+.aligned-div {
+  display: flex;
+}
+
+.icon-pair {
+  line-height: 50%;
+  vertical-align: middle;
+}
+
+.main button {
   border: none;
   background-color: #eeebd7;
   text-align: left;
@@ -432,6 +471,10 @@ padding: 0 15px 0 5px;
   padding-left: 5px;
 }
 
+hr {
+  margin: 6px 0;
+}
+
 .double-hr {
   padding-top: 3px;
   margin-top: 9px;
@@ -439,6 +482,55 @@ padding: 0 15px 0 5px;
   border-color: rgba(140, 140, 140, 0.66);
 }
 
+.hr-stripe {
+  border: 0.3em solid;
+  border-color: rgb(245, 245, 235);
+  background-color: rgb(245,245,235);
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
 .armour-total {
   text-align: center;
 }
+
+.auxsheet-box {
+  padding: 5px;
+}
+
+#aux-add-button {
+  text-align: right;
+  padding-right: 10px;
+  font-style: italic;
+}
+      
+#aux-add-button span {
+  padding-left: 6px;
+}
+
+.collapse-snap {
+  transition-duration: 0;
+  transition-delay: 0;
+}
+
+.Roller button {
+  text-align: center;
+}
+
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: .6s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+

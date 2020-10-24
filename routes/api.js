@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models/models');
-const { Users, Knights, DiceSets } = require('../models/models');
+const { Users, Characters, DiceSets } = require('../models/models');
+
 
 const _ = require('lodash');
 const mongoose = require('mongoose');
@@ -41,41 +42,41 @@ router.get('/', (req, res) => {
    console.log("API :: ROUTING: Get '/'")
    const allData = {}
 
-   models.Knights.find({})
+   models.Characters.find({})
       .then((data)=>{
          console.log(data.length, 'characters found.');
-         allData.knights = data;
+         allData.characters = data;
          res.json(allData);
       })
       .catch((err)=>{
           console.log('Error: ',  err);
       })
 });
-//TEMP: DELETE BEFORE COMMIT
-router.get('/admins', (req, res) => {
-   console.log("API :: ROUTING: Get '/admins'")
-   let allData =[]
+// //TEMP: DELETE BEFORE COMMIT
+// router.get('/admins', (req, res) => {
+//    console.log("API :: ROUTING: Get '/admins'")
+//    let allData =[]
 
-   models.Users.find({"privilege" : "admin"}).select('_id')
-      .then((data)=>{
-         console.log(data.length, 'characters found.');
-         data.forEach(u=>allData.push(u._id));
-         res.json(allData);
-      })
-      .catch((err)=>{
-          console.log('Error: ',  err);
-      })
-});
+//    models.Users.find({"privilege" : "admin"}).select('_id')
+//       .then((data)=>{
+//          console.log(data.length, 'characters found.');
+//          data.forEach(u=>allData.push(u._id));
+//          res.json(allData);
+//       })
+//       .catch((err)=>{
+//           console.log('Error: ',  err);
+//       })
+// });
 
 router.get('/users/:userId', (req, res) => {
    const userId = req.params.userId;
    console.log("API :: ROUTING: Get '/' for user: ",userId);
    const allData = {}
 
-   models.Knights.find({"playerInfo.isOwner": userId})
+   models.Characters.find({"playerInfo.isOwner": userId})
       .then((data)=>{
          console.log(data.length, '"isOwner" characters found.');
-         allData.knights = data;
+         allData.characters = data;
          models.DiceSets.find({isOwner: userId})
             .then((setsData)=>{
                console.log("setsData:",setsData.length);
@@ -94,7 +95,7 @@ router.get('/users/:userId', (req, res) => {
             })
       })
       .catch((err)=>{
-          console.log('Error retrieving knights: ',  err);
+          console.log('Error retrieving characters: ',  err);
       })
 });
 
@@ -104,10 +105,10 @@ router.get('/can-edit/:userId', (req, res) => {
    console.log("API :: ROUTING: Get '/' for user: ",userId);
    const allData = {}
 
-   models.Knights.find({"playerInfo.canEdit": userId})
+   models.Characters.find({"playerInfo.canEdit": userId})
       .then((data)=>{
          console.log(data.length, '"canEdit" characters found.');
-         allData.knights = data;
+         allData.characters = data;
          res.json(allData);
       })
       .catch((err)=>{
@@ -157,13 +158,13 @@ router.post('/login', (req, res) => {
 
    Users.findOne({email:user.email}, (err, foundUser)=>{
       if (err) {
-         console.log(err)
+         console.log("Login error:",err)
       } else if (!foundUser) {
          Users.findOne({userName:user.userName}, (err2, foundUser2)=>{
             if (err2) {
                console.log(err2)
             } if (foundUser2) {
-               console.log(foundUser2);
+               console.log("Found user (username):",foundUser2);
                if (foundUser2.password===user.password) {
                   Users.updateOne({userName:user.userName}, {loggedIn: true}, (err, resp)=>{
                      if (err) {
@@ -179,7 +180,7 @@ router.post('/login', (req, res) => {
             }
          })
       } else if (foundUser) {
-         console.log(foundUser);
+         console.log("Found user (email):",foundUser);
          if (foundUser.password===user.password) {
             Users.updateOne({email:user.email}, {loggedIn: true}, (err, resp)=>{
                if (err) {
@@ -216,10 +217,10 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/create', (req, res) => {
-   console.log('API :: ROUTING: Creating new Knight character. Body:',req.body)
+   console.log('API :: ROUTING: Creating new character. Body:',req.body)
    const data = req.body;
-   const newKnight = new models.Knights(data);
-   console.log("New knight:",JSON.stringify(newKnight))
+   const newCharacter = new models.Characters(data);
+   console.log("New character:",JSON.stringify(newCharacter))
 
    // function getAdmins() {
       let admins = [];
@@ -228,13 +229,13 @@ router.post('/create', (req, res) => {
       .then((data)=>{
             console.log(data.length, 'admins found.');
             data.forEach(u=>admins.push(u._id));
-            newKnight.playerInfo.canEdit= admins;
-            console.log("newKnight.playerInfo",newKnight.playerInfo);
-            newKnight.save((err, response)=>{
+            newCharacter.playerInfo.canEdit= admins;
+            console.log("newCharacter.playerInfo",newCharacter.playerInfo);
+            newCharacter.save((err, response)=>{
                if (err) {
-                  res.json({msg: ("Error saving new knight: " +err)});
+                  res.json({msg: ("Error saving new character: " +err)});
                } else {
-                  console.log("Saved knight: ",response);
+                  console.log("Saved character: ",response);
                   res.json({msg: "data received"});
                }
             })
@@ -272,86 +273,11 @@ router.post('/save-sets', (req, res) => {
 })
 
 
-// router.post('/edit-entry', (req, res) => {
-// // PROPS:
-// // knightId: the _id of the Knight document to update
-// // group: path to the nested data array (e.g. "personalInfo" or "combatSkills.general")
-// // field: key for values in nested objects (e.g. "label" or "value")
-// // value: the new/edited value to save
-// // fieldId: the _id of the entry to be updated :: if null, save will be treated as a new entry
-
-//    console.log('ROUTING: Editing post. Body:',req.body)
-//    const data = req.body;
-//    let value = data.value;
-//    let updateObject = {};
-//    let options = {};
-
-//    console.log("FieldId:", data.fieldId)
-//    console.log("FieldId length:", data.fieldId.length)
-   
-//    // if (!data.fieldId.length > 0) {
-//    if (!data.fieldId) {
-//       console.log("No fieldId found. Creating new entry. (field:",data.field,")")
-//       if (data.field === "single" || data.field === "desc") {
-//          console.log("single/description")
-//          updateObject = {$push: {[`${data.group}`]:`${value}`}};
-//       } else if (data.field === "family") {
-//          console.log("family")
-//          const newId = new mongoose.Types.ObjectId
-//          updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`"${value}"`,"value":""}}}};
-//       } else {
-//          console.log("label-value pair")
-//          const newId = new mongoose.Types.ObjectId
-//          updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
-//       }
-//       options = { 
-//          useFindAndModify: false,
-//          upsert: true, 
-//          new: true
-//       }
-//    } else {
-//       console.log("fieldId found. Updating new entry.")
-//       if (data.field === "single" || data.field === "desc") {
-//          updateObject = {$set: {[`${data.group}.${data.fieldId}`]:`${value}`}};
-//          options = { 
-//             useFindAndModify: false,
-//             upsert: true, 
-//             new: true
-//          }
-//       } else {
-//          updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};  
-//          options = {
-//             arrayFilters: [{ 'entry._id' : data.fieldId }], 
-//             useFindAndModify: false,
-//             upsert: true, 
-//             new: true
-//          }
-//       }
-//    }
-
-//    console.log("knightId:",data.knightId,". Update object:",updateObject,". options:",options)
-//       Knights.findOneAndUpdate(
-//          {"_id": data.knightId},
-//          updateObject,
-//          options,
-//          (err, resp)=>{
-//             if (err) {
-//                console.log("Update failed:",err)
-//                res.send(err)
-//             } else if (resp) {
-//                console.log("Update succeeded:",resp)
-//                res.send(resp)
-//             } else {
-//                console.log("No error or response returned by server")
-//             }
-//       });
-   
-// })
 
 router.post('/edit-entry', (req, res) => {
    // PROPS:
-   // knightId: the _id of the Knight document to update
-   // personId: the _id of the family member
+   // characterId: the _id of the Character document to update
+   // kinId: the _id of the family member
    // group: path to the nested data array (e.g. "personalInfo" or "combatSkills.general")
    // field: key for values in nested objects (e.g. "label" or "value")
    // value: the new/edited value to save
@@ -364,14 +290,19 @@ router.post('/edit-entry', (req, res) => {
       let options = {};
       let filter = {}
       
+      
+      const nestedGroupIndex = data.group.indexOf(".")
+
 
       console.log("Group:", data.group)
       
       
       // if (data.group === "family.reputation") {
-      if (data.group.substring(0,7) === "family.") {
-         console.log("Saving Family sub-element")
-         filter = {"family._id": data.knightId}
+      // if (data.group.substring(0,7) === "family.") {
+      if ((nestedGroupIndex > -1) && (["family.","horses.", "squires."].includes(data.group.substring(0,nestedGroupIndex+1)))){
+         console.log("Saving nested entry")
+         filter = {[`${data.group.substring(0,nestedGroupIndex)}._id`]: data.characterId}
+         console.log("filter:",filter);
          if (!data.fieldId && !(data.fieldId===0)) {
             console.log("No fieldId found. Creating new entry.")
          
@@ -407,8 +338,8 @@ router.post('/edit-entry', (req, res) => {
             }
          }
       } else { 
-         console.log("Saving non Family-Sub entry")
-         filter = {"_id": data.knightId}
+         console.log("Saving non-nested entry")
+         filter = {"_id": data.characterId}
 
          if (!data.fieldId && !(data.fieldId===0)) {
             console.log("No fieldId found. Creating new entry.")
@@ -419,6 +350,35 @@ router.post('/edit-entry', (req, res) => {
                console.log("family")
                const newId = new mongoose.Types.ObjectId
                updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`${value}`,"value":""}}}};
+            } else if (data.field === "horses") {
+               console.log("horses")
+               const newId = new mongoose.Types.ObjectId
+               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "desc": {"label":"Breed","value":`${value}`}}}};
+            } else if (data.field === "squires") {
+               console.log("squires")
+               const squireTemplate = {
+                  // _id: newId,
+                  name: '',
+                  about: [
+                          {label:'Born', value: 0},
+                          {label:'Age', value: 15},
+                          {label:'Glory', value: 0}
+                      ],   
+                  status: {
+                     male: true, 
+                     deceased: true, 
+                     retired: true
+                     },
+                  skills:
+                      [
+                          {label:"First Aid", value: 0},
+                          {label:"Battle", value: 0},
+                          {label:"Horsemanship", value: 0}
+                      ],
+                  reputation:[]
+              }
+               const newId = new mongoose.Types.ObjectId
+               updateObject = {$push: {[`${data.group}`]:squireTemplate}};
             } else {
                console.log("label-value pair")
                const newId = new mongoose.Types.ObjectId
@@ -452,8 +412,8 @@ router.post('/edit-entry', (req, res) => {
          }
       }
    
-      console.log("knightId:",data.knightId,". Filter object:",filter,". Update object:",updateObject,". options:",options)
-         Knights.findOneAndUpdate(
+      console.log("characterId:",data.characterId,". Filter object:",filter,". Update object:",updateObject,". options:",options)
+         Characters.findOneAndUpdate(
             filter,
             updateObject,
             options,
@@ -474,7 +434,7 @@ router.post('/edit-entry', (req, res) => {
 
 router.post('/update-entry', (req, res) => {
    console.log('API :: ROUTING: Updating field value. Body:',req.body)
-   const knightId = req.body.knightId
+   const characterId = req.body.characterId
    const group = req.body.group;
    const fieldId = req.body.fieldId;
    const newVal = req.body.newVal;
@@ -491,7 +451,7 @@ router.post('/update-entry', (req, res) => {
       const objFilter = `${group}._id`
       console.log("options:",options)
       
-      Knights.findOneAndUpdate( 
+      Characters.findOneAndUpdate( 
          filterObject, 
          updateObject, 
          options, 
@@ -509,16 +469,16 @@ router.post('/update-entry', (req, res) => {
 
    } else {
       console.log("Updating array object")
-      const filterObject = { "_id" : knightId }
+      const filterObject = { "_id" : characterId }
       // console.log("filterObject: ",filterObject)
-      Knights.findById(knightId)
-      .then((myKnight, err)=>{
+      Characters.findById(characterId)
+      .then((myCharacter, err)=>{
          if (err) {
             console.log("Data retrieval failed:",err)
          } else {
-            let myGroup = eval(`myKnight.${group}`)
+            let myGroup = eval(`myCharacter.${group}`)
             myGroup.splice(fieldId,1,newVal);
-            myKnight.save((err,doc)=>{
+            myCharacter.save((err,doc)=>{
                if (err) {
                   console.log("Save failed:",err)
                } else {
@@ -536,25 +496,25 @@ router.post('/update-entry', (req, res) => {
 router.post('/create-entry', (req, res)=>{
    console.log('API :: ROUTING: creating new entry. Body:', req.body)
 
-// Update the database entry for Knight: knightId by adding a new {label: newLab, value: newVal} object to the nested array: group.
+// Update the database entry for Character: characterId by adding a new {label: newLab, value: newVal} object to the nested array: group.
    const type = req.body.type
    const group = req.body.group;
    const newVal = req.body.newVal;
-   const knightId = req.body.knightId;
+   const characterId = req.body.characterId;
 
 
-   // Retrieve the knight record:
-   let myKnight 
-   Knights.findOne({"_id": knightId},(err, obj)=>{
+   // Retrieve the character record:
+   let myCharacter 
+   Characters.findOne({"_id": characterId},(err, obj)=>{
       if (err) {
-         console.log("Error retrieving Knight record:",err)
+         console.log("Error retrieving Character record:",err)
          res.send(err)
       } else {
-         myKnight = obj;
+         myCharacter = obj;
       
-   console.log("myKnight:",myKnight)
-   console.log("tunnelling into myKnight for group:",group)
-   let itemToEdit = tunnel(myKnight,group);
+   console.log("myCharacter:",myCharacter)
+   console.log("tunnelling into myCharacter for group:",group)
+   let itemToEdit = tunnel(myCharacter,group);
    let pushItem;
    
    switch (type){
@@ -575,11 +535,11 @@ router.post('/create-entry', (req, res)=>{
    console.log("itemToEdit:",itemToEdit)
    itemToEdit.push(newVal)
    console.log("Edited itemToEdit:",itemToEdit)
-   console.log("Updated knight: ",myKnight);
+   console.log("Updated character: ",myCharacter);
 
-   myKnight.save(err=>{
+   myCharacter.save(err=>{
       if (err) {
-         console.log("Failed to save edited Knight data");
+         console.log("Failed to save edited Character data");
       }
       return res.json
    })
@@ -596,7 +556,7 @@ router.post('/report-bug', (req, res)=>{
    const response = ''
    const resolved = false
 
-const newBugReport = new models.BugReport({
+const newBugReport = new models.BugReports({
    reportedBy : reportedBy,
    problem : problem,
    description : description,

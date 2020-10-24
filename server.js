@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(morgan('tiny'));
 
-const routes = require('./routes/api');
+const routes = require('./routes/api_new');
 
 let database, dbLocation;
 

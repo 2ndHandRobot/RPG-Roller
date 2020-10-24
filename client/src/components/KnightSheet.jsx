@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import _ from 'lodash';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Collapse, Button } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
 import ViewEditTextArea from './ViewEditTextArea';
-import FamilyMember from './FamilyMember';
-import Horse from './Horse';
+import AuxList from './AuxList';
+// import Auxiliaries from './Auxiliaries';
+// import FamilyMember from './FamilyMember';
+// import Squire from './SquireComp';
+// import Horse from './Horse';
 
 import ViewEditPersonality from './ViewEditPersonality';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShieldAlt } from "@fortawesome/free-solid-svg-icons";
+import { faShieldAlt, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 export default function KnightSheet(props) {
     console.log("LOADING KnightSheet")
-    console.log("Knight data: ",props.activeKnight.knightData);
+    // console.log("Knight data: ",props.activeKnight.knightData);
+    // console.log("Auxiliaries data: ",JSON.stringify(props.auxiliaries));
 
+    
     const sPersonalInfo = sortByIndex(props.activeKnight.knightData.personalInfo);
     const sStatistics = sortByIndex(props.activeKnight.knightData.statistics);
     const sPersonality = sortByIndex(props.activeKnight.knightData.personalityTraits);
@@ -22,8 +27,8 @@ export default function KnightSheet(props) {
     const sCombatSkillsGeneral = sortByIndex(props.activeKnight.knightData.combatSkills.general);
     const sCombatSkillsWeapons = sortByIndex(props.activeKnight.knightData.combatSkills.weapons);
     const sSkills = sortByIndex(props.activeKnight.knightData.skills);
-    const sHorses = sortByIndex(props.activeKnight.knightData.horses) || [];
-    const sFamily = sortByIndex(props.activeKnight.knightData.family) || [];
+    const sStables = sortByIndex(props.activeKnight.knightData.horses) || [];
+    const sFamily = sortByIndex(props.activeKnight.knightData.familyMembers) || [];
     const sSquires = sortByIndex(props.activeKnight.knightData.squires) || [];
     const sArmour = sortByIndex(props.activeKnight.knightData.armour) || [];
     const sHistory = sortByValue(props.activeKnight.knightData.history) || [];
@@ -32,13 +37,51 @@ export default function KnightSheet(props) {
 
     const [armourVal, setArmourVal] = useState(0);
     useEffect(()=>{console.log("Initial Armour Calculation");setArmourVal(calcArmourValue())},[]);
+   
+
+    // Define display state variables
+    const [showStables, setShowStables] = useState(false);
+    const [showFamily, setShowFamily] = useState(false);
+    const [showSquires, setShowSquires] = useState(false);
+
+    // const [showAuxiliaries, setShowAuxiliaries] = useState(null);
+    let showAuxiliaries;
+    const [auxList, setAuxList] = useState([]);
+    // useEffect(()=>{changeAuxList()},[showAuxiliaries])
+
+    // function changeAuxList(list){
+    //     console.log("Changing Aux Lists:",list)
+    //     if (showAuxiliaries===list) {
+    //         showAuxiliaries=null
+    //         setAuxList([])
+    //     } else {
+    //         showAuxiliaries=list
+    //         setAuxList(props.auxiliaries[showAuxiliaries])
+    //     }
+    // }
 
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
 
     // console.log("_listeners array:",_listeners)
-
-
+      // Usage
+      function useTraceUpdate(props) {
+        const prev = useRef(props);
+        useEffect(() => {
+          const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+            if (prev.current[k] !== v) {
+              ps[k] = [prev.current[k], v];
+            }
+            return ps;
+          }, {});
+          if (Object.keys(changedProps).length > 0) {
+            console.log('Changed props:', changedProps);
+          }
+          prev.current = props;
+        });
+      }
+    useTraceUpdate(props);
+      
     EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener;
     EventTarget.prototype.addClickListener = function (listener) {
         // console.log("Pushing to _listeners array:", listener)
@@ -47,6 +90,7 @@ export default function KnightSheet(props) {
         
         // console.log("Checking _listeners array:",_listeners.length," found.")
         this.addEventListenerBase("click", listener);
+        console.log("_listeners array:",_listeners)
     };
     EventTarget.prototype.removeClickListeners = function () {
         // console.log("Removing 'click' listeners. (",_listeners.length,"found)")
@@ -81,23 +125,29 @@ export default function KnightSheet(props) {
     }
 
     function derivedStats() {
+        console.log("KNIGHTSHEET :: DOING: derivedStats")
         const STR = getStat("STR");
         const SIZ = getStat("SIZ");
         const DEX = getStat("DEX");
         const CON = getStat("CON");
+        const APP = getStat("APP");
 
         const damage = Math.round((STR + SIZ) / 6) + "d6"
         const healRate = Math.round((STR + CON) / 10)
         const moveRate = Math.round((STR + DEX) / 10)
         const totalHitPoints = SIZ + CON
         const unconscious = Math.round((SIZ+CON) / 4)
+        const influenceMod = Math.min((Math.ceil(APP/3)-4),10)
+        const influence = (influenceMod < 0 ) ? influenceMod : "+"+influenceMod
 
         return ([
+            {label:"Influence mod.", value: influence},
             {label:"Damage", value: damage},
             {label:"Heal Rate", value: healRate},
             {label:"Move Rate", value: moveRate},
             {label:"Total Hit Points", value: totalHitPoints},
-            {label:"Unconscious", value: unconscious}
+            {label:"Unconscious", value: unconscious},
+            
         ])
     }
     // console.log("DERIVED STATS:",derivedStats)
@@ -180,7 +230,8 @@ export default function KnightSheet(props) {
         removeWindowClickListeners: removeWindowClickListeners,
         editInProgress: editInProgress,
         setEditInProgress: setEditInProgress,
-        saveEdit: props.saveEdit
+        saveEdit: props.saveEdit,
+        deleteEntry: props.deleteEntry
     }
 
     return (
@@ -190,73 +241,75 @@ export default function KnightSheet(props) {
             <Row className="page1">
                 <Col className="charsheet-column" xs={12} lg={4}>
                     <h6>Personal Information</h6>
-                        <div className="charsheet-box">
-                            {sPersonalInfo.map((item, index)=>{
-                                return (
-                                    <Row  className="lv-pair">
-                                        <Col xs={6} lg={6} className="char-col-left">
-                                            <ViewEdit
-                                                key={item._id+"_lab_"+index} 
-                                                id={item._id+"_lab"}
-                                                name={item._id}
-                                                group="personalInfo"
-                                                field="label"
-                                                lockEdit={true}
-                                                value={item.label}
-                                                addWindowClickListener={addWindowClickListener}
-                                                removeWindowClickListeners={removeWindowClickListeners}
-                                                editInProgress={editInProgress}
-                                                setEditInProgress={setEditInProgress}
-                                                saveEdit={props.saveEdit}
-                                            />
-                                        </Col>
-                                        <Col xs={6} lg={6} className="char-col-right">
-                                            <ViewEdit
-                                                key={item._id+"_val"} 
-                                                id={item._id+"_val"}
-                                                name={item._id}
-                                                group="personalInfo"
-                                                field="value"
-                                                value={item.value}
-                                                addWindowClickListener={addWindowClickListener}
-                                                removeWindowClickListeners={removeWindowClickListeners}
-                                                editInProgress={editInProgress}
-                                                setEditInProgress={setEditInProgress}
-                                                saveEdit={props.saveEdit}
-                                            />
-                                        </Col>            
-                                    </Row>
-                                )
-                            })}
-                            <Row  className="lv-pair">
-                                <Col>
-                                    <ViewEdit
-                                        key={"personalInfo_new_lab"} 
-                                        id={"personalInfo_new_lab"}
-                                        name={''}
-                                        group="personalInfo"
-                                        field="new"
-                                        value={''}
-                                        placeHolderText="Click to add an entry"
-                                        addWindowClickListener={addWindowClickListener}
-                                        removeWindowClickListeners={removeWindowClickListeners}
-                                        editInProgress={editInProgress}
-                                        setEditInProgress={setEditInProgress}
-                                        saveEdit={props.saveEdit}
-                                    />
-                                </Col>
-                            </Row>
-                        </div>
-                    
+                    <div className="charsheet-box">
+                        {sPersonalInfo.map((item, index)=>{
+                            return (
+                                <Row key={item._id+"_row"} className="lv-pair">
+                                    <Col xs={6} lg={6} className="char-col-left">
+                                        <ViewEdit
+                                            key={item._id+"_lab_"+index} 
+                                            id={item._id+"_lab"}
+                                            fieldId={item._id}
+                                            group="personalInfo"
+                                            field="label"
+                                            // lockEdit={true}
+                                            value={item.label || ''}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                        />
+                                    </Col>
+                                    <Col xs={6} lg={6} className="char-col-right">
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"}
+                                            fieldId={item._id}
+                                            group="personalInfo"
+                                            field="value"
+                                            value={item.value || ''}
+                                            placeHolderText="click this"
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
+                                        />
+                                    </Col>            
+                                </Row>
+                            )
+                        })}
+                        <Row  className="lv-pair">
+                            <Col>
+                                <ViewEdit
+                                    key={"personalInfo_new_lab"} 
+                                    id={"personalInfo_new_lab"}
+                                    fieldId={''}
+                                    group="personalInfo"
+                                    field="new"
+                                    value={''}
+                                    placeHolderText="Click to add an entry"
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
+                                />
+                            </Col>
+                        </Row>
+                    </div>
+                
                     <h6>Distinctive Features</h6>
                     <div key="distinctiveFeatures" className="charsheet-box">
                         {props.activeKnight.knightData.distinctiveFeatures.map((item, index)=>{
                             return (
-                                <Col xs={12}>
+                                <Col xs={12} className="ghost-div">
                                     <ViewEdit
                                         key={"dF_"+index} 
                                         id={"dF_"+index} 
-                                        name={index}
+                                        fieldId={index}
                                         group="distinctiveFeatures"
                                         field="single"
                                         value={item}
@@ -265,6 +318,7 @@ export default function KnightSheet(props) {
                                         editInProgress={editInProgress}
                                         setEditInProgress={setEditInProgress}
                                         saveEdit={props.saveEdit}
+                                        deleteEntry={props.deleteEntry}
                                     />
                                     
                                 </Col>
@@ -273,7 +327,7 @@ export default function KnightSheet(props) {
                         <ViewEdit
                             key={"dF_new"} 
                             id={"dF_new"} 
-                            name={''}
+                            fieldId={''}
                             group="distinctiveFeatures"
                             field="single"
                             value={''}
@@ -283,17 +337,18 @@ export default function KnightSheet(props) {
                             editInProgress={editInProgress}
                             setEditInProgress={setEditInProgress}
                             saveEdit={props.saveEdit}
+                            deleteEntry={props.deleteEntry}
                         />
                     </div>
 
                     <h6>Description</h6>
                     <div key="description" className="charsheet-box character-description">
-                        {arDescription.map(description=>{
+                        {arDescription.map((description, index)=>{
                             return (
                                 <ViewEditTextArea
-                                    key={"description"} 
-                                    id={"description"} 
-                                    name={"0"}
+                                    key={"description_"+index} 
+                                    id={"description_"+index} 
+                                    fieldId={index}
                                     group="description"
                                     field="desc"
                                     value={description}
@@ -302,13 +357,14 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                                 )
                             })}
                         {!arDescription[0]&&<ViewEditTextArea
                                 key={"description_new"} 
                                 id={"description_new"} 
-                                name={""}
+                                fieldId={''}
                                 group="description"
                                 field="desc"
                                 value={''}
@@ -318,50 +374,74 @@ export default function KnightSheet(props) {
                                 editInProgress={editInProgress}
                                 setEditInProgress={setEditInProgress}
                                 saveEdit={props.saveEdit}
+                                deleteEntry={props.deleteEntry}
                             />}
                     </div>
                     <h6>Equipment</h6>
-                        <div key="equipment" className="charsheet-box">
-                            {props.activeKnight.knightData.equipment.map((item, index)=>{
-                                return (
-                                        <Col xs={12}>
-                                            <ViewEdit
-                                                key={"equip_"+index} 
-                                                id={"equip_"+index} 
-                                                name={index}
-                                                group="equipment"
-                                                field="single"
-                                                value={item}
-                                                addWindowClickListener={addWindowClickListener}
-                                                removeWindowClickListeners={removeWindowClickListeners}
-                                                editInProgress={editInProgress}
-                                                setEditInProgress={setEditInProgress}
-                                                saveEdit={props.saveEdit}
-                                            />
-                                            
-                                        </Col>
-                                        )
-                            })}
+                    <div key="equipment" className="charsheet-box">
+                        {props.activeKnight.knightData.equipment.map((item, index)=>{
+                            return (
+                                    <Col xs={12} className=" ghost-div">
+                                        <ViewEdit
+                                            key={"equip_"+index} 
+                                            id={"equip_"+index} 
+                                            fieldId={index}
+                                            group="equipment"
+                                            field="single"
+                                            value={item}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
+                                        />
+                                        
+                                    </Col>
+                                    )
+                        })}
+                        <ViewEdit
+                            key={"equip_new"} 
+                            id={"equip_new"} 
+                            fieldId={''}
+                            group="equipment"
+                            field="single"
+                            value={''}
+                            placeHolderText="Click to add equipment"
+                            addWindowClickListener={addWindowClickListener}
+                            removeWindowClickListeners={removeWindowClickListeners}
+                            editInProgress={editInProgress}
+                            setEditInProgress={setEditInProgress}
+                            saveEdit={props.saveEdit}
+                            deleteEntry={props.deleteEntry}
+                        />
+                    </div>
+                        
+                </Col>
+
+ 
+                <Col className="charsheet-column"  xs={12} lg={4}>
+                    <h3>{props.activeKnight.knightData.personalInfo[0].value || "Unknown Knight"}</h3>
+                    <div className="charsheet-box">
+                        <h5 className="armour-total">Current Glory: 
                             <ViewEdit
-                                key={"equip_new"} 
-                                id={"equip_new"} 
-                                name={''}
-                                group="equipment"
+                                key={"glory_val"} 
+                                id={"glory_val"}
+                                fieldId="glory"
+                                group="glory"
                                 field="single"
-                                value={''}
-                                placeHolderText="Click to add equipment"
+                                value={props.activeKnight.knightData.glory || 0}
+                                placeHolderText="0"
                                 addWindowClickListener={addWindowClickListener}
                                 removeWindowClickListeners={removeWindowClickListeners}
                                 editInProgress={editInProgress}
                                 setEditInProgress={setEditInProgress}
                                 saveEdit={props.saveEdit}
+                                deleteEntry={props.deleteEntry}
                             />
-                        </div>
-                    
-                </Col>
+                        </h5>
+                    </div>
 
- 
-                <Col className="charsheet-column"  xs={12} lg={4}>
                 <h6>Statistics</h6>
                     <div key="statistics" className="charsheet-box">
                         {sStatistics.map((item, index)=>{
@@ -372,11 +452,11 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="statistics"
                                             field="label"
-                                            lockEdit={true}
-                                            value={item.label}
+                                            // lockEdit={true}
+                                            value={item.label || ''}
                                             editInProgress={editInProgress}
                                         />
                                     </Col>
@@ -384,16 +464,17 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="statistics"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="Click to add personal info"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                     </Col>
                                 </Row>
@@ -407,11 +488,11 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={"derivedStats_lab"+index} 
                                             id={"derivedStats_lab"+index}
-                                            name={"derivedStats"}
+                                            fieldId={"derivedStats"}
                                             group="statistics"
                                             field="label"
                                             lockEdit={true}
-                                            value={item.label}
+                                            value={item.label || ''}
                                             editInProgress={editInProgress}
                                         />
                                     </Col>
@@ -419,7 +500,7 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={"derivedStats_val"+index} 
                                             id={"derivedStats_val"+index}
-                                            name={"derivedStats"}
+                                            fieldId={"derivedStats"}
                                             group="statistics"
                                             field="value"
                                             lockEdit={true}
@@ -463,31 +544,33 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="armour"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                         </Col>
                                     <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="armour"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="0"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />    
                                     </Col>
                                     
@@ -499,7 +582,7 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"armour_new_lab"} 
                                     id={"armour_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="armour"
                                     field="new"
                                     value={''}
@@ -509,6 +592,7 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>
@@ -546,22 +630,23 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"+index}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="directedTraits"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                     </Col>
                                     <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"+index}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="directedTraits"
                                             field="value"
                                             value={"+"+item.value}
@@ -571,6 +656,7 @@ export default function KnightSheet(props) {
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                     </Col>
                                 </Row>
@@ -581,7 +667,7 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"directedTraits_new_lab"} 
                                     id={"directedTraits_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="directedTraits"
                                     field="new"
                                     value={''}
@@ -591,6 +677,7 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>
@@ -615,31 +702,33 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"+index}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="passions"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                     </Col>
                                     <Col  xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"+index}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="passions"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="0"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                     </Col>
                                 </Row>
@@ -650,7 +739,7 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"passions_new_lab"} 
                                     id={"passions_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="passions"
                                     field="new"
                                     value={''}
@@ -660,6 +749,7 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>
@@ -688,31 +778,33 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="combatSkills.general"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                         </Col>
                                     <Col xs={2} d={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="combatSkills.general"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="0"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />    
                                     </Col>
                                 </Row>
@@ -723,7 +815,7 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"combatSkills.general_new_lab"} 
                                     id={"combatSkills.general_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="combatSkills.general"
                                     field="new"
                                     value={''}
@@ -733,6 +825,7 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>
@@ -754,31 +847,33 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="combatSkills.weapons"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                         </Col>
                                     <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="combatSkills.weapons"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="0"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />    
                                     </Col>
                                 </Row>
@@ -789,7 +884,7 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"combatSkills.weapons_new_lab"} 
                                     id={"combatSkills.weapons_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="combatSkills.weapons"
                                     field="new"
                                     value={''}
@@ -799,6 +894,7 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>
@@ -823,31 +919,33 @@ export default function KnightSheet(props) {
                                         <ViewEdit
                                             key={item._id+"_lab"} 
                                             id={item._id+"_lab"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="skills"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                         </Col>
                                     <Col xs={2} lg={2} className="value_col">
                                         <ViewEdit
                                             key={item._id+"_val"} 
                                             id={item._id+"_val"}
-                                            name={item._id}
+                                            fieldId={item._id}
                                             group="skills"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="0"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />    
                                     </Col>
                                 </Row>
@@ -858,7 +956,7 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"skills_new_lab"} 
                                     id={"skills_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="skills"
                                     field="new"
                                     value={''}
@@ -868,6 +966,7 @@ export default function KnightSheet(props) {
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>
@@ -876,10 +975,31 @@ export default function KnightSheet(props) {
             </Row>
             <hr className="double-hr"/>
             <Row className="page2">
+                <Col className="charsheet-column aux-block" xs={12}>
+                    <div className="charsheet-box">
+                        <AuxList 
+                            key="aux-list"
+                            auxiliaries={props.auxiliaries}
+                            // funcs={VEFuncs}
+                            addWindowClickListener={addWindowClickListener}
+                            removeWindowClickListeners={removeWindowClickListeners}
+                            editInProgress={editInProgress}
+                            setEditInProgress={setEditInProgress}
+                            saveEdit={props.saveEdit}
+                            deleteEntry={props.deleteEntry}
+                            saveAuxiliary={props.saveAuxiliary}
+                            createAuxiliary={props.createAuxiliary}
+                            openAux={props.openAux}
+                        />
+                    </div>
+                </Col>
+            </Row>
+            <hr className="double-hr"/>
+            <Row className="page3">
                 <Col className="charsheet-column" xs={12} lg={4}>
                     <h6>Personal Information</h6>
                     <div className="charsheet-box">
-                    <h6>Family</h6>
+                    {/* <h6>Family</h6>
                         <div key="family" className="charsheet-box family-block">
                             {sFamily.map((item, index)=>{
                                 return (
@@ -887,9 +1007,9 @@ export default function KnightSheet(props) {
                                             <FamilyMember
                                                 key={"family_"+index} 
                                                 id={"family_"+index} 
-                                                name={index}
+                                                fieldId={index}
                                                 group="family"
-                                                value={item}
+                                                data={item}
                                                 addWindowClickListener={addWindowClickListener}
                                                 removeWindowClickListeners={removeWindowClickListeners}
                                                 editInProgress={editInProgress}
@@ -903,7 +1023,7 @@ export default function KnightSheet(props) {
                             <ViewEdit
                                 key={"family_new"} 
                                 id={"family_new"} 
-                                name={''}
+                                fieldId={''}
                                 group="family"
                                 field="family"
                                 value={''}
@@ -914,21 +1034,43 @@ export default function KnightSheet(props) {
                                 setEditInProgress={setEditInProgress}
                                 saveEdit={props.saveEdit}
                             />
-                        </div>
-                    <h6>Squires</h6>
+                        </div> */}
+                    {/* <h6>Squires</h6>
                         <div key="squires" className="charsheet-box family-block">
-                            
-                        </div>
-                        {/* <h6>Horses</h6>
-                    <div key="horses" className="charsheet-box family-block">
-                        {sHorses.map((horse, horseIndex)=>{
-                            return (
-                                <Horse data={horse} funcs={VEFuncs} />
-                            )
-                        })}
-
-                    </div> */}
-                    
+                        {sSquires.map((item, index)=>{
+                                return (
+                                        <Col xs={12}>
+                                            <Squire
+                                                key={"squire_"+index} 
+                                                id={"squire_"+index} 
+                                                fieldId={index}
+                                                group="squires"
+                                                data={item}
+                                                addWindowClickListener={addWindowClickListener}
+                                                removeWindowClickListeners={removeWindowClickListeners}
+                                                editInProgress={editInProgress}
+                                                setEditInProgress={setEditInProgress}
+                                                saveEdit={props.saveEdit}
+                                            />
+                                            <hr />
+                                        </Col>
+                                        )
+                            })}
+                            <ViewEdit
+                                key={"squire_new"} 
+                                id={"squire_new"} 
+                                fieldId={''}
+                                group="squires"
+                                field="squires"
+                                data={''}
+                                placeHolderText="click to add family member (father, mother...)"
+                                addWindowClickListener={addWindowClickListener}
+                                removeWindowClickListeners={removeWindowClickListeners}
+                                editInProgress={editInProgress}
+                                setEditInProgress={setEditInProgress}
+                                saveEdit={props.saveEdit}
+                            />
+                        </div> */}
                     </div>
                 </Col>
                 <Col className="charsheet-column" xs={12} lg={8}>
@@ -947,33 +1089,35 @@ export default function KnightSheet(props) {
                                 <Row  className="lv-pair">
                                     <Col xs={2} className="year_col">
                                         <ViewEdit
-                                            key={item._id+"_val"} 
-                                            id={item._id+"_val"}
-                                            name={item._id}
+                                            key={item._id+"_val"+index} 
+                                            id={item._id+"_val"+index}
+                                            fieldId={item._id}
                                             group="history"
                                             field="value"
-                                            value={item.value}
+                                            value={item.value || 0}
                                             placeHolderText="0"
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />    
                                     </Col>
                                     <Col xs={10} lg={10} className="event_col">
                                         <ViewEdit
-                                            key={item._id+"_lab"} 
-                                            id={item._id+"_lab"}
-                                            name={item._id}
+                                            key={item._id+"_lab"+index} 
+                                            id={item._id+"_lab"+index}
+                                            fieldId={item._id}
                                             group="history"
                                             field="label"
-                                            value={item.label}
+                                            value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
                                             editInProgress={editInProgress}
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
                                         />
                                     </Col>
                                    
@@ -1004,16 +1148,17 @@ export default function KnightSheet(props) {
                                 <ViewEdit
                                     key={"history_new_lab"} 
                                     id={"history_new_lab"}
-                                    name={''}
+                                    fieldId={''}
                                     group="history"
                                     field="new"
-                                    value={''}
+                                    value=''
                                     placeHolderText="Click to add a new event"
                                     addWindowClickListener={addWindowClickListener}
                                     removeWindowClickListeners={removeWindowClickListeners}
                                     editInProgress={editInProgress}
                                     setEditInProgress={setEditInProgress}
                                     saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
                                 />
                             </Col>
                         </Row>

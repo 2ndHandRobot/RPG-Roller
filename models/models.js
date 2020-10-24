@@ -29,6 +29,21 @@ const LabelStringPairSchema = new mongoose.Schema ({
     value: { type: String, default: '' }
 })
 
+const LabelBoolPairSchema = new mongoose.Schema ({
+    index: Number,
+    label: String,
+    value: Boolean
+})
+
+const WoundSchema = new mongoose.Schema ({
+    index: Number,
+    hitpoints: Number,
+    firstAid: { type: Boolean, default: false },
+    lethal: { type: Boolean, default: false },
+    major: { type: Boolean, default: false },
+    mortal: { type: Boolean, default: false },
+})
+
 const PersonalityTraitPairSchema = new mongoose.Schema ({
     index: Number,
     trait1: { 
@@ -51,33 +66,40 @@ const PersonalityTraitPairSchema = new mongoose.Schema ({
     },
 })
 
+
+const AuxSchema = new mongoose.Schema({
+    index: Number,
+    auxId: String,
+    auxType: String
+})
 const HorseSchema = new mongoose.Schema({
     index: Number,
-    desc: [LabelStringPairSchema],
+    owner: String,
+    who: [LabelStringPairSchema],
+    about: [LabelStringPairSchema],
     stats: [LabelNumberPairSchema]
 })
 
 const FamilyMemberSchema = new mongoose.Schema({
-    index: Number,
-    who: LabelStringPairSchema,
-    male: Boolean,
-    age: Number,
-    glory: Number,
-    deceased: Boolean,
-    reputation: [String]
+    owner: String,
+    who: [LabelStringPairSchema],
+    about: [LabelNumberPairSchema],
+    status: [LabelBoolPairSchema],
+    aux_armour: [LabelNumberPairSchema],
+    aux_equipment: [String],
+    aux_reputation: [String],
 })
 
 const SquireSchema = new mongoose.Schema ({
     index: Number,
-    name: {
-        type: String,
-        default: ''
-    },
-    age: {
-        type: Number,
-        default: 15
-    },
-    skills:[LabelNumberPairSchema]
+    owner: String,
+    who: [LabelStringPairSchema],
+    about: [LabelNumberPairSchema],
+    status: [LabelBoolPairSchema],
+    skills:[LabelNumberPairSchema],
+    armour:[LabelNumberPairSchema],
+    aux_reputation: [String],
+    aux_equipment: [String]
 })
 const CharacterSchema = new mongoose.Schema ({
     index: Number,
@@ -91,10 +113,15 @@ const CharacterSchema = new mongoose.Schema ({
         canRead: [String]
     },
     personalInfo: [LabelStringPairSchema],
+    glory: Number,
     personalityTraits: [PersonalityTraitPairSchema],
     directedTraits: [LabelNumberPairSchema],
     passions: [LabelNumberPairSchema],
     statistics: [LabelNumberPairSchema],
+    health: {
+        chirurgeryNeeded: Boolean,
+        wounds: [WoundSchema]
+    },
     distinctiveFeatures: [String],
     description: [String],
     skills: [LabelNumberPairSchema],
@@ -104,9 +131,9 @@ const CharacterSchema = new mongoose.Schema ({
     },
     armour: [LabelNumberPairSchema],
     equipment: [String],
-    horses: [HorseSchema],
-    family: [FamilyMemberSchema],
-    squire: [SquireSchema],
+    horses: [{type: AuxSchema, default: ()=>{auxType: "horse"}}],
+    familyMembers: [{type: AuxSchema, default: ()=>{auxType: "familyMember"}}],
+    squires: [{type: AuxSchema, default: ()=>{auxType: "squire"}}],
     history: [LabelNumberPairSchema]
 });
 
@@ -121,13 +148,22 @@ const BugReportSchema = new mongoose.Schema ({
 
 // Mongoose Models
 
-const Knights = mongoose.model("Knight", CharacterSchema);
+const Characters = mongoose.model("Character", CharacterSchema);
 const Users = mongoose.model("User", UserSchema);
 const DiceSets = mongoose.model("DiceSet", DiceSetSchema);
-const BugReport = mongoose.model("BugReport", BugReportSchema);
+const BugReports = mongoose.model("BugReport", BugReportSchema);
+const FamilyMembers = mongoose.model("FamilyMember", FamilyMemberSchema);
+const Squires = mongoose.model("Squire", SquireSchema);
+const Horses = mongoose.model("Horse", HorseSchema);
+const Wounds = mongoose.model("Wound", WoundSchema);
 
-module.exports = { Knights: Knights, Users: Users, DiceSets: DiceSets, BugReport: BugReport }
 
-// console.log(module.filename);
-// console.log(module.id);
-// console.log(module.exports);
+module.exports = { 
+        Characters: Characters, 
+        FamilyMembers: FamilyMembers, 
+        Squires: Squires, 
+        Horses: Horses, 
+        Users: Users, 
+        DiceSets: DiceSets, 
+        BugReports: BugReports 
+    }
