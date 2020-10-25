@@ -125,6 +125,8 @@ footer {
 .value-field  {
   text-align: right;
   border-bottom: dotted 1px;
+  vertical-align: bottom;
+  display: inline-block;
 }
 
 
@@ -435,6 +437,11 @@ footer {
 
 .value_col {
   padding: 0 15px 0 5px;
+}
+
+.suffix_col {
+  padding: 0;
+  margin-left: -10px;
 }
 
 .year_col {

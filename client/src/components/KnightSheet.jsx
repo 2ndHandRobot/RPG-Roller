@@ -156,7 +156,7 @@ export default function KnightSheet(props) {
         console.log("Handling Tick Event on",fieldId)
         console.log("checked:",event.target.checked)
         
-        if (event.target.name === "armour") {
+        if (event.target.group === "armour") {
             console.log("ticked an armour box. Updating total")
             
             for (var a of sArmour) {
@@ -171,7 +171,7 @@ export default function KnightSheet(props) {
         }
 
         const payload = {
-            group: event.target.name,
+            group: event.target.group,
             field: "isTicked",
             value: event.target.checked,
             fieldId: fieldId
@@ -534,7 +534,8 @@ export default function KnightSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id} 
-                                            name="armour" 
+                                            group="armour" 
+                                            field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
@@ -620,7 +621,8 @@ export default function KnightSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            name="directedTraits" 
+                                            group="directedTraits" 
+                                            field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
@@ -692,7 +694,8 @@ export default function KnightSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            name="passions" 
+                                            group="passions" 
+                                            field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
@@ -768,7 +771,8 @@ export default function KnightSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            name="combatSkills.general" 
+                                            group="combatSkills.general" 
+                                            field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
@@ -837,7 +841,8 @@ export default function KnightSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            name="combatSkills.weapons" 
+                                            group="combatSkills.weapons"
+                                            field="checkBox" 
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
@@ -909,7 +914,8 @@ export default function KnightSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            name="skills" 
+                                            group="skills" 
+                                            field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}

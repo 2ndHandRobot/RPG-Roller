@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import _ from 'lodash';
 
 import Disp from '../DisplayState';
 
@@ -47,7 +48,34 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
         }
         props.saveAuxiliary(payload)
     }
+    function handleBoxTick(event, fieldId){
+        console.log("Handling Tick Event on",fieldId)
+        console.log("checked:",event.target.checked)
+        
+        // if (event.target.group === "armour") {
+        //     console.log("ticked an armour box. Updating total")
+            
+        //     for (var a of sArmour) {
+        //         console.log("sArmour item:",a)
+        //         if (a._id === event.target.id) {
+        //             console.log("sArmour matched:",a)
+        //             a.isTicked=!a.isTicked;
+        //         }
+        //     }
+            
+        //     setArmourVal(calcArmourValue())
+        // }
 
+        const payload = {
+            group: event.target.group,
+            field: "isTicked",
+            value: event.target.checked,
+            fieldId: fieldId
+        }
+        props.saveHorseEdit(payload);
+        
+        
+    }
     return (
         <div>
             {horseData.who.map((whoItem, whoIndex)=>{
@@ -143,7 +171,18 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                         return (
                             <div key={"stat_div_"+statIndex}>
                             <Row className="lv-pair">
-                                <Col xs={6} lg={6} className="char-col-left">
+                                <Col xs={1} className="tick_col">
+                                        <input 
+                                            type="checkbox" 
+                                            id={stat._id+"_tick"} 
+                                            group="stats" 
+                                            field="checkBox"
+                                            className="entry_tick" 
+                                            onClick={(event)=>{handleBoxTick(event, stat._id)}} 
+                                            defaultChecked={stat.isTicked}
+                                        />
+                                    </Col>
+                                <Col xs={(_.lowerCase(stat.label)==="damage")?8:9} className="label_col">
                                     <ViewEdit
                                         key={stat._id+"stats"+statIndex+"_lab"} 
                                         id={stat._id+"stats"+statIndex+"_lab"}
@@ -160,7 +199,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                                         saveEdit={saveHorseEdit}
                                     />
                                 </Col>
-                                <Col xs={6} lg={6} className="char-col-right">
+                                <Col xs={2} className="value_col">
                                     <ViewEdit
                                         key={stat._id+"stats"+statIndex+"_val"} 
                                         id={stat._id+"stats"+statIndex+"_val"}
@@ -168,14 +207,20 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                                         group="stats"
                                         field="value"
                                         value={stat.value || 0}
-                                        placeHolderText={0}
+                                        placeHolderText={"0"}
                                         addWindowClickListener={props.addWindowClickListener}
                                         removeWindowClickListeners={props.removeWindowClickListeners}
                                         editInProgress={props.editInProgress}
                                         setEditInProgress={props.setEditInProgress}
                                         saveEdit={saveHorseEdit}
                                     />
-                                </Col>            
+                                </Col>
+                                {
+                                    (_.lowerCase(stat.label)==="damage")
+                                    &&<Col xs={1} className="suffix_col container">
+                                        <p>d6</p>
+                                    </Col>            
+                                }
                             </Row>
                         </div>
                         )
