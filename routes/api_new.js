@@ -169,6 +169,34 @@ router.get('/users/:userId/charactersheet/:characterId', (req, res)=>{
     })
 })
 
+router.post('/create', (req, res) => {
+   console.log('API :: ROUTING: Creating new character. Body:',req.body)
+   const data = req.body;
+   const newCharacter = new models.Characters(data);
+   console.log("New character:",JSON.stringify(newCharacter))
+
+   // function getAdmins() {
+      let admins = [];
+      
+      models.Users.find({"privilege" : "admin"})
+      .then((data)=>{
+            console.log(data.length, 'admins found.');
+            data.forEach(u=>admins.push(u._id));
+            newCharacter.playerInfo.canEdit= admins;
+            console.log("newCharacter.playerInfo",newCharacter.playerInfo);
+            newCharacter.save((err, response)=>{
+               if (err) {
+                  res.json({msg: ("Error saving new character: " +err)});
+               } else {
+                  console.log("Saved character: ",response);
+                  res.json({msg: "data received"});
+               }
+            })
+      })
+      .catch((err)=>{
+          console.log('Error: ',  err);
+      })
+})
 // router.get('/users/:userId/auxiliaries/:auxType/:auxId', (req, res)=>{
 //     const userId = req.params.userId;
 //     const auxType = _.upperFirst(req.params.auxType);
@@ -359,6 +387,68 @@ router.post('/edit-entry', (req, res) => {
        
     })
 
+    router.post('/update-entry', (req, res) => {
+       // route now only used to update personality traits
+      console.log('API :: ROUTING: Updating field value. Body:',req.body)
+      const characterId = req.body.characterId
+      const group = req.body.group;
+      const fieldId = req.body.fieldId;
+      const newVal = req.body.newVal;
+      const field = req.body.field
+      
+      if (field) {
+         console.log("Updating nested object")
+         const filterObject = { [`${group}._id`]: fieldId }
+         console.log("filterObject:",filterObject)  
+         console.log("newVal:",newVal)  
+         const updateObject = {$set: {[`${group}.$`]: newVal}}
+         console.log("updateObject:",updateObject)  
+         const options = {useFindAndModify: false, upsert: true, new: true}
+         const objFilter = `${group}._id`
+         console.log("options:",options)
+         
+         Characters.findOneAndUpdate( 
+            filterObject, 
+            updateObject, 
+            options, 
+            (err, result)=>{
+               console.log("Field update completed.")
+               if (err) {
+                  console.log("RESULT OF UPDATE: ",err);
+                  res.send(err);
+               } else {
+                  console.log("Outcome of update: ",result);
+                  res.send("RESULT OF UPDATE: "+result);
+               }
+            } 
+         )
+   
+      } else {
+         console.log("Updating array object")
+         const filterObject = { "_id" : characterId }
+         // console.log("filterObject: ",filterObject)
+         Characters.findById(characterId)
+         .then((myCharacter, err)=>{
+            if (err) {
+               console.log("Data retrieval failed:",err)
+            } else {
+               let myGroup = eval(`myCharacter.${group}`)
+               myGroup.splice(fieldId,1,newVal);
+               myCharacter.save((err,doc)=>{
+                  if (err) {
+                     console.log("Save failed:",err)
+                  } else {
+                     console.log("Save succeeded:", doc);
+                     res.send(doc);
+                  }
+               })
+               
+            }
+         })
+         
+      }
+   })
+   
 
 router.post('/create-auxiliary', (req, res) => {
     console.log("API :: ROUTING: Creating auxiliary. Body:", req.body)
