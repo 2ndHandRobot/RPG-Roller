@@ -556,25 +556,25 @@ router.post('/report-bug', (req, res)=>{
    const response = ''
    const resolved = false
 
-const newBugReport = new models.BugReports({
-   reportedBy : reportedBy,
-   problem : problem,
-   description : description,
-   response : '',
-   resolved : false
-});
+   const newBugReport = new models.BugReports({
+      reportedBy : reportedBy,
+      problem : problem,
+      description : description,
+      response : '',
+      resolved : false
+   });
 
-newBugReport.save((err, resp)=>{
-   if (err) {
-      console.log(err.code)
-      console.log(err);
-      
-      return res.status(500).send(err);
-     } else {
-      console.log("Bug report saved.");
-      res.send(resp);
-   }
-})
+   newBugReport.save((err, resp)=>{
+      if (err) {
+         console.log(err.code)
+         console.log(err);
+         
+         return res.status(500).send(err);
+      } else {
+         console.log("Bug report saved.");
+         res.send(resp);
+      }
+   })
 })
 
 module.exports = router;
