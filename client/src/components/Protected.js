@@ -123,10 +123,16 @@ const Protected = (props) => {
             data: payload
          })
         .then((result) => {
-            console.log("Data sent to server. Knight updated:", result);
-            setActiveKnight(prev=>({...prev, knightData: result.data}))
-            // recordActiveKnightData();
-            // getData();
+            console.log("Data sent to server. Result:", result);
+
+            if (result.data.failure){
+                console.log("Edit did not save:",result.data.failure)
+                setActiveKnight(prev=>({...prev}))
+                return false
+            } else {
+                setActiveKnight(prev=>({...prev, knightData: result.data}))
+                return true
+            }
         })
         .then(() => {
             // openSheet(activeKnight.knightId, activeKnight.access); 
@@ -209,19 +215,26 @@ const Protected = (props) => {
             data: payload
          })
         .then((result) => {
-            console.log("Data sent to server. Auxiliary updated:", result);
-            let auxGroup = auxiliaries[props.auxType]
-            for (let i = 0; i<auxGroup.length; i++) {
-                console.log("checking aux:",auxGroup[i])
-                if (auxGroup[i]._id === props.auxId) {
-                    console.log("updated aux found:",auxGroup[i]._id)
-                    auxGroup[i] = result.data;
-                    console.log("auxGroup updated:",auxGroup)
-                    break;
+            console.log("Data sent to server. Result:", result);
+
+            if (result.data.failure){
+                console.log("Edit did not save:",result.data.failure)
+                setAuxiliaries(prev=>({...prev}))
+                return false
+            } else {
+                let auxGroup = auxiliaries[props.auxType]
+                for (let i = 0; i<auxGroup.length; i++) {
+                    console.log("checking aux:",auxGroup[i])
+                    if (auxGroup[i]._id === props.auxId) {
+                        console.log("updated aux found:",auxGroup[i]._id)
+                        auxGroup[i] = result.data;
+                        console.log("auxGroup updated:",auxGroup)
+                        break;
+                    }
                 }
+                setAuxiliaries(prev=>({...prev,[props.auxType] : auxGroup}) )
+                return true
             }
-            setAuxiliaries(prev=>({...prev,[props.auxType] : auxGroup}) )
-            // return(result.data)
         })
         .catch((err) => {
             console.log("Internal server error.", err);

@@ -79,9 +79,16 @@ import _ from 'lodash';
             console.log("VE: Save payload:",payload)
 
             let saved = this.props.saveEdit(payload);
-            if (!this.props.fieldId) {
-                console.log("New item save completed. Resetting value to:",this.props.value)
-                this.setState({value: this.props.value})
+            if (!saved) {
+                console.log("VE :: confirmEdit: Save outcome = false")
+                console.log("VE :: confirmEdit: resetting value to fallBack:",this.fallBackValue)
+                this.setState({value: this.fallBackValue})
+            } else {
+                console.log("VE :: confirmEdit: Save outcome = true")
+                if (!this.props.fieldId) {
+                    console.log("New item save completed. Resetting value to:",this.props.value)
+                    this.setState({value: this.props.value})
+                }
             }
             // Disable or nullify the click-outside event listener
             this.props.removeWindowClickListeners();

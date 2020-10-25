@@ -343,16 +343,22 @@ router.post('/edit-entry', (req, res) => {
              (err, resp)=>{
                 if (err) {
                    console.log("Update failed:",err)
-                   res.send(err)
+                   if (err.kind === 'Number') {
+                     res.json({failure:"validationError"})
+                   } else {
+                     console.log("Error message is NOT of type CastError")
+                    res.json({failure:"otherError"})
+                  }
                 } else if (resp) {
                    console.log("Update succeeded:",resp)
-                   res.send(resp)
+                   res.json(resp)
                 } else {
                    console.log("No error or response returned by server")
                 }
           });
        
     })
+
 
 router.post('/create-auxiliary', (req, res) => {
     console.log("API :: ROUTING: Creating auxiliary. Body:", req.body)
@@ -457,7 +463,14 @@ router.post('/edit-auxiliary', (req, res) => {
                 (err, resp)=>{
                 if (err) {
                     console.log("Update failed:",err)
-                    res.json(err)
+                    if (err.kind === 'Number') {
+                     
+                       console.log("Error message is of type CastError")
+                       res.json({failure:"validationError"})
+                     } else {
+                        console.log("Error message is NOT of type CastError")
+                       res.json({failure:"otherError"})
+                     }
                 } else if (resp) {
                     console.log("Update succeeded:",resp)
                     res.json(resp)
