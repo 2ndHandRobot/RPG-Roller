@@ -47,7 +47,14 @@ const Disp = {
     setOpenAuxId(auxId){
         console.log("DS :: setOpenAuxId(",auxId,")")
         this.openAuxId=auxId
-    }
+    },
+
+    clearDisplayState(){
+        console.log("DS :: clearDSisplayState");
+        this.openAuxList= '';
+        this.openAuxId='';
+        this.toggleStates= [];
+    },
     
 }
 

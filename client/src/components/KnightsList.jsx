@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-
 import { Container, Collapse } from 'react-bootstrap';
+
+import Disp from '../DisplayState'
 
 export default function KnightsList(props) {
     console.log("KNIGHTSLIST :: props=",props);
@@ -28,6 +29,7 @@ export default function KnightsList(props) {
                                     type="button" 
                                     className="character-list" 
                                     onClick={()=>{
+                                        Disp.clearDisplayState();
                                         props.openSheet(char._id, "own")}
                                         }
                                 >
@@ -59,8 +61,10 @@ export default function KnightsList(props) {
                                             type="button" 
                                             className="character-list" 
                                             onClick={()=>{
-                                                props.openSheet(char._id, "edit")}
-                                                }
+                                                Disp.clearDisplayState();
+                                                props.openSheet(char._id, "edit");
+                                            }}
+                                            
                                         >
                                             {char.name!==""
                                             ?char.name

@@ -704,6 +704,7 @@ class Squire extends  React.Component {
 
     render () {
         console.log("AUX RENDER: ",this.props.data.who)
+        
         return (
             <Row>
                 <Col name="left-col" xs={12} lg={6}> {/* Aux Sheet left column */}

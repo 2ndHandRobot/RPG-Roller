@@ -110,20 +110,26 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
         }
         function getStatus(findStatus) {
             console.log("FAMILYMEMBER :: DOING: getStatus")
-            for (var stts of props.data.status) {
-                if (stts.label===findStatus) {
-                    // console.log("Status value (",findStatus,") :",stts.value)
-                    return (stts.value)
+            if (props.data.status) {
+                for (var stts of props.data.status) {
+                    if (stts.label===findStatus) {
+                        // console.log("Status value (",findStatus,") :",stts.value)
+                        return (stts.value)
+                    }
                 }
+            } else {
+                return false
             }
         }
         
         function getStatusId(findStatus) {
             console.log("FAMILYMEMBER :: DOING: getStatusId")
-            for (var stts of props.data.status) {
-                if (stts.label===findStatus) {
-                    // console.log("Status _id (",findStatus,") :",stts._id)
-                    return (stts._id)
+            if (props.data.status) {
+                for (var stts of props.data.status) {
+                    if (stts.label===findStatus) {
+                        // console.log("Status _id (",findStatus,") :",stts._id)
+                        return (stts._id)
+                    }
                 }
             }
         }

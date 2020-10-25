@@ -19,7 +19,6 @@ class AuxList extends React.Component {
 
         this.state = {
             auxList: [],
-            activeAuxId: '',
             activeAuxData: {}
         }
         this.auxListName=Disp.getOpenAuxList()
@@ -35,17 +34,18 @@ class AuxList extends React.Component {
         function prevAuxData () {
             const auxId = Disp.getOpenAuxId()
             console.log("AUXLIST :: MOUNTING: getting activeAuxData for:",auxId)
-            let auxData = {};
-            
+            let auxData = {_id: ''};
+
             if (props.auxiliaries[Disp.getOpenAuxList()]){
                 for (var a of props.auxiliaries[Disp.getOpenAuxList()]) {
-                    console.log("AUXLIST :: selectAuxSheet : checking Aux:",a)
+                    console.log("AUXLIST :: prevAuxSheet : checking if Aux:",a," has an _id of",auxId)
                     if (a._id===auxId) {
-                        console.log("AUXLIST :: selectAuxSheet : match found:",a.who)
+                        console.log("AUXLIST :: prevAuxSheet : match found:",a.who)
                         auxData = a
                     }
                 }
             }
+            console.log("AUXLIST :: MOUNTING: auxData._id:",auxData._id)
             return auxData;
         }
 
@@ -126,7 +126,7 @@ class AuxList extends React.Component {
     
     handleAuxClick(auxId){
         console.log("AUXLIST :: DOING: handleAuxClick. auxId:",auxId)
-        if (this.state.activeAuxId===auxId){
+        if (this.state.activeAuxData._id===auxId){
             console.log("AUXLIST :: handleAuxClick : Aux ",auxId,"clicked twice: closing sheet")
             Disp.setOpenAuxId('')
             this.setState({activeAuxId:''});
@@ -162,9 +162,9 @@ class AuxList extends React.Component {
         
         if (this.props.auxiliaries[this.auxListName]){
             for (var a of this.props.auxiliaries[this.auxListName]) {
-                console.log("AUXLIST :: selectAuxSheet : checking Aux:",a)
+                console.log("AUXLIST :: getAuxData : checking Aux:",a)
                 if (a._id===auxId) {
-                    console.log("AUXLIST :: selectAuxSheet : match found:",a.who)
+                    console.log("AUXLIST :: getAuxData : match found:",a.who)
                     auxData = a
                 }
             }
@@ -176,7 +176,8 @@ class AuxList extends React.Component {
     // returnAuxSheet(activeAuxData){
     returnAuxSheet(){
         console.log("AUXLIST :: returnAuxSheet : activeAuxData:",this.state.activeAuxData)
-        if (this.state.activeAuxId!==''){
+        console.log("AUXLIST :: returnAuxSheet : aux render check: (this.state.activeAuxData._id!=='') =",this.state.activeAuxData._id!=='')
+        if (this.state.activeAuxData._id!==''){
             switch (this.auxListName){
                 case "horses":
                     console.log("AUXLIST :: returnAuxSheet : Horses aux selected. Returning sheet for render...")
@@ -245,7 +246,8 @@ class AuxList extends React.Component {
     
     render(){
 
-        console.log("AULXLIST :: RENDER: this.state.activeAuxId:",this.state.activeAuxId,". Sheet display check:",((this.state.activeAuxId!=='')&&(this.returnAuxSheet())))
+        console.log("AUXLIST :: RENDER: this.state.activeAuxData._id:",this.state.activeAuxData._id,". Sheet display check:",((this.state.activeAuxData._id!=='')&&(this.returnAuxSheet())))
+        console.log("AUXLIST :: RENDER: state at render:",this.state)
         return (
             <Row className="auxsheet-box" >
             <Col xs={12} lg={4}>
@@ -282,7 +284,7 @@ class AuxList extends React.Component {
                     }
             </Col>
             <Col xs={12} lg={8}>
-                {(this.state.activeAuxId!=='')&&(this.returnAuxSheet())}
+                {(this.state.activeAuxData._id!=='')&&(this.returnAuxSheet())}
             </Col>
             </Row>
         )
