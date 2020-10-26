@@ -172,18 +172,28 @@ router.get('/users/:userId/charactersheet/:characterId', (req, res)=>{
 router.post('/create', (req, res) => {
    console.log('API :: ROUTING: Creating new character. Body:',req.body)
    const data = req.body;
+   console.log("data:",data)
    const newCharacter = new models.Characters(data);
    console.log("New character:",JSON.stringify(newCharacter))
 
    // function getAdmins() {
-      let admins = [];
+      let canEditIds = [];
       
       models.Users.find({"privilege" : "admin"})
-      .then((data)=>{
-            console.log(data.length, 'admins found.');
-            data.forEach(u=>admins.push(u._id));
-            newCharacter.playerInfo.canEdit= admins;
-            console.log("newCharacter.playerInfo",newCharacter.playerInfo);
+      .then((admins)=>{
+            console.log(admins.length, 'admins found.');
+            console.log("data.playerInfo:",data.playerInfo)
+            admins.forEach(u=>{
+               console.log("Admin user id:",u._id.toString())
+               if (u._id.toString() !== data.playerInfo.isOwner) {
+                  console.log("non-owner admin user:",u._id)
+                  canEditIds.push(u._id)
+               } else {
+                  console.log("admin user is owner.")
+               }
+            });
+            newCharacter.playerInfo.canEdit= canEditIds;
+            console.log("newCharacter.playerInfo",newCharacter.playerInfo)
             newCharacter.save((err, response)=>{
                if (err) {
                   res.json({msg: ("Error saving new character: " +err)});
