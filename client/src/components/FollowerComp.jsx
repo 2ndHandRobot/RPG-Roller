@@ -11,9 +11,9 @@ import ViewEdit from './ViewEdit';
 // import Armour from './Armour';
 
 
-class Squire extends  React.Component {
+class Follower extends  React.Component {
     // PROPS: 
-    // props.data = the squire's character sheet data
+    // props.data = the follower's character sheet data
     // props.func = the PROTECTED function  (and variable) bundle VEFuncs 
     // props.saveEdit = the PROTECTED function for saving Auxiliaries
     // props.auxValueChange = the PROTECTED function for saving changes to Auxiliary toggles
@@ -36,7 +36,7 @@ class Squire extends  React.Component {
         }
         console.log("SQUIRE:: loading component. Props:",this.props.data)
 
-        this.saveSquireEdit=this.saveSquireEdit.bind(this);
+        this.saveFollowerEdit=this.saveFollowerEdit.bind(this);
         this.WhoBlock=this.WhoBlock.bind(this);
         this.AboutBlock=this.AboutBlock.bind(this);
         this.StatusBlock=this.StatusBlock.bind(this);
@@ -126,13 +126,13 @@ class Squire extends  React.Component {
         };
         
         console.log("Toggle data:",data)
-        this.saveSquireEdit(data)
+        this.saveFollowerEdit(data)
     }
 
-    saveSquireEdit(thisprops){
+    saveFollowerEdit(thisprops){
         const payload = {
             auxId: this.props.data._id,
-            auxType: "squires",
+            auxType: "followers",
             group: thisprops.group,
             field: thisprops.field,
             value: thisprops.value,
@@ -179,12 +179,12 @@ class Squire extends  React.Component {
                                 group="who"
                                 field="label"
                                 value={whoItem.label}
-                                placeHolderText="add squire type"
+                                placeHolderText="add follower type"
                                 addWindowClickListener={prps.addWindowClickListener}
                                 removeWindowClickListeners={prps.removeWindowClickListeners}
                                 editInProgress={prps.editInProgress}
                                 setEditInProgress={prps.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                             />
                         </Col>
                         <Col xs={6} lg={6} className="char-col-right">
@@ -200,7 +200,7 @@ class Squire extends  React.Component {
                                 removeWindowClickListeners={prps.removeWindowClickListeners}
                                 editInProgress={prps.editInProgress}
                                 setEditInProgress={prps.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                             />
                         </Col>            
                     </Row>
@@ -223,8 +223,8 @@ class Squire extends  React.Component {
                             <Row className="lv-pair">
                                 <Col xs={6} lg={6} className="char-col-left">
                                     <ViewEdit
-                                        key={prps.squireId+"_lab_"+statIndex} 
-                                        id={prps.squireId+"_lab_"+statIndex}
+                                        key={prps.followerId+"_lab_"+statIndex} 
+                                        id={prps.followerId+"_lab_"+statIndex}
                                         fieldId={statIndex}
                                         group="about"
                                         field="label"
@@ -234,8 +234,8 @@ class Squire extends  React.Component {
                                 </Col>
                                 <Col xs={6} lg={6} className="char-col-right">
                                     <ViewEdit
-                                        key={prps.squireId+"_val_"+statIndex} 
-                                        id={prps.squireId+"_val_"+statIndex}
+                                        key={prps.followerId+"_val_"+statIndex} 
+                                        id={prps.followerId+"_val_"+statIndex}
                                         fieldId={stat._id}
                                         group="about"
                                         field="value"
@@ -244,7 +244,7 @@ class Squire extends  React.Component {
                                         removeWindowClickListeners={prps.removeWindowClickListeners}
                                         editInProgress={prps.editInProgress}
                                         setEditInProgress={prps.setEditInProgress}
-                                        saveEdit={this.saveSquireEdit}
+                                        saveEdit={this.saveFollowerEdit}
                                     />
                                 </Col>            
                             </Row>
@@ -363,7 +363,7 @@ class Squire extends  React.Component {
                                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                                 editInProgress={this.props.editInProgress}
                                                 setEditInProgress={this.props.setEditInProgress}
-                                                saveEdit={this.saveSquireEdit}
+                                                saveEdit={this.saveFollowerEdit}
                                             />
                                         </Col>    
                                     </div>
@@ -381,7 +381,7 @@ class Squire extends  React.Component {
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                             />
                         </div>
                     </Collapse>
@@ -455,7 +455,7 @@ class Squire extends  React.Component {
                                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                                 editInProgress={this.props.editInProgress}
                                                 setEditInProgress={this.props.setEditInProgress}
-                                                saveEdit={this.saveSquireEdit}
+                                                saveEdit={this.saveFollowerEdit}
                                             />
                                         </Col>    
                                     </div>
@@ -473,7 +473,7 @@ class Squire extends  React.Component {
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                             />
                         </div>
                     </Collapse>
@@ -508,7 +508,7 @@ class Squire extends  React.Component {
                     value: event.target.checked,
                     fieldId: fieldId
                 }
-                this.saveSquireEdit(payload);
+                this.saveFollowerEdit(payload);
             }
         
             
@@ -589,7 +589,7 @@ class Squire extends  React.Component {
                                                     removeWindowClickListeners={this.props.removeWindowClickListeners}
                                                     editInProgress={this.props.editInProgress}
                                                     setEditInProgress={this.props.setEditInProgress}
-                                                    saveEdit={this.saveSquireEdit}
+                                                    saveEdit={this.saveFollowerEdit}
                                                 />
                                                 </Col>
                                             <Col xs={2} lg={2} className="value_col">
@@ -605,7 +605,7 @@ class Squire extends  React.Component {
                                                     removeWindowClickListeners={this.props.removeWindowClickListeners}
                                                     editInProgress={this.props.editInProgress}
                                                     setEditInProgress={this.props.setEditInProgress}
-                                                    saveEdit={this.saveSquireEdit}
+                                                    saveEdit={this.saveFollowerEdit}
                                                 />    
                                             </Col>
                                             
@@ -626,7 +626,7 @@ class Squire extends  React.Component {
                                             removeWindowClickListeners={this.props.removeWindowClickListeners}
                                             editInProgress={this.props.editInProgress}
                                             setEditInProgress={this.props.setEditInProgress}
-                                            saveEdit={this.saveSquireEdit}
+                                            saveEdit={this.saveFollowerEdit}
                                         />
                                     </Col>
                                 </Row>
@@ -649,8 +649,8 @@ class Squire extends  React.Component {
                                 <Row className="lv-pair">
                                     <Col xs={6} lg={6} className="char-col-left">
                                         <ViewEdit
-                                            key={prps.squireId+"_lab_"+skill._id} 
-                                            id={prps.squireId+"_lab_"+skill._id}
+                                            key={prps.followerId+"_lab_"+skill._id} 
+                                            id={prps.followerId+"_lab_"+skill._id}
                                             fieldId={skill._id}
                                             group="skills"
                                             field="label"
@@ -660,13 +660,13 @@ class Squire extends  React.Component {
                                             removeWindowClickListeners={this.props.removeWindowClickListeners}
                                             editInProgress={this.props.editInProgress}
                                             setEditInProgress={this.props.setEditInProgress}
-                                            saveEdit={this.saveSquireEdit}
+                                            saveEdit={this.saveFollowerEdit}
                                         />
                                     </Col>
                                     <Col xs={6} lg={6} className="char-col-right">
                                         <ViewEdit
-                                            key={prps.squireId+"_val_"+skill._id} 
-                                            id={prps.squireId+"_val_"+skill._id}
+                                            key={prps.followerId+"_val_"+skill._id} 
+                                            id={prps.followerId+"_val_"+skill._id}
                                             fieldId={skill._id}
                                             group="skills"
                                             field="value"
@@ -676,7 +676,7 @@ class Squire extends  React.Component {
                                             removeWindowClickListeners={this.props.removeWindowClickListeners}
                                             editInProgress={this.props.editInProgress}
                                             setEditInProgress={this.props.setEditInProgress}
-                                            saveEdit={this.saveSquireEdit}
+                                            saveEdit={this.saveFollowerEdit}
                                         />
                                     </Col>            
                                 </Row>
@@ -695,7 +695,7 @@ class Squire extends  React.Component {
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                             />
                     </div>
                 )
@@ -714,12 +714,12 @@ class Squire extends  React.Component {
                         <Col name="who-col" >
                             <this.WhoBlock 
                                 data={this.props.data.who || {}} 
-                                squireId={this.props.data._id} 
+                                followerId={this.props.data._id} 
                                 addWindowClickListener={this.props.addWindowClickListener}
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                                 deleteEntry={this.props.deleteEntry} 
                                 auxValueChange={this.auxValueChange}
                             />
@@ -731,12 +731,12 @@ class Squire extends  React.Component {
                         <Col name="status-col" xs={8}>
                                 <this.StatusBlock 
                                     data={this.props.data.status ||[]} 
-                                    squireId={this.props.data._id} 
+                                    followerId={this.props.data._id} 
                                     addWindowClickListener={this.props.addWindowClickListener}
                                     removeWindowClickListeners={this.props.removeWindowClickListeners}
                                     editInProgress={this.props.editInProgress}
                                     setEditInProgress={this.props.setEditInProgress}
-                                    saveEdit={this.saveSquireEdit}
+                                    saveEdit={this.saveFollowerEdit}
                                     deleteEntry={this.props.deleteEntry}  
                                     auxValueChange={this.auxValueChange}
                                     />
@@ -748,36 +748,36 @@ class Squire extends  React.Component {
                         <Col name="left-col-main" >
                             <this.AboutBlock 
                                 data={this.props.data.about ||[]} 
-                                squireId={this.props.data._id}  
+                                followerId={this.props.data._id}  
                                 addWindowClickListener={this.props.addWindowClickListener}
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                                 deleteEntry={this.props.deleteEntry}  
                                 auxValueChange={this.auxValueChange}
                             />
                             <hr />
                             <this.ReputationBlock 
                                 data={this.props.data.reputation ||[]} 
-                                squireId={this.props.data._id}  
+                                followerId={this.props.data._id}  
                                 addWindowClickListener={this.props.addWindowClickListener}
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                                 deleteEntry={this.props.deleteEntry}  
                                 auxValueChange={this.auxValueChange}
                             />
                             <hr />
                             <this.EquipmentBlock 
                                 data={this.props.data.equipment ||[]} 
-                                squireId={this.props.data._id}  
+                                followerId={this.props.data._id}  
                                 addWindowClickListener={this.props.addWindowClickListener}
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                                 deleteEntry={this.props.deleteEntry}  
                                 auxValueChange={this.auxValueChange}
                             />
@@ -794,18 +794,18 @@ class Squire extends  React.Component {
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                                 deleteEntry={this.props.deleteEntry}
                             />
                             <hr />
                             <this.SkillsBlock 
                                 data={this.props.data.skills ||[]} 
-                                squireId={this.props.data._id}  
+                                followerId={this.props.data._id}  
                                 addWindowClickListener={this.props.addWindowClickListener}
                                 removeWindowClickListeners={this.props.removeWindowClickListeners}
                                 editInProgress={this.props.editInProgress}
                                 setEditInProgress={this.props.setEditInProgress}
-                                saveEdit={this.saveSquireEdit}
+                                saveEdit={this.saveFollowerEdit}
                                 deleteEntry={this.props.deleteEntry}
                                 auxValueChange={this.auxValueChange}
                             />
@@ -819,4 +819,4 @@ class Squire extends  React.Component {
     }   
 
 
-    export default Squire;
+    export default Follower;

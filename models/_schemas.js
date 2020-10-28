@@ -88,7 +88,7 @@
 //     reputation: [String]
 // })
 
-// const SquireSchema = new mongoose.Schema ({
+// const FollowerSchema = new mongoose.Schema ({
 //     index: Number,
 //     owner: String,
 //     who: [LabelStringPairSchema],
@@ -124,7 +124,7 @@
 //     equipment: [String],
 //     horses: [{type: AuxSchema, default: ()=>{auxType: "horse"}}],
 //     familyMembers: [{type: AuxSchema, default: ()=>{auxType: "familyMember"}}],
-//     squires: [{type: AuxSchema, default: ()=>{auxType: "squire"}}],
+//     followers: [{type: AuxSchema, default: ()=>{auxType: "follower"}}],
 //     history: [LabelNumberPairSchema]
 // });
 
@@ -144,7 +144,7 @@
 //     AuxSchema: AuxSchema,
 //     CharacterSchema: CharacterSchema, 
 //     FamilyMembersSchema: FamilyMemberSchema, 
-//     SquiresSchema: SquireSchema, 
+//     FollowersSchema: FollowerSchema, 
 //     HorsesSchema: HorseSchema, 
 //     UserSchema: UserSchema, 
 //     DiceSetsSchema: DiceSetSchema, 

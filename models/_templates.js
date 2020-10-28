@@ -242,7 +242,7 @@ const combatSkills=
         aux_reputation: [],
     }
 
-    const squire = {
+    const follower = {
         owner: '',
         who: {label:'', value: '(unnamed)'},
         about: [
@@ -296,7 +296,7 @@ const knight = {
     skills: skills,
     combatSkills: combatSkills,
     family: [],
-    squires: []
+    followers: []
 }
     
 const knightAnarchy = {
@@ -310,14 +310,14 @@ const knightAnarchy = {
     skills: skillsAnarchy,
     combatSkills: combatSkillsAnarchy,
     family: [],
-    squires: []
+    followers: []
 }
 
 const templates = {
     knight:knight,
     knightAnarchy:knightAnarchy,
     familyMember:familyMember,
-    squire:squire,
+    follower:follower,
     horse:horse
 }
 

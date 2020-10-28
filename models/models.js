@@ -90,7 +90,7 @@ const FamilyMemberSchema = new mongoose.Schema({
     aux_reputation: [String],
 })
 
-const SquireSchema = new mongoose.Schema ({
+const FollowerSchema = new mongoose.Schema ({
     index: Number,
     owner: String,
     who: [LabelStringPairSchema],
@@ -133,7 +133,7 @@ const CharacterSchema = new mongoose.Schema ({
     equipment: [String],
     horses: [{type: AuxSchema, default: ()=>{auxType: "horse"}}],
     familyMembers: [{type: AuxSchema, default: ()=>{auxType: "familyMember"}}],
-    squires: [{type: AuxSchema, default: ()=>{auxType: "squire"}}],
+    followers: [{type: AuxSchema, default: ()=>{auxType: "follower"}}],
     history: [LabelNumberPairSchema]
 });
 
@@ -153,7 +153,7 @@ const Users = mongoose.model("User", UserSchema);
 const DiceSets = mongoose.model("DiceSet", DiceSetSchema);
 const BugReports = mongoose.model("BugReport", BugReportSchema);
 const FamilyMembers = mongoose.model("FamilyMember", FamilyMemberSchema);
-const Squires = mongoose.model("Squire", SquireSchema);
+const Followers = mongoose.model("Follower", FollowerSchema);
 const Horses = mongoose.model("Horse", HorseSchema);
 const Wounds = mongoose.model("Wound", WoundSchema);
 
@@ -161,7 +161,7 @@ const Wounds = mongoose.model("Wound", WoundSchema);
 module.exports = { 
         Characters: Characters, 
         FamilyMembers: FamilyMembers, 
-        Squires: Squires, 
+        Followers: Followers, 
         Horses: Horses, 
         Users: Users, 
         DiceSets: DiceSets, 

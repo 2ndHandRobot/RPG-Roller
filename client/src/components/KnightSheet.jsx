@@ -6,7 +6,7 @@ import ViewEditTextArea from './ViewEditTextArea';
 import AuxList from './AuxList';
 // import Auxiliaries from './Auxiliaries';
 // import FamilyMember from './FamilyMember';
-// import Squire from './SquireComp';
+// import Follower from './FollowerComp';
 // import Horse from './Horse';
 
 import ViewEditPersonality from './ViewEditPersonality';
@@ -29,7 +29,7 @@ export default function KnightSheet(props) {
     const sSkills = sortByIndex(props.activeKnight.knightData.skills);
     const sStables = sortByIndex(props.activeKnight.knightData.horses) || [];
     const sFamily = sortByIndex(props.activeKnight.knightData.familyMembers) || [];
-    const sSquires = sortByIndex(props.activeKnight.knightData.squires) || [];
+    const sFollowers = sortByIndex(props.activeKnight.knightData.followers) || [];
     const sArmour = sortByIndex(props.activeKnight.knightData.armour) || [];
     const sHistory = sortByValue(props.activeKnight.knightData.history) || [];
 
@@ -42,7 +42,7 @@ export default function KnightSheet(props) {
     // Define display state variables
     const [showStables, setShowStables] = useState(false);
     const [showFamily, setShowFamily] = useState(false);
-    const [showSquires, setShowSquires] = useState(false);
+    const [showFollowers, setShowFollowers] = useState(false);
 
     // const [showAuxiliaries, setShowAuxiliaries] = useState(null);
     let showAuxiliaries;

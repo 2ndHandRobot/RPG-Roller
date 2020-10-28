@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 
 import FamilyMember from './FamilyMember';
-import Squire from './SquireComp';
+import Follower from './FollowerComp';
 import Horse from './Horse';
 
 import Disp from '../DisplayState';
@@ -194,10 +194,10 @@ class AuxList extends React.Component {
                         />
                     )
                     // break;
-                case "squires":
-                    console.log("AUXLIST :: returnAuxSheet : Squires aux selected. Returning sheet for render...")
+                case "followers":
+                    console.log("AUXLIST :: returnAuxSheet : Followers aux selected. Returning sheet for render...")
                     return (
-                        <Squire
+                        <Follower
                             data={this.state.activeAuxData} 
                             addWindowClickListener={this.props.addWindowClickListener}
                             removeWindowClickListeners={this.props.removeWindowClickListeners}
@@ -253,7 +253,7 @@ class AuxList extends React.Component {
             <Col xs={12} lg={4}>
                 <div className="aligned-div">
                     <button type="button" onClick={()=>{ this.changeAuxList("horses") }}>Horses</button>
-                    <button type="button" onClick={()=>{ this.changeAuxList("squires") }}>Squires</button>
+                    <button type="button" onClick={()=>{ this.changeAuxList("followers") }}>Followers</button>
                     <button type="button" onClick={()=>{ this.changeAuxList("familyMembers") }}>Family</button>
                 </div>
                 <hr/>

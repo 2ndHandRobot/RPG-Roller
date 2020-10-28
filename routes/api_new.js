@@ -6,7 +6,7 @@ const _ = require('lodash');
 const router = express.Router();
 const models = require('../models/models');
 const templates = require('../models/_templates');
-const { Users, Characters, DiceSets, FamilyMembers, Squires, Horses } = require('../models/models');
+const { Users, Characters, DiceSets, FamilyMembers, Followers, Horses } = require('../models/models');
 // const Horses = require('../models/Horses');
 
 const { route } = require('./api');
@@ -268,7 +268,7 @@ router.post('/edit-entry', (req, res) => {
        
        // if (data.group === "family.reputation") {
        // if (data.group.substring(0,7) === "family.") {
-       if ((nestedGroupIndex > -1) && (["family.","horses.", "squires."].includes(data.group.substring(0,nestedGroupIndex+1)))){
+       if ((nestedGroupIndex > -1) && (["family.","horses.", "followers."].includes(data.group.substring(0,nestedGroupIndex+1)))){
           console.log("Saving nested entry")
           filter = {[`${data.group.substring(0,nestedGroupIndex)}._id`]: data.characterId}
           console.log("filter:",filter);
@@ -331,15 +331,15 @@ router.post('/edit-entry', (req, res) => {
                 console.log("horses")
                 const newId = new mongoose.Types.ObjectId
                 updateObject = {$push: {[`${data.group}`]:value}};
-             } else if (data.field === "squires") {
-                console.log("squires")
+             } else if (data.field === "followers") {
+                console.log("followers")
                 const newId = new mongoose.Types.ObjectId
-                const squireTemplate = {
+                const followerTemplate = {
                    _id: newId,
                    auxId: data.auxId,
                    auxType: data.auxType
                }
-                updateObject = {$push: {[`${data.group}`]:squireTemplate}};
+                updateObject = {$push: {[`${data.group}`]:followerTemplate}};
              } else {
                 console.log("label-value pair")
                 const newId = new mongoose.Types.ObjectId

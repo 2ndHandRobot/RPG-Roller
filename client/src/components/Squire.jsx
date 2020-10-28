@@ -9,23 +9,23 @@ import ViewEdit from './ViewEdit';
 import Armour from './Armour';
 
 
-export default function Squire(props) {
+export default function Follower(props) {
     
     console.log("SQUIRE:: loading component. Props:",props)
-    const [squireData, setSquireData] = useState(props.value);
-    console.log("squireData:", squireData)
-    console.log("squireData.who:", squireData.who)
-    console.log("squireData.stats:", squireData.stats)
+    const [followerData, setFollowerData] = useState(props.value);
+    console.log("followerData:", followerData)
+    console.log("followerData.who:", followerData.who)
+    console.log("followerData.stats:", followerData.stats)
     
 
     const [showSheet, setShowSheet] = useState(false);
 
-    let whoData=squireData.who || [];
-    let aboutData=squireData.about || [];
-    let statusData=squireData.status || [];
-    statusData.push(squireData.armour);
-    let skillsData=squireData.skills || [];
-    let reputationData=squireData.reputation || [];
+    let whoData=followerData.who || [];
+    let aboutData=followerData.about || [];
+    let statusData=followerData.status || [];
+    statusData.push(followerData.armour);
+    let skillsData=followerData.skills || [];
+    let reputationData=followerData.reputation || [];
     
     function auxValueChange(props){
         console.log("SQUIRE:: DOING: auxValueChange")
@@ -36,7 +36,7 @@ export default function Squire(props) {
 
     function toggleData(toggle, newVal) {
         const data = {
-            group: "squires.status",
+            group: "followers.status",
             field: toggle,
             value: newVal,
             fieldId: props.value._id
@@ -59,10 +59,10 @@ export default function Squire(props) {
                     <Row className="lv-pair">
                         <Col xs={6} lg={6} className="char-col-left">
                             <ViewEdit
-                                key={squireData._id+"_lab"} 
-                                id={squireData._id+"_lab"}
+                                key={followerData._id+"_lab"} 
+                                id={followerData._id+"_lab"}
                                 name={descIndex}
-                                group="squires"
+                                group="followers"
                                 field="who.label"
                                 lockEdit={true}
                                 value={desc.label}
@@ -75,10 +75,10 @@ export default function Squire(props) {
                         </Col>
                         <Col xs={6} lg={6} className="char-col-right">
                             <ViewEdit
-                                key={squireData._id+"_val"} 
-                                id={squireData._id+"_val"}
+                                key={followerData._id+"_val"} 
+                                id={followerData._id+"_val"}
                                 name={descIndex}
-                                group="squires"
+                                group="followers"
                                 field="who.value"
                                 value={desc.value}
                                 addWindowClickListener={props.funcs.addWindowClickListener}
@@ -108,10 +108,10 @@ export default function Squire(props) {
                             <Row className="lv-pair">
                                 <Col xs={6} lg={6} className="char-col-left">
                                     <ViewEdit
-                                        key={squireData._id+"_lab"} 
-                                        id={squireData._id+"_lab"}
+                                        key={followerData._id+"_lab"} 
+                                        id={followerData._id+"_lab"}
                                         name={statIndex}
-                                        group="squires"
+                                        group="followers"
                                         field="stat.label"
                                         lockEdit={true}
                                         value={stat.label}
@@ -124,10 +124,10 @@ export default function Squire(props) {
                                 </Col>
                                 <Col xs={6} lg={6} className="char-col-right">
                                     <ViewEdit
-                                        key={squireData._id+"_val"} 
-                                        id={squireData._id+"_val"}
+                                        key={followerData._id+"_val"} 
+                                        id={followerData._id+"_val"}
                                         name={statIndex}
-                                        group="squires"
+                                        group="followers"
                                         field="who.value"
                                         value={stat.value}
                                         addWindowClickListener={props.funcs.addWindowClickListener}
@@ -193,10 +193,10 @@ export default function Squire(props) {
                             <Row className="lv-pair">
                                 <Col xs={6} lg={6} className="char-col-left">
                                     <ViewEdit
-                                        key={squireData._id+"_lab"} 
-                                        id={squireData._id+"_lab"}
+                                        key={followerData._id+"_lab"} 
+                                        id={followerData._id+"_lab"}
                                         name={statIndex}
-                                        group="squires"
+                                        group="followers"
                                         field="stat.label"
                                         lockEdit={true}
                                         value={stat.label}
@@ -209,10 +209,10 @@ export default function Squire(props) {
                                 </Col>
                                 <Col xs={6} lg={6} className="char-col-right">
                                     <ViewEdit
-                                        key={squireData._id+"_val"} 
-                                        id={squireData._id+"_val"}
+                                        key={followerData._id+"_val"} 
+                                        id={followerData._id+"_val"}
                                         name={statIndex}
-                                        group="squires"
+                                        group="followers"
                                         field="who.value"
                                         value={stat.value}
                                         addWindowClickListener={props.funcs.addWindowClickListener}
@@ -241,10 +241,10 @@ function ReputationBlock(prps) {
                         <Row className="lv-pair">
                             <Col xs={6} lg={6} className="char-col-left">
                                 <ViewEdit
-                                    key={squireData._id+"_lab"} 
-                                    id={squireData._id+"_lab"}
+                                    key={followerData._id+"_lab"} 
+                                    id={followerData._id+"_lab"}
                                     name={statIndex}
-                                    group="squires"
+                                    group="followers"
                                     field="stat.label"
                                     lockEdit={true}
                                     value={stat.label}
@@ -257,10 +257,10 @@ function ReputationBlock(prps) {
                             </Col>
                             <Col xs={6} lg={6} className="char-col-right">
                                 <ViewEdit
-                                    key={squireData._id+"_val"} 
-                                    id={squireData._id+"_val"}
+                                    key={followerData._id+"_val"} 
+                                    id={followerData._id+"_val"}
                                     name={statIndex}
-                                    group="squires"
+                                    group="followers"
                                     field="who.value"
                                     value={stat.value}
                                     addWindowClickListener={props.funcs.addWindowClickListener}
@@ -287,19 +287,19 @@ function ReputationBlock(prps) {
                     icon={faChevronUp} 
                     name="stables_chevron" 
                     aria-expanded={showSheet}
-                    aria-controls={"squire_sheet"}
+                    aria-controls={"follower_sheet"}
                     onClick={()=>setShowSheet(!showSheet)}
                 />
                 : <FontAwesomeIcon 
                     icon={faChevronDown} 
                     name="stables_chevron" 
                     aria-expanded={showSheet}
-                    aria-controls={"squire_sheet"}
+                    aria-controls={"follower_sheet"}
                     onClick={()=>setShowSheet(!showSheet)}
                 />}
             </Col>
             <Collapse in={showSheet}>
-                <div id="squire-sheet" className="ghost-div">
+                <div id="follower-sheet" className="ghost-div">
                     <AboutBlock data={aboutData} />
                     <hr />
                     <StatusBlock data={statusData} />

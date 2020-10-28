@@ -303,10 +303,10 @@ const Protected = (props) => {
             // setAuxiliaries(prev=>({...prev,horses : foundHorses}) )
         })
         .then(async ()=>{
-            let foundSquires = await getAuxiliaries("squires", knightId);
-            // console.log("Retrieved squires:",JSON.stringify(foundSquires))
-            buildAuxData.squires = foundSquires;
-            // setAuxiliaries(prev=>({...prev,squires : squires}) )
+            let foundFollowers = await getAuxiliaries("followers", knightId);
+            // console.log("Retrieved followers:",JSON.stringify(foundFollowers))
+            buildAuxData.followers = foundFollowers;
+            // setAuxiliaries(prev=>({...prev,followers : followers}) )
         })
         .then(async ()=>{
             let foundFamilyMembers = await getAuxiliaries("familyMembers", knightId);
