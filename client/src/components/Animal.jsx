@@ -7,25 +7,25 @@ import Disp from '../DisplayState';
 import ViewEdit from './ViewEdit';
 
 
-export default function Horse(props) {
-    console.log("HORSE:: loading component. Props:",props)
-    // const [horseId,setHorseId] = useState(props.data._id)
-    // console.log("horseId:", horseId)
+export default function Animal(props) {
+    console.log("ANIMAL:: loading component. Props:",props)
+    // const [animalId,setAnimalId] = useState(props.data._id)
+    // console.log("animalId:", animalId)
     // const [editMode,setEditMode] = useState(false);
-    const [horseData, setHorseData] = useState(props.data);
+    const [animalData, setAnimalData] = useState(props.data);
 
-    console.log("horseData:", horseData)
-    // console.log("horseData.who:", horseData.who)
-    // console.log("horseData.stats:", horseData.stats)
+    console.log("animalData:", animalData)
+    // console.log("animalData.who:", animalData.who)
+    // console.log("animalData.stats:", animalData.stats)
     function auxValueChange(props){
-        console.log("HORSE:: DOING: auxValueChange")
+        console.log("ANIMAL:: DOING: auxValueChange")
         console.log("props:",props)
         let payload = props;
     }
 
     useEffect(()=>{
-        if (props.data!==horseData){
-            setHorseData(props.data)
+        if (props.data!==animalData){
+            setAnimalData(props.data)
         }
     });
     // useEffect(()=>{
@@ -35,12 +35,12 @@ export default function Horse(props) {
     //     }
     // });
 
-console.log("Loading Horse sheet with props.editInProgress:",props.editInProgress)
+console.log("Loading Animal sheet with props.editInProgress:",props.editInProgress)
     
-    function saveHorseEdit(thisprops){
+    function saveAnimalEdit(thisprops){
         const payload = {
-            auxId: horseData._id,
-            auxType: "horses",
+            auxId: animalData._id,
+            auxType: "animals",
             group: thisprops.group,
             field: thisprops.field,
             value: thisprops.value,
@@ -72,13 +72,13 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
             value: event.target.checked,
             fieldId: fieldId
         }
-        props.saveHorseEdit(payload);
+        props.saveAnimalEdit(payload);
         
         
     }
     return (
         <div>
-            {horseData.who.map((whoItem, whoIndex)=>{
+            {animalData.who.map((whoItem, whoIndex)=>{
                 console.log("whoItem:",whoItem)
                 return (
             <Row className="lv-pair">
@@ -90,12 +90,12 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                     group="who"
                     field="label"
                     value={whoItem.label || ''}
-                    placeHolderText="add horse type"
+                    placeHolderText="add animal type"
                     addWindowClickListener={props.addWindowClickListener}
                     removeWindowClickListeners={props.removeWindowClickListeners}
                     editInProgress={props.editInProgress}
                     setEditInProgress={props.setEditInProgress}
-                    saveEdit={saveHorseEdit}
+                    saveEdit={saveAnimalEdit}
                 />
             </Col>
             <Col xs={6} lg={6} className="char-col-right">
@@ -111,7 +111,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                     removeWindowClickListeners={props.removeWindowClickListeners}
                     editInProgress={props.editInProgress}
                     setEditInProgress={props.setEditInProgress}
-                    saveEdit={saveHorseEdit}
+                    saveEdit={saveAnimalEdit}
                 />
             </Col>            
         </Row>
@@ -120,7 +120,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
             <hr />
             <Row>
             <Col xs={12} lg={6}>
-            {horseData.about.map((desc, descIndex)=>{
+            {animalData.about.map((desc, descIndex)=>{
                 console.log("desc:",desc)
                 return (
                     <div key={"desc_div_"+descIndex}>
@@ -139,7 +139,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                                 removeWindowClickListeners={props.removeWindowClickListeners}
                                 editInProgress={props.editInProgress}
                                 setEditInProgress={props.setEditInProgress}
-                                saveEdit={saveHorseEdit}
+                                saveEdit={saveAnimalEdit}
                             />
                         </Col>
                         <Col xs={6} lg={6} className="char-col-right">
@@ -155,7 +155,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                                 removeWindowClickListeners={props.removeWindowClickListeners}
                                 editInProgress={props.editInProgress}
                                 setEditInProgress={props.setEditInProgress}
-                                saveEdit={saveHorseEdit}
+                                saveEdit={saveAnimalEdit}
                             />
                         </Col>            
                     </Row>
@@ -166,7 +166,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
             <hr />
             
             <Col xs={12} lg={6}>
-                    {horseData.stats.map((stat, statIndex)=>{
+                    {animalData.stats.map((stat, statIndex)=>{
                         {/* console.log("stat:",stat) */}
                         return (
                             <div key={"stat_div_"+statIndex}>
@@ -196,7 +196,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                                         removeWindowClickListeners={props.removeWindowClickListeners}
                                         editInProgress={props.editInProgress}
                                         setEditInProgress={props.setEditInProgress}
-                                        saveEdit={saveHorseEdit}
+                                        saveEdit={saveAnimalEdit}
                                     />
                                 </Col>
                                 <Col xs={2} className="value_col">
@@ -212,7 +212,7 @@ console.log("Loading Horse sheet with props.editInProgress:",props.editInProgres
                                         removeWindowClickListeners={props.removeWindowClickListeners}
                                         editInProgress={props.editInProgress}
                                         setEditInProgress={props.setEditInProgress}
-                                        saveEdit={saveHorseEdit}
+                                        saveEdit={saveAnimalEdit}
                                     />
                                 </Col>
                                 {

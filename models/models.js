@@ -72,7 +72,7 @@ const AuxSchema = new mongoose.Schema({
     auxId: String,
     auxType: String
 })
-const HorseSchema = new mongoose.Schema({
+const AnimalSchema = new mongoose.Schema({
     index: Number,
     owner: String,
     who: [LabelStringPairSchema],
@@ -131,7 +131,7 @@ const CharacterSchema = new mongoose.Schema ({
     },
     armour: [LabelNumberPairSchema],
     equipment: [String],
-    horses: [{type: AuxSchema, default: ()=>{auxType: "horse"}}],
+    animals: [{type: AuxSchema, default: ()=>{auxType: "animal"}}],
     familyMembers: [{type: AuxSchema, default: ()=>{auxType: "familyMember"}}],
     followers: [{type: AuxSchema, default: ()=>{auxType: "follower"}}],
     history: [LabelNumberPairSchema]
@@ -154,7 +154,7 @@ const DiceSets = mongoose.model("DiceSet", DiceSetSchema);
 const BugReports = mongoose.model("BugReport", BugReportSchema);
 const FamilyMembers = mongoose.model("FamilyMember", FamilyMemberSchema);
 const Followers = mongoose.model("Follower", FollowerSchema);
-const Horses = mongoose.model("Horse", HorseSchema);
+const Animals = mongoose.model("Animal", AnimalSchema);
 const Wounds = mongoose.model("Wound", WoundSchema);
 
 
@@ -162,7 +162,7 @@ module.exports = {
         Characters: Characters, 
         FamilyMembers: FamilyMembers, 
         Followers: Followers, 
-        Horses: Horses, 
+        Animals: Animals, 
         Users: Users, 
         DiceSets: DiceSets, 
         BugReports: BugReports 

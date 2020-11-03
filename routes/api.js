@@ -1,236 +1,197 @@
 const express = require('express');
-const router = express.Router();
-const models = require('../models/models');
-const { Users, Characters, DiceSets } = require('../models/models');
-
-
-const _ = require('lodash');
 const mongoose = require('mongoose');
 
-function tunnel(tunnelObj, tunnelString){
-   //     console.log("Starting tunnel: ",tunnelString,"into object:",tunnelObj);
-       function findObj(obj, str){
-   //         console.log("Looking for: ",str,"in object:",obj);
-           for (var el in obj) {
-               if (el === str) {
-                   return el
-               }
-           }
-       }
-   
-       let tunnelArr = tunnelString.split('.');
-   //     console.log("tunnelArr:",tunnelArr)
-       let tunnelDepth = tunnelArr.length;
-   //     console.log("tunnelDepth:",tunnelDepth)
-       let minedObject = {};
-       let digger = tunnelObj;
-   
-       for (var d = 0; d<tunnelDepth; d++){
-   //         console.log("Depth: ", d)
-           if (digger) {
-               digger = digger[findObj(digger, tunnelArr[d])] || null
-           }
-   //         console.log("Digger:"+digger);
-       }
-       return digger
-   }
+const _ = require('lodash');
 
-   
+const router = express.Router();
+const models = require('../models/models');
+const templates = require('../models/_templates');
+const { Users, Characters, DiceSets, FamilyMembers, Followers, Animals } = require('../models/models');
+const { route } = require('./api');
 
-// Routing
-router.get('/', (req, res) => {
-   console.log("API :: ROUTING: Get '/'")
-   const allData = {}
-
-   models.Characters.find({})
-      .then((data)=>{
-         console.log(data.length, 'characters found.');
-         allData.characters = data;
-         res.json(allData);
-      })
-      .catch((err)=>{
-          console.log('Error: ',  err);
-      })
-});
-// //TEMP: DELETE BEFORE COMMIT
-// router.get('/admins', (req, res) => {
-//    console.log("API :: ROUTING: Get '/admins'")
-//    let allData =[]
-
-//    models.Users.find({"privilege" : "admin"}).select('_id')
-//       .then((data)=>{
-//          console.log(data.length, 'characters found.');
-//          data.forEach(u=>allData.push(u._id));
-//          res.json(allData);
-//       })
-//       .catch((err)=>{
-//           console.log('Error: ',  err);
-//       })
-// });
-
-router.get('/users/:userId', (req, res) => {
-   const userId = req.params.userId;
-   console.log("API :: ROUTING: Get '/' for user: ",userId);
-   const allData = {}
-
-   models.Characters.find({"playerInfo.isOwner": userId})
-      .then((data)=>{
-         console.log(data.length, '"isOwner" characters found.');
-         allData.characters = data;
-         models.DiceSets.find({isOwner: userId})
-            .then((setsData)=>{
-               console.log("setsData:",setsData.length);
-               if (setsData.length>0){
-                  console.log(setsData[0].diceSets.length, 'dice sets found.')
-                  allData.diceSets = setsData[0].diceSets;
-                  res.json(allData);
-               } else {
-                  console.log("no dice sets found.")
-                  allData.diceSets = []
-                  res.json(allData);
-               }
-            })
-            .catch((err)=>{
-               console.log('Error retrieving dice sets: ',  err);     
-            })
-      })
-      .catch((err)=>{
-          console.log('Error retrieving characters: ',  err);
-      })
-});
-
-
-router.get('/can-edit/:userId', (req, res) => {
-   const userId = req.params.userId;
-   console.log("API :: ROUTING: Get '/' for user: ",userId);
-   const allData = {}
-
-   models.Characters.find({"playerInfo.canEdit": userId})
-      .then((data)=>{
-         console.log(data.length, '"canEdit" characters found.');
-         allData.characters = data;
-         res.json(allData);
-      })
-      .catch((err)=>{
-          console.log('Error: ',  err);
-      })
-});
-
-
+// ROUTING
+//
+// User management routes
 router.post('/register', (req, res) => {
-   console.log('API :: ROUTING: Creating new user. Body:',req.body)
-      const email = req.body.email;
-      const password = req.body.password;
-      const userName = req.body.userName || req.body.login;
-      const loggedIn = req.body.loggedIn || false
-      const privilege = req.body.privilege || 'user'
-
-   const newUser = new models.Users({
-      email: email,
-      password: password,
-      userName: userName,
-      loggedIn: loggedIn,
-      privilege: privilege
-   });
-
-   newUser.save((err)=>{
-      if (err) {
-         console.log(err.code)
-         console.log(err);
-         if (err.name === 'MongoError' && err.code === 11000) {
-            // Duplicate username
-            return res.status(422).send({ succes: false, fail: "user-exists", message: 'User already exist!' });
-          }
-    
-          // Some other error
-          return res.status(500).send(err);
-        } else {
-         console.log("New user created.");
-         res.redirect(307, '/api/login');
-         // res.json({msg: "user created"});
-      }
-   })
-})
+    console.log('API :: ROUTING: Creating new user. Body:',req.body)
+       const email = req.body.email;
+       const password = req.body.password;
+       const userName = req.body.userName || req.body.login;
+       const loggedIn = req.body.loggedIn || false
+       const privilege = req.body.privilege || 'user'
+ 
+    const newUser = new models.Users({
+       email: email,
+       password: password,
+       userName: userName,
+       loggedIn: loggedIn,
+       privilege: privilege
+    });
+ 
+    newUser.save((err)=>{
+       if (err) {
+          console.log(err.code)
+          console.log(err);
+          if (err.name === 'MongoError' && err.code === 11000) {
+             // Duplicate username
+             return res.status(422).send({ succes: false, fail: "user-exists", message: 'User already exist!' });
+           }
+     
+           // Some other error
+           return res.status(500).send(err);
+         } else {
+          console.log("New user created.");
+          res.redirect(307, '/api/login');
+          // res.json({msg: "user created"});
+       }
+    })
+ })
 
 router.post('/login', (req, res) => {
-   console.log('API :: ROUTING: Logging in user. Body:',req.body)
-   const user = req.body;
+    console.log('API :: ROUTING: Logging in user. Body:',req.body)
+    const user = req.body;
+ 
+    Users.findOne({email:user.email}, (err, foundUser)=>{
+       if (err) {
+          console.log(err)
+       } else if (!foundUser) {
+          Users.findOne({userName:user.userName}, (err2, foundUser2)=>{
+             if (err2) {
+                console.log(err2)
+             } if (foundUser2) {
+                console.log(foundUser2);
+                if (foundUser2.password===user.password) {
+                   Users.updateOne({userName:user.userName}, {loggedIn: true}, (err, resp)=>{
+                      if (err) {
+                         console.log("Failed to set loggedIn flag:", err)
+                      } else {
+                         res.send({userId: foundUser2._id, userName: foundUser2.userName});      
+                      }
+                   })
+                   
+                } else {
+                   res.json({userId: null, msg: "password error"});
+                }
+             }
+          })
+       } else if (foundUser) {
+          console.log(foundUser);
+          if (foundUser.password===user.password) {
+             Users.updateOne({email:user.email}, {loggedIn: true}, (err, resp)=>{
+                if (err) {
+                   console.log("Failed to set loggedIn flag:", err)
+                } else {
+                   res.send({userId: foundUser._id, userName: foundUser.userName});      
+                }
+             })
+          } else {
+             res.json({msg: "password error"});
+          }
+       }
+    })
+ })
+ 
+router.post('/logout', (req, res) => {
+    console.log('API :: ROUTING: Logging out user. Body:', req.body);
+    const userId = req.body.userId;
+ 
+    Users.update({_id: userId}, {loggedIn: false}, (err, result)=>{
+       if (err) {
+          console.log(err)
+       } else {
+          if (result) {
+             console.log("Updates: ",result);
+             if (result===1) {
+                res.send(true);
+             } else {
+                res.json({msg: "Error: "+result+" users logged out."});
+             }
+          }
+       }
+    })
+ })
+ 
+// Character management routes
+router.get('/users/:userId/characterlist/:group', (req, res)=>{
+    const userId = req.params.userId;
+    const group = req.params.group;
+    console.log("API :: ROUTING: Get '/"+group+"' for userId:",userId);
 
-   Users.findOne({email:user.email}, (err, foundUser)=>{
-      if (err) {
-         console.log("Login error:",err)
-      } else if (!foundUser) {
-         Users.findOne({userName:user.userName}, (err2, foundUser2)=>{
-            if (err2) {
-               console.log(err2)
-            } if (foundUser2) {
-               console.log("Found user (username):",foundUser2);
-               if (foundUser2.password===user.password) {
-                  Users.updateOne({userName:user.userName}, {loggedIn: true}, (err, resp)=>{
-                     if (err) {
-                        console.log("Failed to set loggedIn flag:", err)
-                     } else {
-                        res.send({userId: foundUser2._id, userName: foundUser2.userName});      
-                     }
-                  })
-                  
-               } else {
-                  res.json({msg: "password error"});
-               }
+    const filter = { [`playerInfo.${group}`] : userId }
+    const fields = { personalInfo: 1 }
+    // const fields = 'personalInfo'
+    // Characters.find(filter, fields)
+    // .slice(personalInfo,1)
+    Characters.aggregate([
+        {$match: filter},
+        {$project: 
+            {personalInfo: 
+                {$arrayElemAt: 
+                    ["$personalInfo", 0]
+                }
             }
-         })
-      } else if (foundUser) {
-         console.log("Found user (email):",foundUser);
-         if (foundUser.password===user.password) {
-            Users.updateOne({email:user.email}, {loggedIn: true}, (err, resp)=>{
-               if (err) {
-                  console.log("Failed to set loggedIn flag:", err)
-               } else {
-                  res.send({userId: foundUser._id, userName: foundUser.userName});      
-               }
-            })
-         } else {
-            res.json({msg: "password error"});
-         }
-      }
-   })
+        }
+    ])
+        .then(data=>{
+            console.log(data.length, group, "characters found.");
+            console.log("Data recieved:", data)
+            let characterData = [];
+            data.map(item=>{
+                characterData.push({_id: item._id, name: item.personalInfo.value})
+            });
+            console.log("characterData to return:",JSON.stringify(characterData))
+            res.json(characterData)
+        })
+        .catch(err=>{
+            console.log(group,"character retrieval failed:",err)
+            const errSend = {err: err}
+            res.json(errSend)
+        })
 })
 
-router.post('/logout', (req, res) => {
-   console.log('API :: ROUTING: Logging out user. Body:', req.body);
-   const userId = req.body.userId;
+router.get('/users/:userId/charactersheet/:characterId', (req, res)=>{
+    const userId = req.params.userId;
+    const characterId = req.params.characterId;
+    
+    console.log("API :: ROUTING: Get charcterId "+characterId+" for userId:",userId);
 
-   Users.update({_id: userId}, {loggedIn: false}, (err, result)=>{
-      if (err) {
-         console.log(err)
-      } else {
-         if (result) {
-            console.log("Updates: ",result);
-            if (result===1) {
-               res.send(true);
-            } else {
-               res.json({msg: "Error: "+result+" users logged out."});
-            }
-         }
-      }
-   })
+    const filter = { _id : characterId }
+    Characters.findById(characterId)
+    .then(data=>{
+      //   console.log("Successfully loaded character data:",data)
+        console.log("Successfully loaded character data.")
+        res.json(data);
+    })
+    .catch(err=>{
+        console.log("Failed to load character data:",err)
+    })
 })
 
 router.post('/create', (req, res) => {
    console.log('API :: ROUTING: Creating new character. Body:',req.body)
    const data = req.body;
+   console.log("data:",data)
    const newCharacter = new models.Characters(data);
    console.log("New character:",JSON.stringify(newCharacter))
 
    // function getAdmins() {
-      let admins = [];
+      let canEditIds = [];
       
       models.Users.find({"privilege" : "admin"})
-      .then((data)=>{
-            console.log(data.length, 'admins found.');
-            data.forEach(u=>admins.push(u._id));
-            newCharacter.playerInfo.canEdit= admins;
-            console.log("newCharacter.playerInfo",newCharacter.playerInfo);
+      .then((admins)=>{
+            console.log(admins.length, 'admins found.');
+            console.log("data.playerInfo:",data.playerInfo)
+            admins.forEach(u=>{
+               console.log("Admin user id:",u._id.toString())
+               if (u._id.toString() !== data.playerInfo.isOwner) {
+                  console.log("non-owner admin user:",u._id)
+                  canEditIds.push(u._id)
+               } else {
+                  console.log("admin user is owner.")
+               }
+            });
+            newCharacter.playerInfo.canEdit= canEditIds;
+            console.log("newCharacter.playerInfo",newCharacter.playerInfo)
             newCharacter.save((err, response)=>{
                if (err) {
                   res.json({msg: ("Error saving new character: " +err)});
@@ -243,148 +204,309 @@ router.post('/create', (req, res) => {
       .catch((err)=>{
           console.log('Error: ',  err);
       })
-   // }
-
-   
-
-   
 })
 
-router.post('/save-sets', (req, res) => {
-   console.log('API :: ROUTING: Saving dice sets. Body:', req.body)
-   const user = req.body.userId;
-   const sets = req.body.sets;
-   
-   DiceSets.findOneAndUpdate(
-      {isOwner: user},
-      {diceSets: sets},
-      {useFindAndModify: false, new:true, upsert: true},
-      (err, result) => {
-         if (err) {
-            console.log("FAILED TO SAVE SETS: ",err);
-            res.send(err);
-         } else {
-            // console.log("Outcome of save: ",result);
-            res.send("SETS SAVED SUCCESSFULLY: "+result);
-         }
-      }
-   )
+router.get('/users/:userId/auxiliaries/:auxType/:characterId', (req, res)=>{
+    const characterId = req.params.characterId;
+    const auxType = _.upperFirst(req.params.auxType);
 
+    console.log("API :: ROUTING: Get auxiliaries ("+auxType+") for characterId:",characterId);
+
+    const filter = {owner: characterId}
+
+    models[auxType].find(filter)
+    .then(data=>{
+      //   console.log("Successfully loaded auxiliary data:",data)
+        console.log("Successfully loaded auxiliary ("+auxType+") data.")
+        res.json(data);
+    })
+    .catch(err=>{
+        console.log("Failed to load auxiliary ("+auxType+") data:",err)
+    })
 })
-
-
 
 router.post('/edit-entry', (req, res) => {
-   // PROPS:
-   // characterId: the _id of the Character document to update
-   // kinId: the _id of the family member
-   // group: path to the nested data array (e.g. "personalInfo" or "combatSkills.general")
-   // field: key for values in nested objects (e.g. "label" or "value")
-   // value: the new/edited value to save
-   // fieldId: the _id of the entry to be updated :: if null, save will be treated as a new entry
-   
-      console.log('ROUTING: Editing post. Body:',req.body)
-      const data = req.body;
-      let value = data.value;
-      let updateObject = {};
-      let options = {};
-      let filter = {}
-      
-      
-      const nestedGroupIndex = data.group.indexOf(".")
-
-
-      console.log("Group:", data.group)
-      
-      
-      // if (data.group === "family.reputation") {
-      // if (data.group.substring(0,7) === "family.") {
-      if ((nestedGroupIndex > -1) && (["family.","horses.", "squires."].includes(data.group.substring(0,nestedGroupIndex+1)))){
-         console.log("Saving nested entry")
-         filter = {[`${data.group.substring(0,nestedGroupIndex)}._id`]: data.characterId}
-         console.log("filter:",filter);
-         if (!data.fieldId && !(data.fieldId===0)) {
-            console.log("No fieldId found. Creating new entry.")
-         
-            // updateObject = {$push: {"family.$.reputation":`${value}`}};
-            let groupString = data.group.replace(".",".$.")
-            // updateObject = {$push: {"family.$.reputation":`${value}`}};
-           
-            updateObject = {$push: {[`${groupString}`]:`${value}`}};
-            options = {
-               // arrayFilters: [{ 'person._id' : data.fieldId }], 
-               useFindAndModify: false,
-               upsert: true, 
-               new: true
-            }
-         
-         } else {
-            console.log("fieldId found. Updating existing entry.")
+    // PROPS:
+    // characterId: the _id of the Character document to update
+    // kinId: the _id of the family member
+    // group: path to the nested data array (e.g. "personalInfo" or "combatSkills.general")
+    // field: key for values in nested objects (e.g. "label" or "value")
+    // value: the new/edited value to save
+    // fieldId: the _id of the entry to be updated :: if null, save will be treated as a new entry
+    
+       console.log('ROUTING: Editing post. Body:',req.body)
+       const data = req.body;
+       let value = data.value;
+       let updateObject = {};
+       let options = {};
+       let filter = {}
+       
+       
+       const nestedGroupIndex = data.group.indexOf(".")
+ 
+ 
+       console.log("Group:", data.group)
+       
+       
+       // if (data.group === "family.reputation") {
+       // if (data.group.substring(0,7) === "family.") {
+       if ((nestedGroupIndex > -1) && (["family.","animals.", "followers."].includes(data.group.substring(0,nestedGroupIndex+1)))){
+          console.log("Saving nested entry")
+          filter = {[`${data.group.substring(0,nestedGroupIndex)}._id`]: data.characterId}
+          console.log("filter:",filter);
+          if (!data.fieldId && !(data.fieldId===0)) {
+             console.log("No fieldId found. Creating new entry.")
+          
+             // updateObject = {$push: {"family.$.reputation":`${value}`}};
+             let groupString = data.group.replace(".",".$.")
+             // updateObject = {$push: {"family.$.reputation":`${value}`}};
             
-            let groupString = data.group.replace(".",".$.")
-            if (!(data.field==="single")) {
-               groupString = groupString + "." + data.field;
-            }
-            // updateObject = {$set: {[`family.$.reputation.${data.fieldId}`]:`${value}`}};
-            if (data.group.substring(7)==="reputation") {
-               updateObject = {$set: {[`${groupString}.${data.fieldId}`]:`${value}`}};
-            } else {
-               updateObject = {$set: {[`${groupString}`]:`${value}`}};
-            }
+             updateObject = {$push: {[`${groupString}`]:`${value}`}};
+             options = {
+                // arrayFilters: [{ 'person._id' : data.fieldId }], 
+                useFindAndModify: false,
+                upsert: true, 
+                new: true
+             }
+          
+          } else {
+             console.log("fieldId found. Updating existing entry.")
+             
+             let groupString = data.group.replace(".",".$.")
+             if (!(data.field==="single")) {
+                groupString = groupString + "." + data.field;
+             }
+             // updateObject = {$set: {[`family.$.reputation.${data.fieldId}`]:`${value}`}};
+             if (data.group.substring(7)==="reputation") {
+                updateObject = {$set: {[`${groupString}.${data.fieldId}`]:`${value}`}};
+             } else {
+                updateObject = {$set: {[`${groupString}`]:`${value}`}};
+             }
+             options = { 
+                useFindAndModify: false,
+                upsert: true, 
+                new: true
+             }
+          }
+       } else { 
+          console.log("Saving non-nested entry")
+          filter = {"_id": data.characterId}
+ 
+          if (data.group==="glory" ) {
+            console.log("updating glory")
+            updateObject = {$set: { "glory" : `${value}`}}
             options = { 
                useFindAndModify: false,
                upsert: true, 
                new: true
             }
-         }
-      } else { 
-         console.log("Saving non-nested entry")
-         filter = {"_id": data.characterId}
+          } else if (!data.fieldId && !(data.fieldId===0)) {
+             console.log("No fieldId found. Creating new entry.")
+             if (data.field === "single" || data.field === "desc") {
+                console.log("single/description")
+                updateObject = {$push: {[`${data.group}`]:`${value}`}};
+             } else if (data.field === "familyMembers") {
+                console.log("familyMember")
+                const newId = new mongoose.Types.ObjectId
+                updateObject = {$push: {[`${data.group}`]:value}};
+             } else if (data.field === "animals") {
+                console.log("animals")
+                const newId = new mongoose.Types.ObjectId
+                updateObject = {$push: {[`${data.group}`]:value}};
+             } else if (data.field === "followers") {
+                console.log("followers")
+                const newId = new mongoose.Types.ObjectId
+                const followerTemplate = {
+                   _id: newId,
+                   auxId: data.auxId,
+                   auxType: data.auxType
+               }
+                updateObject = {$push: {[`${data.group}`]:followerTemplate}};
+             } else {
+                console.log("label-value pair")
+                const newId = new mongoose.Types.ObjectId
+                updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
+             }
+             options = { 
+                useFindAndModify: false,
+                upsert: true, 
+                new: true
+             }
+          } else {
+             console.log("fieldId found. Updating existing entry.")
+             if (data.field === "single" || data.field === "desc") {
+                console.log("single/description")
+                updateObject = {$set: {[`${data.group}.${data.fieldId}`]:`${value}`}};
+                options = { 
+                   useFindAndModify: false,
+                   upsert: true, 
+                   new: true
+                }
+             } else {
+                console.log("label-value pair")
+                updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};  
+                options = {
+                   arrayFilters: [{ 'entry._id' : data.fieldId }], 
+                   useFindAndModify: false,
+                   upsert: true, 
+                   new: true
+                }
+             }
+          }
+       }
+    
+       console.log("characterId:",data.characterId,". Filter object:",filter,". Update object:",updateObject,". options:",options)
+          Characters.findOneAndUpdate(
+             filter,
+             updateObject,
+             options,
+             (err, resp)=>{
+                if (err) {
+                   console.log("Update failed:",err)
+                   if (err.kind === 'Number') {
+                     res.json({failure:"validationError"})
+                   } else {
+                     console.log("Error message is NOT of type CastError")
+                    res.json({failure:"otherError"})
+                  }
+                } else if (resp) {
+                   console.log("Update succeeded:",resp)
+                   res.json(resp)
+                } else {
+                   console.log("No error or response returned by server")
+                }
+          });
+       
+    })
 
+    router.post('/update-entry', (req, res) => {
+       // route now only used to update personality traits
+      console.log('API :: ROUTING: Updating field value. Body:',req.body)
+      const characterId = req.body.characterId
+      const group = req.body.group;
+      const fieldId = req.body.fieldId;
+      const newVal = req.body.newVal;
+      const field = req.body.field
+      
+      if (field) {
+         console.log("Updating nested object")
+         const filterObject = { [`${group}._id`]: fieldId }
+         console.log("filterObject:",filterObject)  
+         console.log("newVal:",newVal)  
+         const updateObject = {$set: {[`${group}.$`]: newVal}}
+         console.log("updateObject:",updateObject)  
+         const options = {useFindAndModify: false, upsert: true, new: true}
+         const objFilter = `${group}._id`
+         console.log("options:",options)
+         
+         Characters.findOneAndUpdate( 
+            filterObject, 
+            updateObject, 
+            options, 
+            (err, result)=>{
+               console.log("Field update completed.")
+               if (err) {
+                  console.log("RESULT OF UPDATE: ",err);
+                  res.send(err);
+               } else {
+                  console.log("Outcome of update: ",result);
+                  res.send("RESULT OF UPDATE: "+result);
+               }
+            } 
+         )
+   
+      } else {
+         console.log("Updating array object")
+         const filterObject = { "_id" : characterId }
+         // console.log("filterObject: ",filterObject)
+         Characters.findById(characterId)
+         .then((myCharacter, err)=>{
+            if (err) {
+               console.log("Data retrieval failed:",err)
+            } else {
+               let myGroup = eval(`myCharacter.${group}`)
+               myGroup.splice(fieldId,1,newVal);
+               myCharacter.save((err,doc)=>{
+                  if (err) {
+                     console.log("Save failed:",err)
+                  } else {
+                     console.log("Save succeeded:", doc);
+                     res.send(doc);
+                  }
+               })
+               
+            }
+         })
+         
+      }
+   })
+   
+
+router.post('/create-auxiliary', (req, res) => {
+    console.log("API :: ROUTING: Creating auxiliary. Body:", req.body)
+
+    const characterId = req.body.characterId
+    const auxType = req.body.auxType.substring(0,req.body.auxType.length-1)
+   //  const auxModel = mongoose.model(_.upperFirst(auxType));
+    const auxName = _.upperFirst(auxType);
+    console.log("auxName:",auxName)
+    console.log("auxName template:",templates[auxType])
+    let newAux = templates[auxType]
+    newAux.owner = characterId;
+
+    console.log("Creating document for aux type",auxName)
+   //  auxModel.create(newAux)
+   mongoose.model([auxName]).create(newAux)
+    .then(result=>{
+        console.log("Auxiliary created:",result)
+        res.json(result)
+    })
+    .catch(err=>{
+        console.log("Auxiliary creation failed:",err)
+        res.json(err)
+    })
+
+    
+})
+router.post('/edit-auxiliary', (req, res) => {
+    // PROPS:
+    // auxId: the _id of the Auxiliary document to update
+    // ayxType: the Collection where the auxiliary is saved
+    // group: path to the nested data array (e.g. "personalInfo" or "combatSkills.general")
+    // field: key for values in nested objects (e.g. "label" or "value")
+    // value: the new/edited value to save
+    // fieldId: the _id of the entry to be updated :: if null, save will be treated as a new entry
+    
+        console.log('API:: ROUTING: Editing auxiliary. Body:',req.body)
+        const data = req.body;
+        const auxId = data.auxId
+        const auxType = _.upperFirst(data.auxType);
+        const value = data.value;
+        let updateObject = {};
+        let options = {};
+        let filter = {}
+        
+    
+        console.log("auxType:", data.auxType)
+        console.log("group:", data.group)
+        console.log("field:", data.field)
+        console.log("auxId:", data.auxId)
+        console.log("fieldId:", data.fieldId)
+        
+         filter = {_id: auxId}
+   
          if (!data.fieldId && !(data.fieldId===0)) {
             console.log("No fieldId found. Creating new entry.")
             if (data.field === "single" || data.field === "desc") {
                console.log("single/description")
                updateObject = {$push: {[`${data.group}`]:`${value}`}};
-            } else if (data.field === "family") {
-               console.log("family")
-               const newId = new mongoose.Types.ObjectId
-               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "who": {"label":`${value}`,"value":""}}}};
-            } else if (data.field === "horses") {
-               console.log("horses")
-               const newId = new mongoose.Types.ObjectId
-               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "desc": {"label":"Breed","value":`${value}`}}}};
-            } else if (data.field === "squires") {
-               console.log("squires")
-               const squireTemplate = {
-                  // _id: newId,
-                  name: '',
-                  about: [
-                          {label:'Born', value: 0},
-                          {label:'Age', value: 15},
-                          {label:'Glory', value: 0}
-                      ],   
-                  status: {
-                     male: true, 
-                     deceased: true, 
-                     retired: true
-                     },
-                  skills:
-                      [
-                          {label:"First Aid", value: 0},
-                          {label:"Battle", value: 0},
-                          {label:"Horsemanship", value: 0}
-                      ],
-                  reputation:[]
-              }
-               const newId = new mongoose.Types.ObjectId
-               updateObject = {$push: {[`${data.group}`]:squireTemplate}};
             } else {
                console.log("label-value pair")
                const newId = new mongoose.Types.ObjectId
-               updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
-            }
-            options = { 
+               updateObject
+               = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
+               }
+               options = { 
                useFindAndModify: false,
                upsert: true, 
                new: true
@@ -410,143 +532,65 @@ router.post('/edit-entry', (req, res) => {
                }
             }
          }
-      }
-   
-      console.log("characterId:",data.characterId,". Filter object:",filter,". Update object:",updateObject,". options:",options)
-         Characters.findOneAndUpdate(
-            filter,
-            updateObject,
-            options,
-            (err, resp)=>{
-               if (err) {
-                  console.log("Update failed:",err)
-                  res.send(err)
-               } else if (resp) {
-                  console.log("Update succeeded:",resp)
-                  res.send(resp)
-               } else {
-                  console.log("No error or response returned by server")
-               }
-         });
-      
-   })
-   
-
-router.post('/update-entry', (req, res) => {
-   console.log('API :: ROUTING: Updating field value. Body:',req.body)
-   const characterId = req.body.characterId
-   const group = req.body.group;
-   const fieldId = req.body.fieldId;
-   const newVal = req.body.newVal;
-   const field = req.body.field
-   
-   if (field) {
-      console.log("Updating nested object")
-      const filterObject = { [`${group}._id`]: fieldId }
-      console.log("filterObject:",filterObject)  
-      console.log("newVal:",newVal)  
-      const updateObject = {$set: {[`${group}.$`]: newVal}}
-      console.log("updateObject:",updateObject)  
-      const options = {useFindAndModify: false, upsert: true, new: true}
-      const objFilter = `${group}._id`
-      console.log("options:",options)
-      
-      Characters.findOneAndUpdate( 
-         filterObject, 
-         updateObject, 
-         options, 
-         (err, result)=>{
-            console.log("Field update completed.")
-            if (err) {
-               console.log("RESULT OF UPDATE: ",err);
-               res.send(err);
-            } else {
-               console.log("Outcome of update: ",result);
-               res.send("RESULT OF UPDATE: "+result);
-            }
-         } 
-      )
-
-   } else {
-      console.log("Updating array object")
-      const filterObject = { "_id" : characterId }
-      // console.log("filterObject: ",filterObject)
-      Characters.findById(characterId)
-      .then((myCharacter, err)=>{
-         if (err) {
-            console.log("Data retrieval failed:",err)
-         } else {
-            let myGroup = eval(`myCharacter.${group}`)
-            myGroup.splice(fieldId,1,newVal);
-            myCharacter.save((err,doc)=>{
-               if (err) {
-                  console.log("Save failed:",err)
-               } else {
-                  console.log("Save succeeded:", doc);
-                  res.send(doc);
-               }
+    
+    
+        console.log("auxId:",data.auxId,". Filter object:",filter,". Update object:",updateObject,". options:",options)
+    
+         console.log("auxType:",auxType)
+         
+         models[auxType].findOneAndUpdate(
+                filter,
+                updateObject,
+                options,
+                (err, resp)=>{
+                if (err) {
+                    console.log("Update failed:",err)
+                    if (err.kind === 'Number') {
+                     
+                       console.log("Error message is of type CastError")
+                       res.json({failure:"validationError"})
+                     } else {
+                        console.log("Error message is NOT of type CastError")
+                       res.json({failure:"otherError"})
+                     }
+                } else if (resp) {
+                    console.log("Update succeeded:",resp)
+                    res.json(resp)
+                } else {
+                    console.log("No error or response returned by server")
+                }
             })
             
-         }
-      })
-      
-   }
+    })
+
+
+// Dice management routes
+router.get('/users/:userId/dicesets', (req, res)=>{
+    const userId = req.params.userId;
+    console.log("API :: ROUTING : Get /dicesets for userId:",userId)
+
+    const filter = {isOwner: userId}
+    DiceSets.find(filter)
+        .then(data=>{
+            console.log("setsData:",data);
+            if (data.length>0){
+               console.log(data[0].diceSets.length, 'dice sets found.')
+               const diceSets = data[0].diceSets;
+               console.log("diceSets:",diceSets);
+               res.json(diceSets);
+            } else {
+               console.log("no dice sets found.")
+               res.json([]);
+            }
+        })
+        .catch(err=>{
+            console.log("Diceset retrieval failed:",err)
+            const errSend = {err: err}
+            res.json(errSend)
+        })
 })
 
-router.post('/create-entry', (req, res)=>{
-   console.log('API :: ROUTING: creating new entry. Body:', req.body)
-
-// Update the database entry for Character: characterId by adding a new {label: newLab, value: newVal} object to the nested array: group.
-   const type = req.body.type
-   const group = req.body.group;
-   const newVal = req.body.newVal;
-   const characterId = req.body.characterId;
-
-
-   // Retrieve the character record:
-   let myCharacter 
-   Characters.findOne({"_id": characterId},(err, obj)=>{
-      if (err) {
-         console.log("Error retrieving Character record:",err)
-         res.send(err)
-      } else {
-         myCharacter = obj;
-      
-   console.log("myCharacter:",myCharacter)
-   console.log("tunnelling into myCharacter for group:",group)
-   let itemToEdit = tunnel(myCharacter,group);
-   let pushItem;
-   
-   switch (type){
-      case "single":
-         console.log("Saving 'single' item", newVal)
-         pushItem = newVal;
-         break;
-      case "pers":
-         console.log("Cannot add new personality traits");
-         res.send("Cannot add new personality traits. Nothing saved")
-         break;
-      default:
-         const newLab = req.body.newLab;   
-      console.log("Saving label/value pair", newLab || 'xxx',"/",newVal || 'xxx')
-         
-         pushItem={label:newLab || '', value:newVal || ''}
-   }
-   console.log("itemToEdit:",itemToEdit)
-   itemToEdit.push(newVal)
-   console.log("Edited itemToEdit:",itemToEdit)
-   console.log("Updated character: ",myCharacter);
-
-   myCharacter.save(err=>{
-      if (err) {
-         console.log("Failed to save edited Character data");
-      }
-      return res.json
-   })
-}
-});
-})
-
+// Bug Report Route
 router.post('/report-bug', (req, res)=>{
    console.log('API :: ROUTING: reporting bug. Body:', req.body)
    
@@ -576,5 +620,6 @@ router.post('/report-bug', (req, res)=>{
       }
    })
 })
+
 
 module.exports = router;

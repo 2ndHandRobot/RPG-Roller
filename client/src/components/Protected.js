@@ -297,10 +297,10 @@ const Protected = (props) => {
         })
         .then(async ()=>{
             
-            let foundHorses = await getAuxiliaries("horses", knightId);
-            // console.log("Retrieved horses:",JSON.stringify(foundHorses))
-            buildAuxData.horses = foundHorses;
-            // setAuxiliaries(prev=>({...prev,horses : foundHorses}) )
+            let foundAnimals = await getAuxiliaries("animals", knightId);
+            // console.log("Retrieved animals:",JSON.stringify(foundAnimals))
+            buildAuxData.animals = foundAnimals;
+            // setAuxiliaries(prev=>({...prev,animals : foundAnimals}) )
         })
         .then(async ()=>{
             let foundFollowers = await getAuxiliaries("followers", knightId);

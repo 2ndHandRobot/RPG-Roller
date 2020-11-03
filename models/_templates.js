@@ -185,15 +185,15 @@ const combatSkills=
     {
         general:
             [
-                {label:"Battle"},
-                {label:"Horsemanship"}
+                {label:"Battle", value: 3},
+                {label:"Horsemanship", value: 4}
             ],
         weapons:
             [
-                {label:"Sword"},
-                {label:"Lance"},
-                {label:"Spear"},
-                {label:"Dagger"}
+                {label:"Sword", value: 7},
+                {label:"Lance", value: 2},
+                {label:"Spear", value: 2},
+                {label:"Dagger", value: 3}
             ]
     }
 
@@ -266,7 +266,7 @@ const combatSkills=
         aux_equipment:[]
     }
 
-    const horse = {
+    const animal = {
         owner: '',
         who: 
             {label: "(unknown type)", value: ""},
@@ -292,7 +292,7 @@ const knight = {
     statistics: stats,
     distinctiveFeatures:[],
     equipment: [],
-    horses: [],
+    animals: [],
     skills: skills,
     combatSkills: combatSkills,
     family: [],
@@ -306,7 +306,7 @@ const knightAnarchy = {
     statistics: stats,
     distinctiveFeatures:[],
     equipment: [],
-    horses: [],
+    animals: [],
     skills: skillsAnarchy,
     combatSkills: combatSkillsAnarchy,
     family: [],
@@ -318,7 +318,7 @@ const templates = {
     knightAnarchy:knightAnarchy,
     familyMember:familyMember,
     follower:follower,
-    horse:horse
+    animal:animal
 }
 
 module.exports = templates;

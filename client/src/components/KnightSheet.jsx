@@ -4,10 +4,6 @@ import { Container, Row, Col, Collapse, Button } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
 import ViewEditTextArea from './ViewEditTextArea';
 import AuxList from './AuxList';
-// import Auxiliaries from './Auxiliaries';
-// import FamilyMember from './FamilyMember';
-// import Follower from './FollowerComp';
-// import Horse from './Horse';
 
 import ViewEditPersonality from './ViewEditPersonality';
 
@@ -27,9 +23,6 @@ export default function KnightSheet(props) {
     const sCombatSkillsGeneral = sortByIndex(props.activeKnight.knightData.combatSkills.general);
     const sCombatSkillsWeapons = sortByIndex(props.activeKnight.knightData.combatSkills.weapons);
     const sSkills = sortByIndex(props.activeKnight.knightData.skills);
-    const sStables = sortByIndex(props.activeKnight.knightData.horses) || [];
-    const sFamily = sortByIndex(props.activeKnight.knightData.familyMembers) || [];
-    const sFollowers = sortByIndex(props.activeKnight.knightData.followers) || [];
     const sArmour = sortByIndex(props.activeKnight.knightData.armour) || [];
     const sHistory = sortByValue(props.activeKnight.knightData.history) || [];
 

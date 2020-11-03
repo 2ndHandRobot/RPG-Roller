@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import FamilyMember from './FamilyMember';
 import Follower from './FollowerComp';
-import Horse from './Horse';
+import Animal from './Animal';
 
 import Disp from '../DisplayState';
 
@@ -179,10 +179,10 @@ class AuxList extends React.Component {
         console.log("AUXLIST :: returnAuxSheet : aux render check: (this.state.activeAuxData._id!=='') =",this.state.activeAuxData._id!=='')
         if (this.state.activeAuxData._id!==''){
             switch (this.auxListName){
-                case "horses":
-                    console.log("AUXLIST :: returnAuxSheet : Horses aux selected. Returning sheet for render...")
+                case "animals":
+                    console.log("AUXLIST :: returnAuxSheet : Animals aux selected. Returning sheet for render...")
                     return (
-                        <Horse
+                        <Animal
                             data={this.state.activeAuxData} 
                             addWindowClickListener={this.props.addWindowClickListener}
                             removeWindowClickListeners={this.props.removeWindowClickListeners}
@@ -252,7 +252,7 @@ class AuxList extends React.Component {
             <Row className="auxsheet-box" >
             <Col xs={12} lg={4}>
                 <div className="aligned-div">
-                    <button type="button" onClick={()=>{ this.changeAuxList("horses") }}>Horses</button>
+                    <button type="button" onClick={()=>{ this.changeAuxList("animals") }}>Animals</button>
                     <button type="button" onClick={()=>{ this.changeAuxList("followers") }}>Followers</button>
                     <button type="button" onClick={()=>{ this.changeAuxList("familyMembers") }}>Family</button>
                 </div>
