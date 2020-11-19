@@ -3,8 +3,8 @@ import { Container, Collapse } from 'react-bootstrap';
 
 import Disp from '../DisplayState'
 
-export default function KnightsList(props) {
-    console.log("KNIGHTSLIST :: props=",props);
+export default function CharactersList(props) {
+    console.log("CHARACTERSLIST :: props=",props);
     
     const [showOwn, setShowOwn] = useState(true);
     const [showEdit, setShowEdit] = useState(false);

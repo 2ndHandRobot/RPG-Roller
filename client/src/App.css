@@ -48,7 +48,13 @@ footer {
   background-color: rgb(245, 245, 235);
 }
 
-
+.FontAwesomeIcon {
+  align-self: center;
+  
+}
+.v-icon {
+  padding: inherit 2px;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

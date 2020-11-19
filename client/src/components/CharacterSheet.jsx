@@ -4,42 +4,151 @@ import { Container, Row, Col, Collapse, Button } from 'react-bootstrap';
 import ViewEdit from './ViewEdit';
 import ViewEditTextArea from './ViewEditTextArea';
 import AuxList from './AuxList';
+import Reserves from './Reserves';
+
 
 import ViewEditPersonality from './ViewEditPersonality';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShieldAlt, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
-export default function KnightSheet(props) {
-    console.log("LOADING KnightSheet")
-    // console.log("Knight data: ",props.activeKnight.knightData);
+export default function CharacterSheet(props) {
+    console.log("LOADING CharacterSheet. Props:",props)
+    // console.log("Knight data: ",props.activeKnight);
     // console.log("Auxiliaries data: ",JSON.stringify(props.auxiliaries));
 
+    const [characterSheetData,setCharacterSheetData] = useState(props.activeKnight)
+    useEffect(() => { 
+        console.log('CHARACTERSHEET :: useEffect: activeKnght data has changed:',props.activeKnight); 
+        setCharacterSheetData(props.activeKnight) }, 
+        [props.activeKnight]
+        );
+
+    let sPersonalInfo = [];
+    // if (getNested(props,'activeKnight','personalInfo')){
+    if (getNested(characterSheetData,'personalInfo')){
+        console.log("Updating sPersonalInfo.")
+        sPersonalInfo = sortByIndex(characterSheetData.personalInfo)
+        console.log("sPersonalInfo:",sPersonalInfo)
+        // sPersonalInfo = sortByIndex(props.activeKnight.personalInfo)
+    };
+
+    let sStatistics = [];
+    // if (getNested(props,'activeKnight','statistics')){
+    if (getNested(characterSheetData,'statistics')){
+        sStatistics = sortByIndex(characterSheetData.statistics)
+        // sStatistics = sortByIndex(props.activeKnight.statistics)
+    };
     
-    const sPersonalInfo = sortByIndex(props.activeKnight.knightData.personalInfo);
-    const sStatistics = sortByIndex(props.activeKnight.knightData.statistics);
-    const sPersonality = sortByIndex(props.activeKnight.knightData.personalityTraits);
-    const sPassions = sortByIndex(props.activeKnight.knightData.passions);
-    const sCombatSkillsGeneral = sortByIndex(props.activeKnight.knightData.combatSkills.general);
-    const sCombatSkillsWeapons = sortByIndex(props.activeKnight.knightData.combatSkills.weapons);
-    const sSkills = sortByIndex(props.activeKnight.knightData.skills);
-    const sArmour = sortByIndex(props.activeKnight.knightData.armour) || [];
-    const sHistory = sortByValue(props.activeKnight.knightData.history) || [];
+    let sPersonality = [];
+    // if (getNested(props,'activeKnight','personalityTraits')){
+    if (getNested(characterSheetData,'personalityTraits')){
+        sPersonality = sortByIndex(characterSheetData.personalityTraits)
+        // sPersonality = sortByIndex(props.activeKnight.personalityTraits)
+    };
+    let sPassions = [];
+    // if (getNested(props,'activeKnight','passions')){
+    if (getNested(characterSheetData,'passions')){
+        sPassions = sortByIndex(characterSheetData.passions)
+        // sPassions = sortByIndex(props.activeKnight.passions)
+    };
+    let sCombatSkillsGeneral = [];
+    // if (getNested(props,'activeKnight','combatSkills','general')){
+    if (getNested(characterSheetData,'combatSkills','general')){
+        sCombatSkillsGeneral = sortByIndex(characterSheetData.combatSkills.general)
+        // sCombatSkillsGeneral = sortByIndex(props.activeKnight.combatSkills.general)
+    };
+    let sCombatSkillsWeapons = [];
+    // if (getNested(props,'activeKnight','combatSkills','weapons')){
+    if (getNested(characterSheetData,'combatSkills','weapons')){
+        sCombatSkillsWeapons = sortByIndex(characterSheetData.combatSkills.weapons)
+        // sCombatSkillsWeapons = sortByIndex(props.activeKnight.combatSkills.weapons)
+    };
+    let sSkills = [];
+    // if (getNested(props,'activeKnight','skills')){
+    if (getNested(characterSheetData,'skills')){
+    sSkills = sortByIndex(characterSheetData.skills)
+    // sSkills = sortByIndex(props.activeKnight.skills)
+    };
+    let sArmour = [];
+    // if (getNested(props,'activeKnight','armour')){
+    if (getNested(characterSheetData,'armour')){
+        sArmour = sortByIndex(characterSheetData.armour)
+        // sArmour = sortByIndex(props.activeKnight.armour)
+    };
+    let sHistory = [];
+    // if (getNested(props,'activeKnight','history')){
+    if (getNested(characterSheetData,'history')){
+        sHistory = sortByIndex(characterSheetData.history)
+        // sHistory = sortByIndex(props.activeKnight.history)
+    };
+    
+    let arDistinctiveFeatures = [];
+    // if (getNested(props,'activeKnight','distinctiveFeatures')){
+    if (getNested(characterSheetData,'distinctiveFeatures')){
+        arDistinctiveFeatures = characterSheetData.distinctiveFeatures
+        // arDistinctiveFeatures = props.activeKnight.distinctiveFeatures
+    };
 
-    const arDescription = props.activeKnight.knightData.description;
+    let arDescription = [];
+    // if (getNested(props,'activeKnight','description')){
+    if (getNested(characterSheetData,'description')){
+        arDescription = characterSheetData.description
+        // arDescription = props.activeKnight.description
+    };
+    let arDirectedTraits = [];
+    // if (getNested(props,'activeKnight','directedTraits')){
+    if (getNested(characterSheetData,'directedTraits')){
+        arDirectedTraits = characterSheetData.directedTraits
+        // arDirectedTraits = props.activeKnight.directedTraits
+    };
+    let arEquipment = [];
+    // if (getNested(props,'activeKnight','equipment')){
+    if (getNested(characterSheetData,'equipment')){
+        arEquipment = characterSheetData.equipment
+        // arEquipment = props.activeKnight.equipment
+    };
+    
+    let characterId = '';
+    if (getNested(props,'activeKnight','_id')){
+        characterId = props.activeKnight._id
+    };
+    
+    let characterName = 'Unknown Knight'
+    console.log("Personal info [0] value (in getNested):",getNested(props,'activeKnight','personalInfo',[0],'value'))
+    
+    if (getNested(props,'activeKnight','personalInfo',[0],'label')==="Name"){
+        console.log("Personal info [0] label is 'Name'. Value:",getNested(props,'activeKnight','personalInfo',[0],'value'))
+        characterName = props.activeKnight.personalInfo[0].value
+        console.log('characterId:',characterName) 
+    };
+    
+    let characterGlory = '0';
+    if (getNested(props,'activeKnight','glory')){
+        characterGlory = props.activeKnight.glory
+    };
 
+
+    let reserveSP = 0
+    let reserveSP_id = "new"
+    if (getNested(props,'activeKnight','reserves','skillPoints')){
+        reserveSP = props.activeKnight.reserves.skillPoints
+        Reserves.setReserve("skillPoints",reserveSP)
+    };
+
+    const [reserveSkillPoints, setReserveSkillPoints] = useState(reserveSP)
     const [armourVal, setArmourVal] = useState(0);
     useEffect(()=>{console.log("Initial Armour Calculation");setArmourVal(calcArmourValue())},[]);
    
 
     // Define display state variables
-    const [showStables, setShowStables] = useState(false);
-    const [showFamily, setShowFamily] = useState(false);
-    const [showFollowers, setShowFollowers] = useState(false);
+    // const [showStables, setShowStables] = useState(false);
+    // const [showFamily, setShowFamily] = useState(false);
+    // const [showFollowers, setShowFollowers] = useState(false);
 
     // const [showAuxiliaries, setShowAuxiliaries] = useState(null);
-    let showAuxiliaries;
-    const [auxList, setAuxList] = useState([]);
+    // let showAuxiliaries;
+    // const [auxList, setAuxList] = useState([]);
     // useEffect(()=>{changeAuxList()},[showAuxiliaries])
 
     // function changeAuxList(list){
@@ -56,23 +165,28 @@ export default function KnightSheet(props) {
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
 
+
+    function getNested(obj, ...args) {
+        return args.reduce((obj, level) => obj && obj[level], obj)
+    }
+
     // console.log("_listeners array:",_listeners)
       // Usage
-      function useTraceUpdate(props) {
+    function useTraceUpdate(props) {
         const prev = useRef(props);
         useEffect(() => {
-          const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+            const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
             if (prev.current[k] !== v) {
-              ps[k] = [prev.current[k], v];
+                ps[k] = [prev.current[k], v];
             }
             return ps;
-          }, {});
-          if (Object.keys(changedProps).length > 0) {
-            console.log('Changed props:', changedProps);
-          }
-          prev.current = props;
+            }, {});
+            if (Object.keys(changedProps).length > 0) {
+            console.log('CHARACTERSHEET :: Changed props:', changedProps);
+            }
+            prev.current = props;
         });
-      }
+    }
     useTraceUpdate(props);
       
     EventTarget.prototype.addEventListenerBase = EventTarget.prototype.addEventListener;
@@ -111,8 +225,10 @@ export default function KnightSheet(props) {
 
     
     function getStat(statName){
-        const stat = props.activeKnight.knightData.statistics.filter(stat=>stat.label=== statName)[0]
-        const statScore = stat.value
+        const stat = sStatistics.filter(stat=>stat.label === statName)[0]
+
+        let statScore = 0;
+        if (stat){statScore=stat.value}
         // console.log(statName," : ",statScore,` (${JSON.stringify(stat)})`)
         return statScore
     }
@@ -228,8 +344,7 @@ export default function KnightSheet(props) {
     }
 
     return (
-        <div className="Charsheet" key={props.activeKnight.knightData._id}>
-        {/* <h1>{"Active Knight _id:",props.activeKnight.knightId}</h1> */}
+        <div className="Charsheet" key={characterId}>
         <Container fluid>
             <Row className="page1">
                 <Col className="charsheet-column" xs={12} lg={4}>
@@ -269,6 +384,7 @@ export default function KnightSheet(props) {
                                             setEditInProgress={setEditInProgress}
                                             saveEdit={props.saveEdit}
                                             deleteEntry={props.deleteEntry}
+                                            invalid={item.invalid}
                                         />
                                     </Col>            
                                 </Row>
@@ -296,7 +412,7 @@ export default function KnightSheet(props) {
                 
                     <h6>Distinctive Features</h6>
                     <div key="distinctiveFeatures" className="charsheet-box">
-                        {props.activeKnight.knightData.distinctiveFeatures.map((item, index)=>{
+                        {arDistinctiveFeatures.map((item, index)=>{
                             return (
                                 <Col xs={12} className="ghost-div">
                                     <ViewEdit
@@ -372,7 +488,7 @@ export default function KnightSheet(props) {
                     </div>
                     <h6>Equipment</h6>
                     <div key="equipment" className="charsheet-box">
-                        {props.activeKnight.knightData.equipment.map((item, index)=>{
+                        {arEquipment.map((item, index)=>{
                             return (
                                     <Col xs={12} className=" ghost-div">
                                         <ViewEdit
@@ -414,7 +530,7 @@ export default function KnightSheet(props) {
 
  
                 <Col className="charsheet-column"  xs={12} lg={4}>
-                    <h3>{props.activeKnight.knightData.personalInfo[0].value || "Unknown Knight"}</h3>
+                    <h3>{characterName}</h3>
                     <div className="charsheet-box">
                         <h5 className="armour-total">Current Glory: 
                             <ViewEdit
@@ -423,7 +539,7 @@ export default function KnightSheet(props) {
                                 fieldId="glory"
                                 group="glory"
                                 field="single"
-                                value={props.activeKnight.knightData.glory || 0}
+                                value={characterGlory}
                                 placeHolderText="0"
                                 addWindowClickListener={addWindowClickListener}
                                 removeWindowClickListeners={removeWindowClickListeners}
@@ -607,7 +723,7 @@ export default function KnightSheet(props) {
                             )
                         })}
                         <h6>Directed Traits</h6>
-                        {props.activeKnight.knightData.directedTraits.map((item, index)=>{
+                        {arDirectedTraits.map((item, index)=>{
                             return (
                                 <Row  className="lv-pair">
                                     <Col xs={1} lg={1} className="tick_col">
@@ -755,6 +871,30 @@ export default function KnightSheet(props) {
                 </Col>
 
                 <Col className="charsheet-column" xs={12} lg={4}>
+                    <div className="charsheet-box aligned-div">
+                        <Col xs={9} className="label-col">
+                        <h5 className="resSP-total label-view">Skill Points: </h5>
+                        </Col>
+                        <Col xs={3} className="value-col">
+                        <h5 className="value-field">
+                            <ViewEdit
+                                key={"resSP_val"} 
+                                id={"resSP_val"}
+                                fieldId="skillPoints"
+                                group="reserves"
+                                field="single"
+                                value={reserveSkillPoints}
+                                placeHolderText="0"
+                                addWindowClickListener={addWindowClickListener}
+                                removeWindowClickListeners={removeWindowClickListeners}
+                                editInProgress={editInProgress}
+                                setEditInProgress={setEditInProgress}
+                                saveEdit={props.saveEdit}
+                                deleteEntry={props.deleteEntry}
+                            />
+                        </h5>
+                        </Col>
+                    </div>
                 <h6>Combat Skills</h6>
                     <div key="combatSkills" className="charsheet-box">
                         {sCombatSkillsGeneral.map((item, index)=>{

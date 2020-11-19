@@ -35,15 +35,18 @@ class AuxList extends React.Component {
             const auxId = Disp.getOpenAuxId()
             console.log("AUXLIST :: MOUNTING: getting activeAuxData for:",auxId)
             let auxData = {_id: ''};
-
-            if (props.auxiliaries[Disp.getOpenAuxList()]){
-                for (var a of props.auxiliaries[Disp.getOpenAuxList()]) {
-                    console.log("AUXLIST :: prevAuxSheet : checking if Aux:",a," has an _id of",auxId)
-                    if (a._id===auxId) {
-                        console.log("AUXLIST :: prevAuxSheet : match found:",a.who)
-                        auxData = a
+            if (props.auxiliaries){
+                if (props.auxiliaries[Disp.getOpenAuxList()]){
+                    for (var a of props.auxiliaries[Disp.getOpenAuxList()]) {
+                        console.log("AUXLIST :: prevAuxSheet : checking if Aux:",a," has an _id of",auxId)
+                        if (a._id===auxId) {
+                            console.log("AUXLIST :: prevAuxSheet : match found:",a.who)
+                            auxData = a
+                        }
                     }
                 }
+            } else {
+                return [];
             }
             console.log("AUXLIST :: MOUNTING: auxData._id:",auxData._id)
             return auxData;
@@ -52,17 +55,20 @@ class AuxList extends React.Component {
         function prevAuxListData () {
             const list = Disp.getOpenAuxList()
             console.log("AUXLIST :: MOUNTING: getting AuxListData for:",list)
-       
-            if (props.auxiliaries[list]) {
-            const auxListData = 
-                props.auxiliaries[list].map(aux=>{
-                    console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
-                    const lab = aux.who[0].label
-                    const val = aux.who[0].value
-                    return ({[lab]:val, auxId:aux._id})
-                })
-            console.log("AUXLIST :: auxListData:",auxListData)
-            return auxListData
+            if (props.auxiliaries){
+                if (props.auxiliaries[list]) {
+                const auxListData = 
+                    props.auxiliaries[list].map(aux=>{
+                        console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
+                        const lab = aux.who[0].label
+                        const val = aux.who[0].value
+                        return ({[lab]:val, auxId:aux._id})
+                    })
+                console.log("AUXLIST :: auxListData:",auxListData)
+                return auxListData
+                } else {
+                    return [];
+                }
             } else {
                 return [];
             }

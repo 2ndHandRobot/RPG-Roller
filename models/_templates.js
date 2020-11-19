@@ -74,7 +74,7 @@ const personality= [
     },
     {
         trait1:{label:"Trusting",isTicked: false},
-        trait2:{label:"Suspiscious",isTicked: false},
+        trait2:{label:"Suspicious",isTicked: false},
         value: 10
     },
     {
@@ -276,8 +276,9 @@ const combatSkills=
         ],
         stats: [
             {label: "SIZ", value: 0},
-            {label: "CON", value: 0},
             {label: "DEX", value: 0},
+            {label: "STR", value: 0},
+            {label: "CON", value: 0},
             {label: "HP", value: 0},
             {label: "Attack", value: 0},
             {label: "Damage", value: 0},

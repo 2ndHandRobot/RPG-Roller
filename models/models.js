@@ -19,7 +19,7 @@ const DiceSetSchema = new mongoose.Schema ({
 const LabelNumberPairSchema = new mongoose.Schema ({
     index: Number,
     label: { type: String, default: '' },
-    value: { type: Number, min: [0, 'cannot be negative'], default: 0 },
+    value: { type: Number, default: 0 },
     isTicked: { type: Boolean, default: false }
 })
 
@@ -134,7 +134,8 @@ const CharacterSchema = new mongoose.Schema ({
     animals: [{type: AuxSchema, default: ()=>{auxType: "animal"}}],
     familyMembers: [{type: AuxSchema, default: ()=>{auxType: "familyMember"}}],
     followers: [{type: AuxSchema, default: ()=>{auxType: "follower"}}],
-    history: [LabelNumberPairSchema]
+    history: [LabelNumberPairSchema],
+    reserves: Object
 });
 
 const BugReportSchema = new mongoose.Schema ({

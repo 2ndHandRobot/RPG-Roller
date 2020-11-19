@@ -2,6 +2,12 @@ import React, { useState, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 
+import Reserves from './Reserves';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle,faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+
+
 // DESCRIPTION
 // The ViewEdit component is a toggleable diplay unit
 // It allows you to display a value, which becomes editable when clicked
@@ -44,6 +50,12 @@ import _ from 'lodash';
             this.handleParaClick = this.handleParaClick.bind(this);
             this.handleClickOutside = this.handleClickOutside.bind(this);
             
+
+            if (typeof props.invalid === 'undefined'){
+                this.verif = false
+            } else {
+                this.verif = true
+            }
             // console.log("VIEWEDIT :: state.value:",this.state.value)
             // console.log("length:",  this.state.value.length)
             // console.log("VIEWEDIT :: state.editMode:",this.state.editMode)
@@ -90,6 +102,36 @@ import _ from 'lodash';
                     this.setState({value: this.props.value})
                 }
             }
+
+            // If update is to a reserve pool, also adjust global reserve value
+            if (this.props.group === "reserves") {
+                Reserves.setReserve(this.props.fieldId, this.state.value)
+            }
+
+
+            // If update is to a skill value, also adjust reserve
+            if (this.props.group.toLowerCase().includes("skill")) {
+                const pointSpend = this.state.value - this.fallBackValue
+                const newTotal = Reserves.getReserve("skillPoints") - pointSpend;
+                console.log("Skill point spend:", pointSpend,". New total:",newTotal)
+                Reserves.setReserve("skillPoints",newTotal);
+
+                let resPayload = {
+                    group: "reserves",
+                    field: "single",
+                    value: newTotal,
+                    fieldId: "skillPoints"
+                }
+                let resSaved = this.props.saveEdit(resPayload);
+                if (!resSaved) {
+                    console.log("VE :: confirmEdit reserve update: Save outcome = false")
+                } else {
+                    console.log("VE :: confirmEdit reserve update: Save outcome = true")
+                }
+
+            }
+
+
             // Disable or nullify the click-outside event listener
             this.props.removeWindowClickListeners();
         }
@@ -217,7 +259,7 @@ import _ from 'lodash';
                             // ref={textInput}
                             value={this.state.value}    
                         />
-                        : <p 
+                        : <div
                             key={this.props.fieldId+"_"+this.props.field+"_p"}
                             id={this.props.fieldId+"_"+this.props.field+"_p"}
                             name={this.props.field}
@@ -234,9 +276,18 @@ import _ from 'lodash';
                             {
                                 (['',0].includes(this.state.value)) 
                                 ? this.placeHolderText
-                                : this.state.value
+                                : <div className="ghost-div aligned-div">
+                                    <p className={this.state.value&&this.props.field+"-view"}>
+                                        {this.state.value}
+                                    </p>
+                                    {this.verif&&(
+                                        this.props.invalid
+                                        ?  <span>  <FontAwesomeIcon icon={faQuestionCircle} color="red" /></span>
+                                        :  <span>  <FontAwesomeIcon icon={faCheckCircle} color="green" /></span>
+                                    )}
+                                  </div>
                                 }
-                        </p>
+                        </div>
                     }
                     {/* </Col> */}
                 </Container>

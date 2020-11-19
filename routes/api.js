@@ -170,7 +170,7 @@ router.get('/users/:userId/charactersheet/:characterId', (req, res)=>{
 router.post('/create', (req, res) => {
    console.log('API :: ROUTING: Creating new character. Body:',req.body)
    const data = req.body;
-   console.log("data:",data)
+   // console.log("data:",data)
    const newCharacter = new models.Characters(data);
    console.log("New character:",JSON.stringify(newCharacter))
 
@@ -589,6 +589,14 @@ router.get('/users/:userId/dicesets', (req, res)=>{
             res.json(errSend)
         })
 })
+
+// reserve routes
+router.post('/getReserve', (req,res)=>{
+   const reserveName = req.body
+
+
+})
+
 
 // Bug Report Route
 router.post('/report-bug', (req, res)=>{
