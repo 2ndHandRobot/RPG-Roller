@@ -265,9 +265,10 @@ export default function CharacterSheet(props) {
         console.log("Handling Tick Event on",fieldId)
         console.log("checked:",event.target.checked)
         
-        if (event.target.group === "armour") {
+        let group = event.target.group
+        if (event.target.name === "armour") {
             console.log("ticked an armour box. Updating total")
-            
+            group = event.target.name
             for (var a of sArmour) {
                 console.log("sArmour item:",a)
                 if (a._id === event.target.id) {
@@ -280,7 +281,7 @@ export default function CharacterSheet(props) {
         }
 
         const payload = {
-            group: event.target.group,
+            group: group,
             field: "isTicked",
             value: event.target.checked,
             fieldId: fieldId
@@ -643,10 +644,10 @@ export default function CharacterSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id} 
-                                            group="armour" 
+                                            name="armour" 
                                             field="checkBox"
                                             className="entry_tick" 
-                                            onClick={(event)=>{handleBoxTick(event, item._id)}} 
+                                            onClick={(event)=>{console.log("Box ticked:",event.target.name);handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
                                     </Col>
