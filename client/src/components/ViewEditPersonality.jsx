@@ -9,7 +9,7 @@ import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ViewEdit(props) {
-    // console.log("LOADING ViewEditPersonality. Props: ", JSON.stringify(props));
+    console.log("LOADING ViewEditPersonality. Props: ", JSON.stringify(props));
 
         function personalityObj (traitsObj) {
 
@@ -77,6 +77,28 @@ export default function ViewEdit(props) {
             }
             
         }
+        
+        let religiousTraitList = {
+            'Arian Christian': ['Chaste', 'Honest', 'Just', 'Merciful', 'Temperate'],
+            'British Christian': ['Chaste', 'Energetic', 'Generous', 'Modest', 'Temperate'],
+            'Roman Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
+            Heathen: ['Vengeful', 'Honest', 'Proud', 'Arbitrary', 'Worldly'],
+            Jewish: ['Chaste', 'Energetic', 'Just', 'Prudent', 'Temperate'],
+            'British Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
+            'Germanic Pagan': ['Generous', 'Proud', 'Worldly', 'Reckless', 'Indulgent'],
+        }
+
+        function isReligious(trait){
+            console.log("Religious traits:",religiousTraitList[props.religion],". Looking for:",trait)
+            const relTraits = religiousTraitList[props.religion]
+            console.log("Religious traits:",relTraits)
+            let isRel = false;
+            if (relTraits !== undefined){
+                isRel = relTraits.includes(_.capitalize(trait))
+            }
+            
+            return isRel
+        }
 
         let personalityPair = personalityObj(props.entry);
         
@@ -101,7 +123,7 @@ export default function ViewEdit(props) {
                         onClick={handleBoxTick} 
                         defaultChecked={personalityPair.tick1}
                     />
-                    <p className="trait trait1">{_.startCase(personalityPair.trait1)}</p>
+                    <p className={isReligious(personalityPair.trait1)?"trait trait1 religious-trait":"trait trait1"}>{_.startCase(personalityPair.trait1)}</p>
                 </Col>
                 <Col xs={1} lg={1} className="line-container text-right">
                     <div className="traitVals">
@@ -117,7 +139,7 @@ export default function ViewEdit(props) {
                     </div>
                 </Col>
                 <Col xs={4} lg={4} className="line-container trait trait2">
-                    <p className="trait trait2">{_.startCase(personalityPair.trait2)}</p>
+                    <p className={isReligious(personalityPair.trait2)?"trait trait2 religious-trait":"trait trait2"}>{_.startCase(personalityPair.trait2)}</p>
                     <input 
                         type="checkbox" 
                         id={props.entry._id+"_tick2"} 

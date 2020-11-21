@@ -164,6 +164,9 @@ export default function CharacterSheet(props) {
 
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
+    // const [isChivalrous, setChivalrous] = useState();
+    // const [isReligious, setReligious] = useState();
+
 
 
     function getNested(obj, ...args) {
@@ -223,6 +226,15 @@ export default function CharacterSheet(props) {
         window.removeClickListeners();
     }
 
+    function findItemLabelled(obj,lab){
+        console.log("Looking for",lab,"in",obj)
+        for (let item in obj) {
+            if (obj[item].label === lab){
+                console.log("Found:",obj[item])
+                return obj[item]    
+            }
+        }
+    }
     
     function getStat(statName){
         const stat = sStatistics.filter(stat=>stat.label === statName)[0]
@@ -331,8 +343,33 @@ export default function CharacterSheet(props) {
         if (equippedArmour.length>0){
             sumArmour = equippedArmour.reduce((a,b)=>a+b);
         }
+        if (isChivalrous()) {
+            sumArmour += 3
+        }
         console.log("new armour value is:",sumArmour)
         return sumArmour;
+    }
+
+    function isChivalrous(){
+        const chivTraits = ["Generous", "Energetic", "Modest", "Just", "Merciful", "Valorous"]
+        let chivTotal = 0
+        
+        for (let trait in sPersonality) {
+            console.log("Trait:",sPersonality[trait])
+            if (chivTraits.includes(sPersonality[trait].trait1.label)){
+                console.log("Chivalrous trait found. Value:",sPersonality[trait].value)
+                chivTotal += sPersonality[trait].value
+                console.log("New chivalrous total:",chivTotal)
+
+            }
+        }
+
+        console.log("Chivalry total:",chivTotal)
+        if (chivTotal > 80){
+            return true
+        } else {
+            return false
+        }
     }
 
     const VEFuncs = {
@@ -720,6 +757,7 @@ export default function CharacterSheet(props) {
                                     canEditLabel={false}
                                     canEditValue={true}
                                     saveEntry={props.saveEntry}
+                                    religion={findItemLabelled(sPersonalInfo,"Religion").value}
                                 />
                             )
                         })}

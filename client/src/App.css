@@ -546,3 +546,6 @@ hr {
 		opacity: 1;
 	}
 }
+.religious-trait {
+  text-decoration: underline;
+}
