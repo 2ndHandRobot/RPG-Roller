@@ -50,7 +50,7 @@ footer {
 
 .FontAwesomeIcon {
   align-self: center;
-  
+
 }
 .v-icon {
   padding: inherit 2px;
@@ -138,7 +138,7 @@ footer {
 
 .desc-field {
   border-bottom: none;
-  
+
 }
 
 .desc-edit {
@@ -248,8 +248,8 @@ footer {
   padding-left: 0;
   padding-right: 0;
   margin: 0;
-  
-  display: flex; 
+
+  display: flex;
   align-items: center;
 }
 
@@ -516,7 +516,7 @@ hr {
   padding-right: 10px;
   font-style: italic;
 }
-      
+
 #aux-add-button span {
   padding-left: 6px;
 }
@@ -546,4 +546,3 @@ hr {
 		opacity: 1;
 	}
 }
-

@@ -14,9 +14,9 @@ function Header (props) {
         Auth.authenticate(loginData, props.setUserId)
     }
     return (
-  
+
             <div className="Header">
-                {  
+                {
                     loggedIn ? (
                         <button className="btn btn-primary shadow-none login-btn" onClick={logout}>Log Out</button>
                     ) : (
@@ -28,7 +28,7 @@ function Header (props) {
                 }
                 <hr className="hr-stripe" />
             </div>
- 
+
         )
 }
 

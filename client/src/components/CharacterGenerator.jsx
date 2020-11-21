@@ -35,7 +35,7 @@ function newChar(preSelects) {
         let characterData = {}
         let characterSheet = {}
         let n = 0
-    
+
 
 // Set up random selection tables
 // VERIFICATION OBJECT
@@ -366,7 +366,7 @@ let homelandSelect = [
             100:'Strangorre',
         }
     ],
-    
+
     // Cornwall & Brittany objects:
     [
         // Cornwall & Brittany: Uther, Anarchy
@@ -469,17 +469,17 @@ let homeSelect ={
         },
         Cumbria: {
             Cambenet: { 4: 'Cambenet', 6: 'Carduel' },
-            Malahaut: { 1: 'Brigantia', 2: 'Catterick', 
+            Malahaut: { 1: 'Brigantia', 2: 'Catterick',
                 3: ()=>{
-                    if (['Uther','Anarchy','Boy King','Conquest'].includes(buildChar.period)) { 
-                        return 'Eburacum' 
-                    } else { 
+                    if (['Uther','Anarchy','Boy King','Conquest'].includes(buildChar.period)) {
+                        return 'Eburacum'
+                    } else {
                         return 'Deira'}
-                    }, 
+                    },
                     4: 'Eburacum', 5: 'Richmond', 6: 'Ripon' },
-            // Malahaut: { 
-            //     1: 'Brigantia', 
-            //     2: 'Catterick', 
+            // Malahaut: {
+            //     1: 'Brigantia',
+            //     2: 'Catterick',
             //     3: {
             //         period:{
             //             locate:[
@@ -503,7 +503,7 @@ let homeSelect ={
             //     if (['Uther','Anarchy','Boy King','Conquest'].includes(period)) {
                 //     return 'Lothian'
                 // } else {return 'Castle of Maidens'}}, 2: 'Edinburgh', 5:'Lothian', 6: 'The Orkneys' },
-            Lothian: { 
+            Lothian: {
                 1: {
                     period:{
                         locate:[
@@ -516,9 +516,9 @@ let homeSelect ={
                         ]
                     }
                 },
-                2: 'Edinburgh', 
-                5:'Lothian', 
-                6: 'The Orkneys' 
+                2: 'Edinburgh',
+                5:'Lothian',
+                6: 'The Orkneys'
             },
             Strangorre: { 1: 'Alcud', 6: 'Strangorre' }
         },
@@ -549,7 +549,7 @@ let homeSelect ={
             'Munster':'Munster',
             'Oriel':'Oriel',
             'Pomitain':'Pomitain',
-            
+
         }
     }
 
@@ -924,7 +924,7 @@ let familyTraitSelect = {
         17: 'Beautiful voice',
         18: 'Nimble fingers',
         20: 'Potion brewer: ',
-        
+
     }
 }
 
@@ -970,7 +970,7 @@ let defaultSkillBonus = [{
             'combatSkills.weapons.Lance':'8',
             'combatSkills.weapons.Spear':'2',
             'combatSkills.weapons.Dagger':'2',
-        },      
+        },
         Female:{
             'skills.Awareness':'4',
             'skills.Boating':'0',
@@ -1040,7 +1040,7 @@ let defaultSkillBonus = [{
             'combatSkills.weapons.Lance':'2',
             'combatSkills.weapons.Spear':'2',
             'combatSkills.weapons.Dagger':'4',
-        },    
+        },
         Female:{
             'skills.Awareness':'3',
             'skills.Boating':'0',
@@ -1895,7 +1895,7 @@ let defaultSkillBonus = [{
         }
     }
 }]
-    
+
 // LOCATE OBJECT :: locators object for father's class along three dimensions: period, region and culture
 let fatherClassLocate = {
     // dimension 1: Region
@@ -1929,14 +1929,14 @@ let fatherClassSelect = {
                     [
                         // Early period
                         {
-                            1:'Lord or Officer',   
+                            1:'Lord or Officer',
                             2:'Banneret Knight',
                             8:'Vassal Knight',
                             10:'Bachelor Knight',
                             13:'Mercenary Knight',
                             16:'Squire',
                             20:'Warrior',
-                        },  
+                        },
                         // Late period
                         {
                             1:'Lord or Officer',
@@ -1947,7 +1947,7 @@ let fatherClassSelect = {
                             20:'Squire',
                         },
                     ],
-                    
+
                     // Roman
                     [
                         {
@@ -1965,7 +1965,7 @@ let fatherClassSelect = {
                             10:'Vassal Knight',
                             14:'Bachelor Knight',
                             16:'Mercenary Knight',
-                            20:'Squire',              
+                            20:'Squire',
                         },
                     ],
                     // Saxon
@@ -1980,7 +1980,7 @@ let fatherClassSelect = {
                     ],
                 ],
             Saxon:[
-                
+
                 {
                     3:'Mercenary Knight',
                     7:'Squire',
@@ -2197,8 +2197,8 @@ let fatherClassSelect = {
 }
 
 // SELECT OBJECT :: Lord/Officer father's class selector arrays by region (object property), culture (object property) and time period (selector index 2)
-let officerSelect = { 
-    
+let officerSelect = {
+
     Logres: {
         Cymric: [
             // Early Period
@@ -2242,7 +2242,7 @@ let officerSelect = {
         ],
     },
     Saxon: [
-        
+
         // Late Period
         {
             1:'Seneschal',
@@ -2312,7 +2312,7 @@ let officerSelect = {
 }
 
 /// BONUS OBJECT :: familiy characteristic bonus setter (to be modified to return the bonus object instead of running a setBonus)
-let familyTraitBonus = {    
+let familyTraitBonus = {
     'Keen on status': ()=>{setBonus('skills.Courtesy', '5');console.log('Courtesy now',getNested(characterData,'skills','Courtesy'))},
     'Spiritual bent': ()=>{setBonus('skills.Religion', '5');console.log('Religion now',getNested(characterData,'skills','Religion'))},
     'Knows the commoners': ()=>{setBonus('skills.Folklore', '5');console.log('Folklore now',getNested(characterData,'skills','Folklore'))},
@@ -2349,17 +2349,17 @@ function fatherClassBonus(fClass, culture, period) {
         case 'Legionnarius':
             bonusObj = {
                 'Glory': '3d6+50',
-                'reserves.skillPoints': '18', 
-                'skills.Awareness': '1', 
+                'reserves.skillPoints': '18',
+                'skills.Awareness': '1',
                 'combatSkills.weapons.Spear': '1',
                 'combatSkills.weapons.Sword': '1',
-                'combatSkills.weapons.Grapple': '2', 
+                'combatSkills.weapons.Grapple': '2',
                 'combatSkills.weapons.Dagger': '3',
-                'personalityPairs.Modest': '-1', 
-                'personalityPairs.Prudent': '1d3', 
-                'personalityPairs.Generous': '-1d3-2', 
-                'personalityPairs.Merciful': '-d6', 
-                'personalityPairs.Valorous': '1', 
+                'personalityPairs.Modest': '-1',
+                'personalityPairs.Prudent': '1d3',
+                'personalityPairs.Generous': '-1d3-2',
+                'personalityPairs.Merciful': '-d6',
+                'personalityPairs.Valorous': '1',
                 'personalityPairs.Honour': '1d3',
                 'passions.Loyalty (Lord)': '1',
                 'Equipment':()=>{
@@ -2376,16 +2376,16 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
                 'Glory': '6d6',
                 'reserves.skillPoints': '20',
-                'personalityPairs.Energetic': '1d3', 
-                'personalityPairs.Modest': '1d3', 
-                'personalityPairs.Prudent': '1d3', 
-                'personalityPairs.Valorous': '1d6', 
+                'personalityPairs.Energetic': '1d3',
+                'personalityPairs.Modest': '1d3',
+                'personalityPairs.Prudent': '1d3',
+                'personalityPairs.Valorous': '1d6',
                 'passions.Loyalty (Lord)': '3',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['Irish', 'Pict'].includes(culture)) {
                         eqpt.push( "Footsoldier's Outfit" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 1")
                     }
                     let luckItems = rollLuck(1);
@@ -2395,19 +2395,19 @@ function fatherClassBonus(fClass, culture, period) {
             }
         break;
 
-        case 'Mercenary Knight': 
+        case 'Mercenary Knight':
             bonusObj = {
                 'Glory': '6d6+100',
-                'reserves.skillPoints': '20', 
-                'combatSkills.weapons.Sword': '3', 
+                'reserves.skillPoints': '20',
+                'combatSkills.weapons.Sword': '3',
                 'combatSkills.weapons.Other weapon': '3',
-                'personalityPairs.merciful': '-1d6', 
+                'personalityPairs.merciful': '-1d6',
                 'personalityPairs.valorous': '1d3',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['Roman'].includes(culture)) {
                         eqpt.push( "Outfit 3" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 2")
                     }
                     let luckItems = rollLuck(1);
@@ -2421,13 +2421,13 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
                 'Glory': '6d6+50',
                 'reserves.skillPoints': '24',
-                'skills.Awareness': '2', 
-                'combatSkills.weapons.Spear': '2', 
+                'skills.Awareness': '2',
+                'combatSkills.weapons.Spear': '2',
                 'combatSkills.weapons.Cultural Weapon': '3',
-                'personalityPairs.Modest': '-1', 
-                'personalityPairs.Prudent': '-1d3', 
-                'personalityPairs.Valorous': '1d3+2', 
-                'passions.Honour': '1d6', 
+                'personalityPairs.Modest': '-1',
+                'personalityPairs.Prudent': '-1d3',
+                'personalityPairs.Valorous': '1d3+2',
+                'passions.Honour': '1d6',
                 'passions.Loyalty (Lord)': '3',
                 'Equipment':()=>{
                     let eqpt=[];
@@ -2442,11 +2442,11 @@ function fatherClassBonus(fClass, culture, period) {
         case 'Family Chieftain':
             bonusObj = {
                 'Glory': '2d6+100',
-                'reserves.skillPoints': '28', 
+                'reserves.skillPoints': '28',
                 'combatSkills.weapons.Cultural Weapon': '2',
-                'passions.Love (family)': '1d3', 
-                'personalityPairs.Valorous': '1d3', 
-                'passions.Honour': '1d3', 
+                'passions.Love (family)': '1d3',
+                'personalityPairs.Valorous': '1d3',
+                'passions.Honour': '1d3',
                 'passions.Loyalty (Lord)': '1d3+3',
                 'Equipment':()=>{
                     let eqpt=[];
@@ -2462,10 +2462,10 @@ function fatherClassBonus(fClass, culture, period) {
         case 'Tribal or Clan Chieftain':
             bonusObj = {
                 'Glory': '6d6+250',
-                'reserves.skillPoints': '30', 
+                'reserves.skillPoints': '30',
                 'combatSkills.weapons.Cultural Weapon': '3',
-                'personalityPairs.Valorous': '1d3', 
-                'passions.Loyalty (Clan)': '2d6+6', 
+                'personalityPairs.Valorous': '1d3',
+                'passions.Loyalty (Clan)': '2d6+6',
                 'passions.Honour': '1d6',
                 'Equipment':()=>{
                     let eqpt=[];
@@ -2481,14 +2481,14 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
                 'Glory': '6d6+250',
                 'reserves.skillPoints': '26',
-                'personalityPairs.Valorous': '1', 
-                'passions.Loyalty (Lord)': '3', 
+                'personalityPairs.Valorous': '1',
+                'passions.Loyalty (Lord)': '3',
                 'passions.Honour': '1',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['Irish', 'Pict', 'French', 'Saxon'].includes(culture)) {
                         eqpt.push( "Outfit 2" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 3")
                     }
                     let luckItems = rollLuck(1);
@@ -2502,14 +2502,14 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj =  {
                 'Glory': '6d6+250',
                 'reserves.skillPoints': '30',
-                'personalityPairs.Valorous': '2', 
-                'passions.Loyalty (Lord)': '4', 
+                'personalityPairs.Valorous': '2',
+                'passions.Loyalty (Lord)': '4',
                 'passions.Honour': '1',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['Irish', 'Pict', 'French', 'Saxon'].includes(culture)) {
                         eqpt.push( "Outfit 2" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 3")
                     }
                     let luckItems = rollLuck(1);
@@ -2523,14 +2523,14 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
                 'Glory': '6d6+250',
                 'reserves.skillPoints': '32',
-                'personalityPairs.Valorous': '3', 
-                'passions.Loyalty (Lord)': '5', 
+                'personalityPairs.Valorous': '3',
+                'passions.Loyalty (Lord)': '5',
                 'passions.Honour': '1d3',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['Irish', 'Pict', 'French', 'Saxon'].includes(culture)) {
                         eqpt.push( "Outfit 2" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 3")
                     }
                     let luckItems = rollLuck(2);
@@ -2544,17 +2544,17 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
                 'Glory': '6d6+300',
                 'reserves.skillPoints': '28',
-                'personalityPairs.Valorous': '1', 
-                'passions.Loyalty (Lord)': '4', 
+                'personalityPairs.Valorous': '1',
+                'passions.Loyalty (Lord)': '4',
                 'passions.Honour': '1d3',
-                'skills.Stewardship': '5', 
-                'skills.Intrigue': '3', 
+                'skills.Stewardship': '5',
+                'skills.Intrigue': '3',
                 'passions.Hospitality': '1d3',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['French', 'Saxon'].includes(culture)) {
                         eqpt.push( "Outfit 3" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 4")
                     }
                     let luckItems = rollLuck(1);
@@ -2568,15 +2568,15 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
                 'Glory': '6d6+300',
                 'reserves.skillPoints': '28',
-                'personalityPairs.Valorous': '1d3+1', 
-                'passions.Loyalty (Lord)': '4', 
+                'personalityPairs.Valorous': '1d3+1',
+                'passions.Loyalty (Lord)': '4',
                 'passions.Honour': '1d3',
-                'skills.Battle': '5', 
+                'skills.Battle': '5',
                 'Equipment':()=>{
                     let eqpt=[];
                     if (['French', 'Saxon'].includes(culture)) {
                         eqpt.push( "Outfit 3" )
-                    } else { 
+                    } else {
                         eqpt.push ("Outfit 4")
                     }
                     let luckItems = rollLuck(1);
@@ -2585,21 +2585,21 @@ function fatherClassBonus(fClass, culture, period) {
                 },
             }
         break;
-    
-        case 'Butler': 
+
+        case 'Butler':
             bonusObj = {
             'Glory': '6d6+300',
             'reserves.skillPoints': '28',
             'personalityPairs.Generous': '3',
-            'personalityPairs.Valorous': '1', 
-            'passions.Loyalty (Lord)': '4', 
+            'personalityPairs.Valorous': '1',
+            'passions.Loyalty (Lord)': '4',
             'passions.Honour': '1d3',
-            'skills.Courtesy': '2', 
+            'skills.Courtesy': '2',
             'Equipment':()=>{
                 let eqpt=[];
                 if (['French', 'Saxon'].includes(culture)) {
                     eqpt.push( "Outfit 3" )
-                } else { 
+                } else {
                     eqpt.push ("Outfit 4")
                 }
                 let luckItems = rollLuck(1);
@@ -2613,10 +2613,10 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
             'Glory': '6d6+300',
             'reserves.skillPoints': '28',
-            'personalityPairs.Valorous': '1', 
-            'passions.Loyalty (Lord)': '4', 
+            'personalityPairs.Valorous': '1',
+            'passions.Loyalty (Lord)': '4',
             'passions.Honour': '1d3',
-            'skills.Read (Latin)': '5', 
+            'skills.Read (Latin)': '5',
             'skills.Heraldry': ()=>{if (['Uther','Anarchy'].includes(period)) { return '0' } else {return '3'}},
             'skills.Recognise': ()=>{if (['Uther','Anarchy'].includes(period)) { return '3' } else {return '0'}},
 
@@ -2624,7 +2624,7 @@ function fatherClassBonus(fClass, culture, period) {
                 let eqpt=[];
                 if (['French', 'Saxon'].includes(culture)) {
                     eqpt.push( "Outfit 3" )
-                } else { 
+                } else {
                     eqpt.push ("Outfit 4")
                 }
                 let luckItems = rollLuck(1);
@@ -2638,8 +2638,8 @@ function fatherClassBonus(fClass, culture, period) {
         bonusObj = {
             'Glory': '6d6+300',
             'reserves.skillPoints': '28',
-            'personalityPairs.Valorous': '1', 
-            'passions.Loyalty (Lord)': '4', 
+            'personalityPairs.Valorous': '1',
+            'passions.Loyalty (Lord)': '4',
             'passions.Honour': '1d3',
             'skills.Tourney': ()=>{if (['Uther','Anarchy'].includes(period)) { return '0' } else {return '5'}},
             'skills.Battle': ()=>{if (['Uther','Anarchy'].includes(period)) { return '3' } else {return '0'}},
@@ -2648,7 +2648,7 @@ function fatherClassBonus(fClass, culture, period) {
                 let eqpt=[];
                 if (['French', 'Saxon'].includes(culture)) {
                     eqpt.push( "Outfit 3" )
-                } else { 
+                } else {
                     eqpt.push ("Outfit 4")
                 }
                 let luckItems = rollLuck(1);
@@ -2662,17 +2662,17 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
             'Glory': '6d6+300',
             'reserves.skillPoints': '28',
-            'personalityPairs.Valorous': '1', 
-            'passions.Loyalty (Lord)': '4', 
+            'personalityPairs.Valorous': '1',
+            'passions.Loyalty (Lord)': '4',
             'passions.Honour': '1d3',
-            'skills.Awareness': '1d6', 
-            'skills.Falconry': '2', 
+            'skills.Awareness': '1d6',
+            'skills.Falconry': '2',
             'skills.Hunting': '5',
             'Equipment':()=>{
                 let eqpt=[];
                 if (['French', 'Saxon'].includes(culture)) {
                     eqpt.push( "Outfit 3" )
-                } else { 
+                } else {
                     eqpt.push ("Outfit 4")
                 }
                 let luckItems = rollLuck(1);
@@ -2686,17 +2686,17 @@ function fatherClassBonus(fClass, culture, period) {
         bonusObj = {
             'Glory': '6d6+300',
             'reserves.skillPoints': '28',
-            'personalityPairs.Valorous': '1', 
-            'passions.Loyalty (Lord)': '4', 
+            'personalityPairs.Valorous': '1',
+            'passions.Loyalty (Lord)': '4',
             'passions.Honour': '1d3',
-            'skills.Battle': '2', 
-            'skills.Courtesy': '2', 
+            'skills.Battle': '2',
+            'skills.Courtesy': '2',
             'skills.Stewardship': '2',
             'Equipment':()=>{
                 let eqpt=[];
                 if (['French', 'Saxon'].includes(culture)) {
                     eqpt.push( "Outfit 3" )
-                } else { 
+                } else {
                     eqpt.push ("Outfit 4")
                 }
                 let luckItems = rollLuck(1);
@@ -2710,22 +2710,22 @@ function fatherClassBonus(fClass, culture, period) {
             bonusObj = {
             'Glory': '6d6+300',
             'reserves.skillPoints': '32',
-            'skills.Courtesy': '2', 
+            'skills.Courtesy': '2',
             'skills.Heraldry': ()=>{if (['Uther','Anarchy'].includes(period)) { return '0' } else {return '2'}},
             'skills.Recognise': ()=>{if (['Uther','Anarchy'].includes(period)) { return '2' } else {return '0'}},
-            'skills.Intrigue': '2', 
-            'combatSkills.general.Battle': '2', 
-            'combatSkills.weapons.Sword': '3', 
+            'skills.Intrigue': '2',
+            'combatSkills.general.Battle': '2',
+            'combatSkills.weapons.Sword': '3',
             'combatSkills.weapons.Spear': '2',
-            'passions.Loyalty (Lord)': '6', 
-            'passions.Honour': '3', 
-            'personalityPairs.Modest': '-1d3', 
+            'passions.Loyalty (Lord)': '6',
+            'passions.Honour': '3',
+            'personalityPairs.Modest': '-1d3',
             'personalityPairs.Valorous': '1d3',
             'Equipment':()=>{
                 let eqpt=[];
                 if (['Saxon'].includes(culture)) {
                     eqpt.push( "Outfit 3" )
-                } else { 
+                } else {
                     eqpt.push ("Outfit 4")
                 }
                 let luckItems = rollLuck(3);
@@ -2734,7 +2734,7 @@ function fatherClassBonus(fClass, culture, period) {
             },
         }
         break;
-    
+
 }
 
 return ( bonusObj)
@@ -2847,55 +2847,55 @@ let luckSelect = {
 
 // BONUS OBJECT :: trait and passion bonus generation objects based on culture (access by object property)
 let cultureBonus = {
-    
+
     French:{
-       'personalityPairs.Modest': '12', 
-       'personalityPairs.Prudent': '-2', 
+       'personalityPairs.Modest': '12',
+       'personalityPairs.Prudent': '-2',
        'personalityPairs.Valorous': '2',
        'directedTraits.Indulgent (wine)': 'd6',
-       'passions.Loyalty (Lord)': 'd6', 
+       'passions.Loyalty (Lord)': 'd6',
        'passions.Honour': '1',
     },
     Irish:{
-       'personalityPairs.Forgiving': '-2', 
-       'personalityPairs.Temperate': '-2', 
+       'personalityPairs.Forgiving': '-2',
+       'personalityPairs.Temperate': '-2',
        'personalityPairs.Prudent': '-1',
-       'passions.Loyalty (Lord)': '-1d6', 
-       'passions.Love (family)': 'd6', 
+       'passions.Loyalty (Lord)': '-1d6',
+       'passions.Love (family)': 'd6',
        'passions.Honour': '-1'
     },
     Pict:{
-       'personalityPairs.Spiritual': '2', 
-       'personalityPairs.Suspicious': '2', 
+       'personalityPairs.Spiritual': '2',
+       'personalityPairs.Suspicious': '2',
        'personalityPairs.Merciful': '-1',
-       'passions.Love (family)': '2', 
-       'passions.Hospitality': '1', 
+       'passions.Love (family)': '2',
+       'passions.Hospitality': '1',
        'passions.Honour': '-2'
     },
     Roman:{
-       'personalityPairs.Honest': '-2', 
-       'personalityPairs.Spiritual': '-2', 
+       'personalityPairs.Honest': '-2',
+       'personalityPairs.Spiritual': '-2',
        'personalityPairs.Modest': '-2',
        'directedTraits.Suspicious (non-Romans)': 'd6',
        'passions.Loyalty (City) or (Emperor)': '3d6'
     },
     Saxon:{
-       'personalityPairs.Just': '-2', 
-       'personalityPairs.Merciful': '-1', 
-       'personalityPairs.Honest': '2', 
-       'personalityPairs.Energetic': '1', 
+       'personalityPairs.Just': '-2',
+       'personalityPairs.Merciful': '-1',
+       'personalityPairs.Honest': '2',
+       'personalityPairs.Energetic': '1',
        'personalityPairs.Valorous': '1',
-       'passions.Loyalty (Lord)': 'd6', 
+       'passions.Loyalty (Lord)': 'd6',
        'passions.Honour': '-1'
     },
     Occitanian:{
-       'personalityPairs.Forgiving': '-2', 
-       'personalityPairs.Temperate': '-2', 
-       'personalityPairs.Modest': '2', 
+       'personalityPairs.Forgiving': '-2',
+       'personalityPairs.Temperate': '-2',
+       'personalityPairs.Modest': '2',
        'personalityPairs.Spiritual': '-2',
        'directedTraits.Suspicious (religious fanatics)': 'd6',
-       'passions.Loyalty (Lord)': '-2', 
-       'passions.Honour': '1' 
+       'passions.Loyalty (Lord)': '-2',
+       'passions.Honour': '1'
     },
 }
 
@@ -2904,44 +2904,44 @@ let regionBonus = {
     Brittany:{
        'personalityPairs.Energetic': '1',
        'personalityPairs.Modest': '2,',
-       'personalityPairs.Prudent': '2', 
+       'personalityPairs.Prudent': '2',
        'personalityPairs.Valorous': '1',
     },
     Cambria:{
-       'personalityPairs.Just': '-2', 
-       'personalityPairs.Trusting': '-2', 
-       'personalityPairs.Prudent': '1', 
+       'personalityPairs.Just': '-2',
+       'personalityPairs.Trusting': '-2',
+       'personalityPairs.Prudent': '1',
        'personalityPairs.Temperate': '1',
     },
     Cumbria:{
-       'personalityPairs.Spiritual': '2', 
+       'personalityPairs.Spiritual': '2',
        'personalityPairs.Honest': '1',
-       'passions.Loyalty (Cumbrian lord)': '1d6', 
+       'passions.Loyalty (Cumbrian lord)': '1d6',
        'passions.Loyalty (non-Cumbrian lord)': '-1d6',
     },
     Cornwall:{
-       'personalityPairs.Just': '-2', 
-       'personalityPairs.Trusting': '-2', 
+       'personalityPairs.Just': '-2',
+       'personalityPairs.Trusting': '-2',
        'personalityPairs.Prudent': '2',
     },
     Ireland:{
        'personalityPairs.Chaste': '-1',
-       'personalityPairs.Energetic': '1', 
-       'personalityPairs.Honest': '2', 
+       'personalityPairs.Energetic': '1',
+       'personalityPairs.Honest': '2',
        'personalityPairs.Temperate': '2',
     },
     Logres:{
-       'personalityPairs.Energetic': '1', 
-       'personalityPairs.Forgiving': '1', 
-       'personalityPairs.Honest': '1', 
-       'personalityPairs.Just': '1', 
+       'personalityPairs.Energetic': '1',
+       'personalityPairs.Forgiving': '1',
+       'personalityPairs.Honest': '1',
+       'personalityPairs.Just': '1',
        'personalityPairs.Trusting': '1',
        'personalityPairs.Valorous': '1',
     },
     'The North':{
-       'personalityPairs.Prudent': '2', 
-       'personalityPairs.Selfish': '2', 
-       'personalityPairs.Pious': '1', 
+       'personalityPairs.Prudent': '2',
+       'personalityPairs.Selfish': '2',
+       'personalityPairs.Pious': '1',
        'personalityPairs.Temperate': '1',
        'passions.Love (family)': 'd3',
     },
@@ -3472,76 +3472,76 @@ let homelandBonus ={
 // CHECK OBJECT :: comparison objects for career quialification, organised by career class (object property)
 let qualificationCheck = {
     Footsoldier: {
-       'combatSkills.weapons.Great Spear': '10', 
-       'combatSkills.weapons.Other': '5', 
-       'personalityPairs.Valorous': '10', 
+       'combatSkills.weapons.Great Spear': '10',
+       'combatSkills.weapons.Other': '5',
+       'personalityPairs.Valorous': '10',
        'passions.Loyalty (Lord)': '10'
     },
     Warrior: {
-       'combatSkills.weapons.Cultural': '10', 
-       'skills.First Aid': '6', 
-       'personalityPairs.Valorous': '12', 
-       'passions.Loyalty (Lord)': '10', 
+       'combatSkills.weapons.Cultural': '10',
+       'skills.First Aid': '6',
+       'personalityPairs.Valorous': '12',
+       'passions.Loyalty (Lord)': '10',
        'passions.Honour': '8'
        },
     Sergeant:{
-        'combatSkills.weapons.Lance': '10', 
-        'combatSkills.weapons.Spear': '5', 
-        'combatSkills.weapons.Other': '10', 
-        'combatSkills.general.Horsemanship': '10', 
-        'personalityPairs.Valorous': '10', 
+        'combatSkills.weapons.Lance': '10',
+        'combatSkills.weapons.Spear': '5',
+        'combatSkills.weapons.Other': '10',
+        'combatSkills.general.Horsemanship': '10',
+        'personalityPairs.Valorous': '10',
         'passions.Loyalty (Lord)': '10'
     },
     Squire: {
-       'combatSkills.general.Battle': '1', 
+       'combatSkills.general.Battle': '1',
        'combatSkills.general.Horsemanship': '6',
-       'skills.First Aid': '6', 
-       'skills.Other': '5', 
-       'personalityPairs.Valorous': '8', 
+       'skills.First Aid': '6',
+       'skills.Other': '5',
+       'personalityPairs.Valorous': '8',
        'passions.Loyalty (Lord)': '10'
     },
     'Mercenary Knight': {
        'skills.First Aid': '6',
-       'combatSkills.weapons.Other': '10', 
-       'combatSkills.weapons.Lance': '10', 
-       'combatSkills.weapons.Spear': '5', 
-       'combatSkills.general.Horsemanship': '10', 
-       'personalityPairs.Valorous': '12', 
-       'passions.Loyalty (Lord)': '15', 
+       'combatSkills.weapons.Other': '10',
+       'combatSkills.weapons.Lance': '10',
+       'combatSkills.weapons.Spear': '5',
+       'combatSkills.general.Horsemanship': '10',
+       'personalityPairs.Valorous': '12',
+       'passions.Loyalty (Lord)': '15',
        'passions.Honour': '5'
     },
     'Knight Errant': {
         'skills.First Aid': '6',
-        'combatSkills.weapons.Other': '10', 
-        'combatSkills.weapons.Lance': '10', 
-        'combatSkills.weapons.Spear': '5', 
-        'combatSkills.general.Horsemanship': '10', 
-        'personalityPairs.Valorous': '12', 
-        'passions.Loyalty (Lord)': '15', 
+        'combatSkills.weapons.Other': '10',
+        'combatSkills.weapons.Lance': '10',
+        'combatSkills.weapons.Spear': '5',
+        'combatSkills.general.Horsemanship': '10',
+        'personalityPairs.Valorous': '12',
+        'passions.Loyalty (Lord)': '15',
         'passions.Honour': '5'
     },
     'Bachelor Knight': {
-        'combatSkills.weapons.Sword': '10', 
-        'combatSkills.weapons.Lance': '10', 
-        'combatSkills.general.Battle': '10', 
-        'combatSkills.general.Horsemanship': '10', 
+        'combatSkills.weapons.Sword': '10',
+        'combatSkills.weapons.Lance': '10',
+        'combatSkills.general.Battle': '10',
+        'combatSkills.general.Horsemanship': '10',
         'skills.First Aid': '10',
         'skills.Other': '10',
         'skills.Other': '10',
-        'personalityPairs.Valorous': '15', 
-        'passions.Loyalty (Lord)': '15', 
+        'personalityPairs.Valorous': '15',
+        'passions.Loyalty (Lord)': '15',
         'passions.Honour': '5'
     },
     'Vassal Knight': {
-        'combatSkills.weapons.Sword': '10', 
-        'combatSkills.weapons.Lance': '10', 
-        'combatSkills.general.Battle': '10', 
-        'combatSkills.general.Horsemanship': '10', 
+        'combatSkills.weapons.Sword': '10',
+        'combatSkills.weapons.Lance': '10',
+        'combatSkills.general.Battle': '10',
+        'combatSkills.general.Horsemanship': '10',
         'skills.First Aid': '10',
         'skills.Other': '10',
         'skills.Other': '10',
-        'personalityPairs.Valorous': '15', 
-        'passions.Loyalty (Lord)': '15', 
+        'personalityPairs.Valorous': '15',
+        'passions.Loyalty (Lord)': '15',
         'passions.Honour': '5'
     }
 }
@@ -3604,7 +3604,7 @@ let check = {
     //     }).toLowerCase();
     // }
 
-    
+
     function rollLuck(times){
         let luckCount = times || 1;
         console.log("Rolling luck",luckCount,'times.')
@@ -3677,7 +3677,7 @@ let check = {
                     officer = officer+'(Illegitimate)'
                 }
                 break;
-                    
+
             case "Cumbria":
                 console.log("From Cumbria...")
                 // cultureIndex = locateSelectObj(locate.fatherClass,char.region,char.culture)
@@ -3692,25 +3692,25 @@ let check = {
                     officer = officer+'(Illegitimate)'
                 }
                 break;
-                        
+
             case "The North":
                 console.log("From The North...")
                 // cultureIndex = locateSelectObj(locate.fatherClass,char.region,char.culture)
                 fatherClassObj = select.fatherClass[char.region][cultureIndex]
                 console.log("Father's class:",fatherClassObj," found in",select.fatherClass[char.region],"at index [",cultureIndex,"][0]")
                 break;
-                
+
             case "Ireland":
                 console.log("From Ireland...")
-                cultureIndex = 0    
+                cultureIndex = 0
                 if (getNested(char,'home')==='Meath' || getNested(char,'religion')==='British Pagan' || getNested(char,'culture')==='Pict') {
-                    cultureIndex = 1         
+                    cultureIndex = 1
                 }
                 fatherClassObj = select.fatherClass[char.region][cultureIndex][0]
                 break;
 
             default:
-                
+
                 console.log("From some other place... (period:",periodIndex,")")
                 console.log("Looking for select.fatherClass[",char.region,"][0][",periodIndex,"]")
                 fatherClassObj = select.fatherClass[char.region][0][periodIndex]
@@ -3772,7 +3772,7 @@ let check = {
                         // }
                         // periodArrays.shift();
                         // // console.log("regionItems:",regionItems,". periodArrays:",periodArrays)
-                        
+
                         // let periodCount = 0;
                         // let thresholds =[];
                         // for (let i = 0; i< periodArrays.length; i++) {
@@ -3786,7 +3786,7 @@ let check = {
                         // } while (thresholds[index] < iP)
                         // // console.log("index:",index,", threshold:",thresholds[index],"(perod index:",iP,")")
                         // thisRegion = regionItems[index]
-                        
+
                         thisRegion = locate.homeland.region[iR]
                         console.log("Region found:",thisRegion)
                         return thisRegion;
@@ -3804,33 +3804,49 @@ let check = {
         const diceNums=[];
         let valChange=0;
         let validDiceString = true;
-        
+
         function splitString(myString){
-            // console.log("splitting string")
+            console.log("splitting string:",myString)
             let stringPieces = [];
-            if (myString.indexOf("+")!=-1){
-                // console.log("found '+':",myString.indexOf("+"))
-                stringPieces.push(myString.slice(0,myString.indexOf("+")))
-                // console.log("piece added:",stringPieces)
-                // console.log("splitting rest:",myString.slice(myString.indexOf("+")+1))
-                splitString(myString.slice(myString.indexOf("+")+1))
-            } else if (myString.indexOf("-", 1)!=-1){
-                // console.log("found '-':",myString.indexOf("-",1))
-                stringPieces.push(myString.slice(0,myString.indexOf("-",1)))
-                // console.log("piece added:",stringPieces)
-                // console.log("splitting rest:",myString.slice(myString.indexOf("-",1)))
-                splitString(myString.slice(myString.indexOf("-",1)))
+            if (myString.length>0){
+               console.log("myString has length. Examining...")
+
+               if (myString.indexOf("+",1)!==-1){
+                   console.log("found '+':",myString.indexOf("+",1))
+                   stringPieces.push(myString.slice(0,myString.indexOf("+",1)))
+                   console.log("piece added:",stringPieces)
+                   let rest = myString.slice(myString.indexOf("+",1))
+                   if (rest.length>0){
+                      console.log("splitting rest:",rest)
+                      stringPieces.push(...splitString(rest))
+                   }
+               } else if (myString.indexOf("-", 1)!==-1){
+                   console.log("found '-':",myString.indexOf("-",1))
+                   stringPieces.push(myString.slice(0,myString.indexOf("-",1)))
+                   console.log("piece added:",stringPieces)
+                   let rest = myString.slice(myString.indexOf("-",1))
+                   if (rest.length>0){
+                      console.log("splitting rest:",rest)
+                      stringPieces.push(...splitString(rest))
+                   }
+               } else {
+                  console.log("No more pieces. Pushing remainder",myString,"to array.")
+                   stringPieces.push(myString)
+               }
+
+               return stringPieces;
             } else {
-                stringPieces.push(myString)
+               console.log("myString has no length. Returning nothing.")
+               return ;
             }
-            return stringPieces;
+
         }
-        // console.log("diceString:",diceString)
+        console.log("diceString:",diceString)
         const stringPieces=splitString(diceString)
-        // console.log("diceString split:",stringPieces)
+        console.log("diceString split:",stringPieces)
 
         stringPieces.forEach(bit=>{
-            // console.log("examining bit:",bit)
+            console.log("examining bit:",bit)
             let dIndex=-1;
             if (bit.includes("d")) {
                 dIndex = bit.indexOf("d")
@@ -3839,7 +3855,7 @@ let check = {
             }
             // console.log("dIndex:",dIndex)
             if (dIndex>-1) {
-                // console.log("bit",bit," is a die")
+                console.log("bit",bit," is a die")
                 let extractCount = 1
                 let plusMinus = 1
                 if (dIndex>0) {
@@ -3849,9 +3865,9 @@ let check = {
                         extractCount = extractCount.slice(1)
                     }
                 }
-                
+
                 let extractNum = bit.slice(dIndex+1)
-                
+
 
                 if (!isNaN(extractNum*plusMinus)) {
                     for (let i=0; i<extractCount; i++) {
@@ -3862,13 +3878,14 @@ let check = {
                     console.log("invalid dice string:",bit)
                 }
             } else {
+               console.log("bit",bit," is a bonus")
                 if (!isNaN(bit*1)) {
                     valChange=valChange+(bit*1)
                 } else {
                     validDiceString=false
                     console.log("invalid dice string:",bit)
                 }
-            }       
+            }
         })
         // console.log("dice:",diceNums,", valChange:",valChange)
         return {dice:diceNums,valChange:valChange,valid:validDiceString}
@@ -3877,13 +3894,14 @@ let check = {
     function setBonus(entry, value){
         const {dice,valChange,valid} = readDiceString(value);
         let currentVal = _.get(characterData,entry,null)
+        console.log("Dice:",dice,", bonus:",valChange)
         if (valid) {
             let updateVal = valChange;
             dice.forEach(die=>{
                 updateVal += roll(die)
             })
 
-            // console.log("Adding",updateVal,"to",entry)
+            console.log("Adding",updateVal,"to",entry)
 
             if (currentVal) {
                 // console.log("found current value:",currentVal)
@@ -3925,7 +3943,7 @@ let check = {
             plusMinus = -1;
         }
         const rollResult = plusMinus*(Math.floor(Math.random()*max)+1)
-        // console.log("roll result:",rollResult," on ",plusMinus,"d"+max)
+        console.log("roll result:",rollResult," on ",plusMinus,"d"+max)
         return rollResult;
     }
 
@@ -3958,7 +3976,7 @@ let check = {
 
             const thresholds = Object.keys(randomSelectObj)
             const outcomes = Object.values(randomSelectObj)
-            
+
             const thisMax = thresholds[thresholds.length-1]
             let thisRoll
             if (preRoll) {
@@ -3966,21 +3984,21 @@ let check = {
             } else {
                 thisRoll = roll(thisMax)
             }
-            
+
             // console.log("thisRoll:",thisRoll)
             // console.log("typeof thisRoll:",typeof thisRoll)
-            
+
             let i = -1
             do {
                 i++
             } while (thresholds[i] < (thisRoll))
             // console.log("i:",i,", threshold:",thresholds[i],"(roll:",thisRoll,")")
             let thisOutcome = outcomes[i]
-            
-            
+
+
             if (typeof thisOutcome === 'function') {
                 console.log("outcome is a function. returning result of function")
-                
+
                 thisOutcome = thisOutcome.call()
             // } else if (Array.isArray(thisOutcome)) {
             //     thisOutcome[1].call()
@@ -3988,7 +4006,7 @@ let check = {
             } else if (typeof thisOutcome === 'object'){
                 thisOutcome = randomSelect(thisOutcome).outcome
             }
-            
+
             console.log("thisOutcome:",thisOutcome, ", (rolled:",thisRoll,")")
             return {outcome: thisOutcome, roll: thisRoll}
             }
@@ -4009,15 +4027,15 @@ let check = {
     }
 
         function getHomelandObj(myRegion,myPeriod){
-        const region = locateSelectObj(locate.homeland,"region",myRegion); 
-        const period = locateSelectObj(locate.homeland,myRegion,myPeriod); 
+        const region = locateSelectObj(locate.homeland,"region",myRegion);
+        const period = locateSelectObj(locate.homeland,myRegion,myPeriod);
         console.log("region:",region,". period:",period)
 
         console.log("Dimension 2 Array:",select.homeland[region])
         return select.homeland[region][period]
     }
 
-    function reduceSelectObj(selectObj, criteria){ 
+    function reduceSelectObj(selectObj, criteria){
         let criteriaArray = []
         if (Array.isArray(criteria)) {
             criteriaArray = criteria
@@ -4048,7 +4066,7 @@ let check = {
                         }
                     }
                 }
-                
+
             }
         })
         return reducedObj
@@ -4063,24 +4081,27 @@ let check = {
         } else {
             stringPieces.push(myString);
         }
-    
+
         console.log("String Pieces found:",stringPieces)
         return stringPieces;
     }
-    
+
 
     // Build Character from randomSelect objects:
     // Select GENDER
     if (!(buildChar.hasOwnProperty("gender"))) { buildChar.gender = randomSelect(select.gender).outcome };
     console.log("BUILDCHAR:: Gender:",buildChar.gender)
+
+    // Select PERIOD
+    if (!(buildChar.hasOwnProperty("period"))) { buildChar.period = randomSelect(list.period).outcome };
+    console.log("BUILDCHAR:: Period:",buildChar.period)
+    
     // If no preset 'culture' or 'religion'...
     if (!(buildChar.hasOwnProperty("culture")) && !(buildChar.hasOwnProperty("religion"))){
-        // Select PERIOD
-        if (!(buildChar.hasOwnProperty("period"))) { buildChar.period = randomSelect(list.period).outcome };
-        console.log("BUILDCHAR:: Period:",buildChar.period)
-        
+
+
         // If there is a preset 'home'
-        if (buildChar.hasOwnProperty("home")) { 
+        if (buildChar.hasOwnProperty("home")) {
             console.log("Preset home.")
             // has h: find H, find R
             // Locate HOMELAND and REGION
@@ -4109,7 +4130,7 @@ let check = {
             console.log("No preset home.")
             // If preset 'homeland'
             // does not have h. will select h.
-            if (buildChar.hasOwnProperty("homeland")) { 
+            if (buildChar.hasOwnProperty("homeland")) {
                 console.log("Preset homeeland.")
                 // has H: find R, select h
                 // Locate REGION
@@ -4136,17 +4157,17 @@ let check = {
             } else {
                 // If no preset 'homeland'
                 console.log("No preset homeland.")
-                
+
                 // does not have h or H. Will select.
                 // If no preset 'region'
                 // Select REGION
-                if (!(buildChar.hasOwnProperty("region"))) { 
+                if (!(buildChar.hasOwnProperty("region"))) {
                     console.log("No preset region.")
                     // does not have R: select R
                     let regionObj = getNested(select.region, buildChar.period)
                     if (regionObj) {buildChar.region = randomSelect(regionObj).outcome}
                     console.log("BUILDCHAR:: Region selected:",buildChar.region)
-                    
+
                     // console.log("Region selected:",buildChar.region)
                 }
     // Select HOMELAND
@@ -4195,18 +4216,18 @@ let check = {
             if (myCultureObj) {
                 let cultureInfo = randomSelect(myCultureObj)
                 buildChar.culture = randomSelect(myCultureObj).outcome
-                if (!(buildChar.hasOwnProperty("religion"))) { 
+                if (!(buildChar.hasOwnProperty("religion"))) {
                     buildChar.religion = randomSelect(select.religion[buildChar.home], cultureInfo.roll).outcome
                 }
             }
-            
+
         } else {
             console.log("Home = Homeland. Will select culture based on HOMELAND")
             let myCultureObj = getNested(select.culture,buildChar.homeland);
             if (myCultureObj) {
                 let cultureInfo = randomSelect(myCultureObj)
                 buildChar.culture = cultureInfo.outcome
-                if (!(buildChar.hasOwnProperty("religion"))) { 
+                if (!(buildChar.hasOwnProperty("religion"))) {
                     let myReligionObj = getNested(select.religion, buildChar.homeland)
                     if (myReligionObj) {buildChar.religion = randomSelect(myReligionObj, cultureInfo.roll).outcome}
                 }
@@ -4228,7 +4249,7 @@ let check = {
         }
     // Build a list of possible homes, homelands, regions and periods
             // let possibleHomes = Object.keys(reduceSelectObj(select.culture,chosenCulture))
-            
+
             let possibleHomelands = [];
             let possibleRegions = [];
             let possiblePeriods = [];
@@ -4286,7 +4307,7 @@ let check = {
                         } else {
                             reducedHomelands[regionIndex]=[select.homeland[allRegionIndex][allPeriodGroupIndex]]
                         }
-                        
+
                     }
                 })
             })
@@ -4307,7 +4328,7 @@ let check = {
             // let selectedRegion = '';
             // let selectedHomeland = '';
             // let selectedHome = '';
-            
+
             buildChar.period = randomSelect(possiblePeriods).outcome;
             console.log("BUILDCHAR:: Restricted Period selected:",buildChar.period)
             n=0;
@@ -4318,7 +4339,7 @@ let check = {
                 n++
             } while (!(possibleRegions.includes(buildChar.region)) && n < 200)
             console.log("BUILDCHAR:: Restricted Region selected:",buildChar.region)
-            
+
             let regionIndex = reducedHomelandLocator.region.indexOf(buildChar.region);
             let periodIndex
             reducedHomelandLocator[buildChar.region].forEach((pGroup, pIndex)=>{
@@ -4341,8 +4362,8 @@ let check = {
                 n++
             } while (!(possibleHomes.includes(buildChar.home)) && n < 200)
             console.log("BUILDCHAR:: Restricted Home selected:",buildChar.home)
-            
-            
+
+
             if (!(buildChar.hasOwnProperty('religion'))) {
                 console.log("Religion undefined. Deriving from home/culture")
                 let rollForCulture
@@ -4375,16 +4396,16 @@ let check = {
     if (!(buildChar.hasOwnProperty("familyTrait"))) { buildChar.familyTrait = randomSelect(select.familyTrait[buildChar.gender]).outcome };
 
     console.log("Determining father's class")
-    if (!(buildChar.hasOwnProperty("fatherClass"))) { 
+    if (!(buildChar.hasOwnProperty("fatherClass"))) {
         console.log("Selecting Father's Class")
         buildChar.fatherClass = getfatherClass(buildChar)
-        console.log("BUILDCHAR:: Father's Class selected:",buildChar.fatherClass)    
+        console.log("BUILDCHAR:: Father's Class selected:",buildChar.fatherClass)
     } else {
         console.log("Father's Class found. Not selecting")
 
     };
 
-    // Set bonuses based on buildChar values 
+    // Set bonuses based on buildChar values
     console.log("Building character sheet bonuses...")
     console.log("Character sheet before:",characterData)
 
@@ -4392,7 +4413,7 @@ let check = {
     for (let stat in bonus.defaultStat[buildChar.gender]) {
         console.log("Generating stat value:", stat,":", bonus.defaultStat[buildChar.gender][stat])
         // let religionObj = getNested(select.religion, buildChar.homeland)
-        //     if (religionObj) 
+        //     if (religionObj)
         if (!getNested(buildChar,stat)){
             console.log(stat,"stat not found in Presets.")
             setBonus("statistics."+stat, bonus.defaultStat[buildChar.gender][stat])
@@ -4522,7 +4543,7 @@ let check = {
         }
         setBonus("personalityPairs."+updateTrait, modifier)
     }
-   
+
     // console.log("Generating siblings...")
     characterData.family={}
     characterData.family.siblings=[];
@@ -4553,7 +4574,7 @@ let check = {
 
     // console.log("Adding personal info to character sheet")
     characterData.personalInfo = buildChar;
-    
+
     console.log("Character data compiled:",characterData)
 
     // CHECK CAPPED VALUES
@@ -4568,10 +4589,10 @@ let check = {
             characterData.personalityPairs[trait] = 1
         }
     }
-    
+
     // console.log("Checking passions for exceeded caps:",characterData.passions)
     for (let trait in characterData.passions) {
-        
+
         if (characterData.passions[trait] > 20) {
             console.log(trait,"value:",characterData.passions[trait],"is greater than 20. Capping at 20.")
             characterData.passions[trait] = 20
@@ -4597,8 +4618,8 @@ let check = {
         // console.log("buildPersonalityTraitObj :: props:",trait,":",value)
         const newPersonalityTrait = {
             // _id:mongoObjectId(),
-            trait1: { 
-                label: '', 
+            trait1: {
+                label: '',
                 isTicked: false
             },
             trait2: {
@@ -4620,13 +4641,13 @@ let check = {
             newPersonalityTrait.trait1.label = personalityTraitList.lefthand[personalityTraitList.righthand.indexOf(trait)]
         }
 
-        return newPersonalityTrait        
+        return newPersonalityTrait
     }
-    
+
     // convert personalInfo
     characterSheet.personalInfo = []
     // let personalInfo = []
-    for (let item in characterData.personalInfo) { 
+    for (let item in characterData.personalInfo) {
         characterSheet.personalInfo.push(convertToLVPair(_.startCase(item), characterData.personalInfo[item]))
         // personalInfo.push(convertToLVPair(_.startCase(item), characterData.personalInfo[item]))
     }
@@ -4635,7 +4656,7 @@ let check = {
     // convert statistics
     characterSheet.statistics = []
     // let statistics = []
-    for (let item in characterData.statistics) { 
+    for (let item in characterData.statistics) {
         characterSheet.statistics.push(convertToLVPair(item, characterData.statistics[item]))
         // statistics.push(convertToLVPair(item, characterData.statistics[item]))
     }
@@ -4645,13 +4666,13 @@ let check = {
     characterSheet.combatSkills={general:[],weapons:[]}
     // let combatSkills = {}
     // combatSkills.general = []
-    for (let item in characterData.combatSkills.general) { 
+    for (let item in characterData.combatSkills.general) {
         characterSheet.combatSkills.general.push(convertToLVPair(item, characterData.combatSkills.general[item]))
         // combatSkills.general.push(convertToLVPair(item, characterData.combatSkills.general[item]))
     }
     characterSheet.combatSkills.weapons = []
     // combatSkills.weapons = []
-    for (let item in characterData.combatSkills.weapons) { 
+    for (let item in characterData.combatSkills.weapons) {
         characterSheet.combatSkills.weapons.push(convertToLVPair(item, characterData.combatSkills.weapons[item]))
         // combatSkills.weapons.push(convertToLVPair(item, characterData.combatSkills.weapons[item]))
     }
@@ -4660,7 +4681,7 @@ let check = {
     // convert skills
     characterSheet.skills = []
     // let skills = []
-    for (let item in characterData.skills) { 
+    for (let item in characterData.skills) {
         characterSheet.skills.push(convertToLVPair(item, characterData.skills[item]))
         // skills.push(convertToLVPair(item, characterData.skills[item]))
     }
@@ -4669,7 +4690,7 @@ let check = {
     // console.log("Converting basic personality trait scores to personality trait objects. pairs:",characterData.personalityPairs)
     characterSheet.personalityTraits = []
     // let personalityTraits = []
-    personalityTraitList.lefthand.forEach((trait)=>{  
+    personalityTraitList.lefthand.forEach((trait)=>{
         // console.log("trait:",trait,"value:",characterData.personalityPairs[trait])
         characterSheet.personalityTraits.push(buildPersonalityTraitObj(trait, characterData.personalityPairs[trait]))
         // personalityTraits.push(buildPersonalityTraitObj(trait, characterData.personalityPairs[trait]))
@@ -4681,11 +4702,11 @@ let check = {
         trait.index=index
     })
     // setCharacterSheet(prev=>({...prev,personalityTraits:personalityTraits}))
-    
+
     // convert directedTraits
     characterSheet.directedTraits = []
     // let directedTraits = []
-    for (let item in characterData.directedTraits) { 
+    for (let item in characterData.directedTraits) {
         characterSheet.directedTraits.push(convertToLVPair(item, characterData.directedTraits[item]))
         // directedTraits.push(convertToLVPair(item, characterData.directedTraits[item]))
     }
@@ -4694,36 +4715,36 @@ let check = {
     // convert passions
     characterSheet.passions = []
     // let passions = []
-    for (let item in characterData.passions) { 
+    for (let item in characterData.passions) {
         characterSheet.passions.push(convertToLVPair(item, characterData.passions[item]))
         // passions.push(convertToLVPair(item, characterData.passions[item]))
     }
     // setCharacterSheet(prev=>({...prev,passions:passions}))
-    
+
     // convert equipment
     characterSheet.equipment = []
     // let equipment = []
     if (getNested(characterData,"Equipment")) {
-        characterData.Equipment.forEach(item=> { 
-        // characterData.Equipment.forEach(item=> { 
+        characterData.Equipment.forEach(item=> {
+        // characterData.Equipment.forEach(item=> {
             characterSheet.equipment.push(item)
         })
     }
     // setCharacterSheet(prev=>({...prev,equipment:equipment}))
-    
+
     characterSheet.reserves = characterData.reserves
     // setCharacterSheet(prev=>({...prev,reserves:characterData.reserves}))
-    
-    
-    
+
+
+
     characterSheet.glory = characterData.Glory
     // setCharacterSheet(prev=>({...prev,glory:characterData.Glory}))
 
-    
+
     console.log("Character build completed:",characterSheet)
     // props.setSheetDataTemp(characterSheet)
     // setNewCharacter(characterSheet)
-    
+
 return characterSheet
 }
 
