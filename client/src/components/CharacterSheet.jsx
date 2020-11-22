@@ -245,6 +245,88 @@ export default function CharacterSheet(props) {
         return statScore
     }
 
+    function getPersonalityTraitValue(trait){
+        console.log("Getting value for",trait,"trait.")
+        let personalityTraitList = {
+            righthand: ['Lustful','Lazy','Vengeful','Selfish','Deceitful','Arbitrary','Cruel','Proud','Worldly','Reckless','Indulgent','Suspicious','Cowardly'],
+            lefthand: ['Chaste','Energetic','Forgiving','Generous','Honest','Just','Merciful','Modest','Spiritual','Prudent','Temperate','Trusting','Valorous'],
+            directed: []
+        }
+        let traitValue = 0
+        if (personalityTraitList.lefthand.includes(trait)){
+            console.log("Trait is lefthand")
+            for (let persoPair in sPersonality) {
+                if (sPersonality[persoPair].trait1.label === trait){
+                    traitValue = sPersonality[persoPair].value
+                    console.log("Trait value:",traitValue)
+                }
+            }
+        } else if (personalityTraitList.righthand.includes(trait)){
+            console.log("Trait is lefthand")
+            for (let persoPair in sPersonality) {
+                if (sPersonality[persoPair].trait2.label === trait){
+                    traitValue = 20 - sPersonality[persoPair].value
+                    console.log("Trait value:",traitValue)
+                }
+            }
+        }
+        console.log("Value of",trait,"trait is",traitValue)
+        return traitValue
+    }
+
+    function getReligiousBonuses() {
+        let religiousTraitList = {
+            'Arian Christian': ['Chaste', 'Honest', 'Just', 'Merciful', 'Temperate'],
+            'British Christian': ['Chaste', 'Energetic', 'Generous', 'Modest', 'Temperate'],
+            'Roman Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
+            'Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
+            Heathen: ['Vengeful', 'Honest', 'Proud', 'Arbitrary', 'Worldly'],
+            Jewish: ['Chaste', 'Energetic', 'Just', 'Prudent', 'Temperate'],
+            'British Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
+            'Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
+            'Germanic Pagan': ['Generous', 'Proud', 'Worldly', 'Reckless', 'Indulgent'],
+        }
+
+        let allReligiousBonuses = {
+            'Arian Christian': {damage:'3',totalHitPoints: 2},
+            'British Christian': {damage:'2',totalHitPoints: 3},
+            'Roman Christian': {totalHitPoints: 6},
+            'Christian': {damage:'3',totalHitPoints: 2},
+            Heathen: {moveRate:2,healRate: 1},
+            Jewish: {healRate: 1,totalHitPoints: 3},
+            'British Pagan': {healRate: 2},
+            'Pagan': {healRate: 2},
+            'Germanic Pagan': {damage:'1d6'},
+        }
+
+        const religion = findItemLabelled(sPersonalInfo,"Religion").value
+        let religiousTraits = religiousTraitList[religion]
+
+        let isReligious
+        if (getNested(allReligiousBonuses,religion)){
+            isReligious = true
+        } else {
+            isReligious = false
+        }
+
+        for (let trait in religiousTraits){
+            if (getPersonalityTraitValue(religiousTraits[trait])<16){
+                console.log(trait,"is less than 16. isReligious = false")
+                isReligious = false
+            }
+        }
+        console.log("isReligious:",isReligious)
+
+        let religiousBonuses = {}
+
+        if (isReligious) {
+            religiousBonuses = allReligiousBonuses[religion]
+        }
+
+
+        return religiousBonuses
+    }
+
     function derivedStats() {
         console.log("KNIGHTSHEET :: DOING: derivedStats")
         const STR = getStat("STR");
@@ -253,13 +335,28 @@ export default function CharacterSheet(props) {
         const CON = getStat("CON");
         const APP = getStat("APP");
 
-        const damage = Math.round((STR + SIZ) / 6) + "d6"
-        const healRate = Math.round((STR + CON) / 10)
-        const moveRate = Math.round((STR + DEX) / 10)
-        const totalHitPoints = SIZ + CON
-        const unconscious = Math.round((SIZ+CON) / 4)
+        const religiousBonuses = getReligiousBonuses()
+        console.log("religiousBonuses:",religiousBonuses)
+
+        let damageCalculation = (Math.round((STR + SIZ) / 6))
+        if (getNested(religiousBonuses,"damage")) {
+            if (religiousBonuses.damage.includes("d6")){
+                damageCalculation = (damageCalculation+(1*religiousBonuses.damage.slice(0,religiousBonuses.damage.indexOf("d")))) +"d6" 
+            } else {
+                damageCalculation = damageCalculation +"d6+"+ religiousBonuses.damage
+            }
+        } else {
+            damageCalculation = damageCalculation +"d6"
+        }
+
+        const damage = damageCalculation
+        const healRate = Math.round((STR + CON) / 10) + (religiousBonuses.healRate || 0)
+        const moveRate = Math.round((STR + DEX) / 10) + (religiousBonuses.moveRate || 0)
+        const totalHitPoints = SIZ + CON + (religiousBonuses.totalHitPoints || 0)
+        const unconscious = Math.round((SIZ+CON) / 4) + (religiousBonuses.unconscious || 0)
         const influenceMod = Math.min((Math.ceil(APP/3)-4),10)
         const influence = (influenceMod < 0 ) ? influenceMod : "+"+influenceMod
+
 
         return ([
             {label:"Influence mod.", value: influence},
@@ -638,7 +735,7 @@ export default function CharacterSheet(props) {
                                             fieldId={"derivedStats"}
                                             group="statistics"
                                             field="label"
-                                            lockEdit={true}
+                                            editLock={true}
                                             value={item.label || ''}
                                             editInProgress={editInProgress}
                                         />
@@ -650,7 +747,7 @@ export default function CharacterSheet(props) {
                                             fieldId={"derivedStats"}
                                             group="statistics"
                                             field="value"
-                                            lockEdit={true}
+                                            editLock={true}
                                             value={item.value}
                                             editInProgress={editInProgress}
                                         />

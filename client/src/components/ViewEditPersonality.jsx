@@ -78,17 +78,19 @@ export default function ViewEdit(props) {
             
         }
         
-        let religiousTraitList = {
-            'Arian Christian': ['Chaste', 'Honest', 'Just', 'Merciful', 'Temperate'],
-            'British Christian': ['Chaste', 'Energetic', 'Generous', 'Modest', 'Temperate'],
-            'Roman Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
-            Heathen: ['Vengeful', 'Honest', 'Proud', 'Arbitrary', 'Worldly'],
-            Jewish: ['Chaste', 'Energetic', 'Just', 'Prudent', 'Temperate'],
-            'British Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
-            'Germanic Pagan': ['Generous', 'Proud', 'Worldly', 'Reckless', 'Indulgent'],
-        }
+        
 
         function isReligious(trait){
+            let religiousTraitList = {
+                'Arian Christian': ['Chaste', 'Honest', 'Just', 'Merciful', 'Temperate'],
+                'British Christian': ['Chaste', 'Energetic', 'Generous', 'Modest', 'Temperate'],
+                'Roman Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
+                Heathen: ['Vengeful', 'Honest', 'Proud', 'Arbitrary', 'Worldly'],
+                Jewish: ['Chaste', 'Energetic', 'Just', 'Prudent', 'Temperate'],
+                'British Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
+                'Germanic Pagan': ['Generous', 'Proud', 'Worldly', 'Reckless', 'Indulgent'],
+            }
+
             console.log("Religious traits:",religiousTraitList[props.religion],". Looking for:",trait)
             const relTraits = religiousTraitList[props.religion]
             console.log("Religious traits:",relTraits)
@@ -99,6 +101,18 @@ export default function ViewEdit(props) {
             
             return isRel
         }
+
+        function isChivalrous(trait){
+            const chivalrousTraitList = ['Energetic','Generous','Just','Merciful','Modest','Valorous']
+            console.log("Chivalrous traits:",chivalrousTraitList,". Looking for:",_.capitalize(trait))
+            
+            const isChiv = chivalrousTraitList.includes(_.capitalize(trait))
+            if (isChiv) {console.log(trait,"is chivalrous")}
+            
+            return isChiv
+        }
+       
+
 
         let personalityPair = personalityObj(props.entry);
         
@@ -123,7 +137,13 @@ export default function ViewEdit(props) {
                         onClick={handleBoxTick} 
                         defaultChecked={personalityPair.tick1}
                     />
-                    <p className={isReligious(personalityPair.trait1)?"trait trait1 religious-trait":"trait trait1"}>{_.startCase(personalityPair.trait1)}</p>
+                    <p className={
+                        (isReligious(personalityPair.trait1)?"religious-trait ":"")
+                        +(isChivalrous(personalityPair.trait1)?"chivalrous-trait ":"")
+                        +"trait trait1"
+                    }>
+                        {_.startCase(personalityPair.trait1)}
+                    </p>
                 </Col>
                 <Col xs={1} lg={1} className="line-container text-right">
                     <div className="traitVals">
@@ -139,7 +159,11 @@ export default function ViewEdit(props) {
                     </div>
                 </Col>
                 <Col xs={4} lg={4} className="line-container trait trait2">
-                    <p className={isReligious(personalityPair.trait2)?"trait trait2 religious-trait":"trait trait2"}>{_.startCase(personalityPair.trait2)}</p>
+                    <p className={
+                        (isReligious(personalityPair.trait2)?"religious-trait ":"")
+                        +(isChivalrous(personalityPair.trait2)?"chivalrous-trait ":"")
+                        +"trait trait2"
+                    }>{_.startCase(personalityPair.trait2)}</p>
                     <input 
                         type="checkbox" 
                         id={props.entry._id+"_tick2"} 

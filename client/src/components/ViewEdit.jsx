@@ -56,9 +56,9 @@ import { faQuestionCircle,faCheckCircle } from "@fortawesome/free-solid-svg-icon
             } else {
                 this.verif = true
             }
-            // console.log("VIEWEDIT :: state.value:",this.state.value)
+            console.log("VIEWEDIT :: value:",props.value)
             // console.log("length:",  this.state.value.length)
-            // console.log("VIEWEDIT :: state.editMode:",this.state.editMode)
+            console.log("VIEWEDIT :: editLock:",props.editLock)
             
         }   
         // const [value, setValue] = useState(props.value)

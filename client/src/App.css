@@ -549,3 +549,7 @@ hr {
 .religious-trait {
   text-decoration: underline;
 }
+
+.chivalrous-trait {
+  font-weight: bold;
+}
