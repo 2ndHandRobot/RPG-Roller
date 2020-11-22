@@ -85,9 +85,11 @@ export default function ViewEdit(props) {
                 'Arian Christian': ['Chaste', 'Honest', 'Just', 'Merciful', 'Temperate'],
                 'British Christian': ['Chaste', 'Energetic', 'Generous', 'Modest', 'Temperate'],
                 'Roman Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
+                'Christian': ['Chaste', 'Forgiving', 'Merciful', 'Modest', 'Temperate'],
                 Heathen: ['Vengeful', 'Honest', 'Proud', 'Arbitrary', 'Worldly'],
                 Jewish: ['Chaste', 'Energetic', 'Just', 'Prudent', 'Temperate'],
                 'British Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
+                'Pagan': ['Lustful', 'Energetic', 'Generous', 'Honest', 'Proud'],
                 'Germanic Pagan': ['Generous', 'Proud', 'Worldly', 'Reckless', 'Indulgent'],
             }
 
