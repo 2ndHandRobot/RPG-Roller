@@ -110,7 +110,7 @@ import { faQuestionCircle,faCheckCircle } from "@fortawesome/free-solid-svg-icon
 
 
             // If update is to a skill value, also adjust reserve
-            if (this.props.group.toLowerCase().includes("skill")) {
+            if ((this.props.group.toLowerCase().includes("skill"))&&(this.props.field==='value')) {
                 const pointSpend = this.state.value - this.fallBackValue
                 const newTotal = Reserves.getReserve("skillPoints") - pointSpend;
                 console.log("Skill point spend:", pointSpend,". New total:",newTotal)
