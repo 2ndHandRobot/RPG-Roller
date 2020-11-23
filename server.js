@@ -16,7 +16,7 @@ const routes = require('./routes/api');
 let database, dbLocation;
 
 switch (process.env.NODE_ENV) {
-   case "development":
+   case "development_local":
       database = 'mongodb://localhost:27017/RollerDB';
       dbLocation = "local";
       app.use(express.static('client'))

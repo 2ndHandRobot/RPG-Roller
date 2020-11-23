@@ -274,6 +274,12 @@ export default function CharacterSheet(props) {
         return traitValue
     }
 
+    function getReligion(){
+        if (findItemLabelled(sPersonalInfo,"Religion")){
+            return findItemLabelled(sPersonalInfo,"Religion").value
+        } else return ''
+    }
+
     function getReligiousBonuses() {
         let religiousTraitList = {
             'Arian Christian': ['Chaste', 'Honest', 'Just', 'Merciful', 'Temperate'],
@@ -298,21 +304,24 @@ export default function CharacterSheet(props) {
             'Pagan': {healRate: 2},
             'Germanic Pagan': {damage:'1d6'},
         }
-
-        const religion = findItemLabelled(sPersonalInfo,"Religion").value
-        let religiousTraits = religiousTraitList[religion]
-
-        let isReligious
-        if (getNested(allReligiousBonuses,religion)){
-            isReligious = true
-        } else {
-            isReligious = false
-        }
-
-        for (let trait in religiousTraits){
-            if (getPersonalityTraitValue(religiousTraits[trait])<16){
-                console.log(trait,"is less than 16. isReligious = false")
-                isReligious = false
+        
+        let religion = ''
+        let religiousTraits = []
+        let isReligious = false
+        
+        if (findItemLabelled(sPersonalInfo,"Religion")){
+            religion = findItemLabelled(sPersonalInfo,"Religion").value
+            religiousTraits = religiousTraitList[religion]
+            
+            if (getNested(allReligiousBonuses,religion)){
+                isReligious = true
+                
+                for (let trait in religiousTraits){
+                    if (getPersonalityTraitValue(religiousTraits[trait])<16){
+                        console.log(trait,"is less than 16. isReligious = false")
+                        isReligious = false
+                    }
+                }
             }
         }
         console.log("isReligious:",isReligious)
@@ -854,7 +863,7 @@ export default function CharacterSheet(props) {
                                     canEditLabel={false}
                                     canEditValue={true}
                                     saveEntry={props.saveEntry}
-                                    religion={findItemLabelled(sPersonalInfo,"Religion").value}
+                                    religion={getReligion()}
                                 />
                             )
                         })}

@@ -4092,12 +4092,12 @@ let check = {
     if (!(buildChar.hasOwnProperty("gender"))) { buildChar.gender = randomSelect(select.gender).outcome };
     console.log("BUILDCHAR:: Gender:",buildChar.gender)
 
-    // Select PERIOD
-    if (!(buildChar.hasOwnProperty("period"))) { buildChar.period = randomSelect(list.period).outcome };
-    console.log("BUILDCHAR:: Period:",buildChar.period)
     
     // If no preset 'culture' or 'religion'...
     if (!(buildChar.hasOwnProperty("culture")) && !(buildChar.hasOwnProperty("religion"))){
+        // Select PERIOD
+        if (!(buildChar.hasOwnProperty("period"))) { buildChar.period = randomSelect(list.period).outcome };
+        console.log("BUILDCHAR:: Period:",buildChar.period)
 
 
         // If there is a preset 'home'
@@ -4170,7 +4170,7 @@ let check = {
 
                     // console.log("Region selected:",buildChar.region)
                 }
-    // Select HOMELAND
+                // Select HOMELAND
                 // has R: select H and h
                 console.log("Has (pre?)set region.")
                 // Check randomly generated Period is valid for given region
@@ -4195,7 +4195,7 @@ let check = {
                 if (myHomelandObj) {buildChar.homeland = randomSelect(myHomelandObj).outcome}
                 console.log("BUILDCHAR:: Homeland selected:",buildChar.homeland)
             }
-    // Select HOME
+        // Select HOME
             console.log("Selecting Home. Region and homeland:",buildChar.region,",",buildChar.homeland)
             let homeObj = getNested(select.home,buildChar.region,buildChar.homeland)
             if (homeObj) {buildChar.home =  randomSelect(homeObj).outcome} else {buildChar.home=buildChar.homeland}
@@ -4208,7 +4208,7 @@ let check = {
             }
         }
 
-    // Select CULTURE and RELIGION
+        // Select CULTURE and RELIGION
         if (buildChar.home !== buildChar.homeland) {
             console.log("Home != Homeland. Will select culture/religion based on HOME")
             let myCultureObj = getNested(select.culture, buildChar.home);
