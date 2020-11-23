@@ -381,9 +381,11 @@ export default function CharacterSheet(props) {
 
     function handleBoxTick(event, fieldId){
         console.log("Handling Tick Event on",fieldId)
-        console.log("checked:",event.target.checked)
+        console.log("event.target:",event.target)
+        console.log("event.target.group:",event.target.group)
+        console.log("event.target.name:",event.target.name)
         
-        let group = event.target.group
+        let group = event.target.name
         if (event.target.name === "armour") {
             console.log("ticked an armour box. Updating total")
             group = event.target.name
@@ -875,7 +877,7 @@ export default function CharacterSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            group="directedTraits" 
+                                            name="directedTraits" 
                                             field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
@@ -948,7 +950,7 @@ export default function CharacterSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            group="passions" 
+                                            name="passions" 
                                             field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
@@ -1049,7 +1051,7 @@ export default function CharacterSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            group="combatSkills.general" 
+                                            name="combatSkills.general" 
                                             field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
@@ -1119,7 +1121,7 @@ export default function CharacterSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            group="combatSkills.weapons"
+                                            name="combatSkills.weapons"
                                             field="checkBox" 
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
@@ -1192,7 +1194,7 @@ export default function CharacterSheet(props) {
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
-                                            group="skills" 
+                                            name="skills" 
                                             field="checkBox"
                                             className="entry_tick" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
