@@ -325,7 +325,7 @@ router.post('/edit-entry', (req, res) => {
              } else {
                 console.log("label-value pair")
                 const newId = new mongoose.Types.ObjectId
-                updateObject = {$push: {[`${data.group}`]:{"_id": newId, "label":`${value}`,"value":"","isTicked":false}}};
+                updateObject = {$push: {[`${data.group}`]:{"_id": newId, [`${data.field}`]:`${value}`,"isTicked":false}}};
              }
              options = { 
                 useFindAndModify: false,

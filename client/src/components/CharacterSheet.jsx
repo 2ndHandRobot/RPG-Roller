@@ -506,7 +506,7 @@ export default function CharacterSheet(props) {
                                             fieldId={item._id}
                                             group="personalInfo"
                                             field="label"
-                                            // lockEdit={true}
+                                            // editLock={true}
                                             value={item.label || ''}
                                             addWindowClickListener={addWindowClickListener}
                                             removeWindowClickListeners={removeWindowClickListeners}
@@ -543,7 +543,7 @@ export default function CharacterSheet(props) {
                                     id={"personalInfo_new_lab"}
                                     fieldId={''}
                                     group="personalInfo"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add an entry"
                                     addWindowClickListener={addWindowClickListener}
@@ -710,7 +710,7 @@ export default function CharacterSheet(props) {
                                             fieldId={item._id}
                                             group="statistics"
                                             field="label"
-                                            // lockEdit={true}
+                                            // editLock={true}
                                             value={item.label || ''}
                                             editInProgress={editInProgress}
                                         />
@@ -840,7 +840,7 @@ export default function CharacterSheet(props) {
                                     id={"armour_new_lab"}
                                     fieldId={''}
                                     group="armour"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add armour"
                                     addWindowClickListener={addWindowClickListener}
@@ -927,7 +927,7 @@ export default function CharacterSheet(props) {
                                     id={"directedTraits_new_lab"}
                                     fieldId={''}
                                     group="directedTraits"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add a directed trait"
                                     addWindowClickListener={addWindowClickListener}
@@ -1000,7 +1000,7 @@ export default function CharacterSheet(props) {
                                     id={"passions_new_lab"}
                                     fieldId={''}
                                     group="passions"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add a passion"
                                     addWindowClickListener={addWindowClickListener}
@@ -1101,7 +1101,7 @@ export default function CharacterSheet(props) {
                                     id={"combatSkills.general_new_lab"}
                                     fieldId={''}
                                     group="combatSkills.general"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add a combat skill"
                                     addWindowClickListener={addWindowClickListener}
@@ -1171,7 +1171,7 @@ export default function CharacterSheet(props) {
                                     id={"combatSkills.weapons_new_lab"}
                                     fieldId={''}
                                     group="combatSkills.weapons"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add a weapon skill"
                                     addWindowClickListener={addWindowClickListener}
@@ -1244,7 +1244,7 @@ export default function CharacterSheet(props) {
                                     id={"skills_new_lab"}
                                     fieldId={''}
                                     group="skills"
-                                    field="new"
+                                    field="label"
                                     value={''}
                                     placeHolderText="Click to add a skill"
                                     addWindowClickListener={addWindowClickListener}
@@ -1345,15 +1345,15 @@ export default function CharacterSheet(props) {
                                     id="new_year_val"
                                     name="new_year"
                                     group="history"
-                                    field="new"
+                                    field="value"
                                     value=''
                                     placeHolderText="-"
-                                    lockEdit={true}
-                                    // addWindowClickListener={addWindowClickListener}
-                                    // removeWindowClickListeners={removeWindowClickListeners}
-                                    // editInProgress={editInProgress}
-                                    // setEditInProgress={setEditInProgress}
-                                    // saveEdit={props.saveEdit}
+                                    // editLock={true}
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
                                 />    
                             </Col>
                             <Col xs={10} lg={10} className="event_col">
@@ -1362,8 +1362,9 @@ export default function CharacterSheet(props) {
                                     id={"history_new_lab"}
                                     fieldId={''}
                                     group="history"
-                                    field="new"
+                                    field="label"
                                     value=''
+                                    editLock={true}
                                     placeHolderText="Click to add a new event"
                                     addWindowClickListener={addWindowClickListener}
                                     removeWindowClickListeners={removeWindowClickListeners}
