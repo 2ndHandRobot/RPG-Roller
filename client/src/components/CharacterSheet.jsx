@@ -464,7 +464,7 @@ export default function CharacterSheet(props) {
         
         for (let trait in sPersonality) {
             console.log("Trait:",sPersonality[trait])
-            if (chivTraits.includes(sPersonality[trait].trait1.label)){
+            if (chivTraits.includes(_.capitalize(sPersonality[trait].trait1.label))){
                 console.log("Chivalrous trait found. Value:",sPersonality[trait].value)
                 chivTotal += sPersonality[trait].value
                 console.log("New chivalrous total:",chivTotal)
