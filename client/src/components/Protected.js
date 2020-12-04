@@ -707,7 +707,8 @@ const Protected = (props) => {
                             onClick={()=>{
                                 // console.log("Triggering createKnight. template data:",templates.knight )
                                 // setActiveKnight({knightId:"new", access:"own",knightData:Object.assign({}, templates.knight)});
-                                setMainMode("createKnight")
+                                setMainMode("createKnight");
+                                openBlankSheet();
                             }}
                         >
                             New Knight
