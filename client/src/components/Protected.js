@@ -133,7 +133,8 @@ const Protected = (props) => {
          })
          .then(() => {
             console.log("Data sent to server");
-            getData(); 
+            getData();
+            setMainMode('editKnight');
          })
          .catch((err) => {
             console.log("Internal server error.", err);

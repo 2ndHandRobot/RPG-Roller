@@ -8,13 +8,16 @@ let verification = {
     homeland: [
         'Ailech','Austrasia','Barcelona','Bedegraine','Benoic','Benoit','Brecklands','Broadlands','Brun','Caercolun','Cambenet','Cameliard','Carcassone','Catalonia','Cheshire','Clarence','Connacht','Cornouailles',
         'Dal Araide','Dal Riada','Deira','Delfinat','Devon','Domnonie','Dorset','Escavalon','Escoce','Essex','Estregales','Ganis','Garloth','Gloucester','Gorre',
-        'Hampshire','Hertford','Huntington','Isle of Wight','Jagent','Kent','Lambor','Languedoc','Leinster','Leon','Lindsey','Listeneisse','Lonazep','London','Long','Lothian','Lyons',
+        'Hampshire','Hertford','Huntington','Isle of Wight','Jagent','Kent','Lambor','Languedoc','Leinster','Leon','Lindsey','Listeneisse','Lonazep','London','Long Isles','Lothian','Lyons',
         'Malahaut','Maris','Marlborough','Marsielles','Meath','Munster','Narbonne','Neustria','Nohaut','Oriel','Orléans','Pomitain','Provence','Rheged','Roestoc','Rydychan',
         'Salisbury','Silchester','Somerset','Sorestan','Southports','Strangorre','Sugales','Surrey','Sussex','Tintagel','Toulouse','Tribuit','Vannetais','Wuerensis',
     ],
-    home: ["Ailech","Alcud","Austrasia","Bayeux","Bayonne","Bedegraine","Benoit","Benwick","Bordeaux","Brest","Brigantia","Caercolun","Caerwent","Caistor","Cambenet","Cambridge","Cameliard","Carduel","Carhaix","Carlion","Carmarthen","Castle of Maidens","Catterick","Cheshire","Chichester","Cirencester","Cité d'Orléans","City of Bedegraine","City of Legions","Clarence","Colchester","Connacht","Cornouailles",
-        "Dal Araide","Dal Riada","Deira","Devon","Dol","Domnonie","Dorchester","Dorset","Dover","Eburacum","Edinburgh","Escavalon","Escoce","Essex","Estregales","Exeter","Ganis","Glevum","Gloucester","Gorre","Hampshire","Hantonne","Hertford","Huntingdon","Ilchester","Inverness","Jagent","Kent","La Rochelle","Lambor","Lancashire","Leicester","Leinster","Leon","Lestroite","Lincoln","Lindsey","Listeneisse","Lonazep","London","Lothian",
-        "Marlborough","Meath","Metz","Munster","Nantes","Neustria","Norwich","Oriel","Orléans","Oxford","Peterborough","Pomitain","Portchester","Quimper","Rennes","Richmond","Ripon","Rouse","Rydychan","Salisbury","Sarum","Silchester","Silchester City","Soissons","Southports","St Albans","St Brienc","Stafford","Staines","Strangorre","Surluse","Surrey","Thamesmouth","The Orkneys","Tintagel","Totnes","Vannes","Wandborough","Winchester","Wuerensis","Yarmouth",
+    home: ["Ailech","Alcud","Austrasia","Bayeux","Bayonne","Bedegraine","Benoit","Benwick","Bordeaux","Brest","Brigantia","Caercolun","Caerwent","Caistor","Cambenet","Cambridge","Cameliard","Carduel","Carhaix","Carlion",
+        "Carmarthen","Castle of Maidens","Catterick","Cheshire","Chichester","Cirencester","Cité d'Orléans","City of Bedegraine","City of Legions","Clarence","Cockermouth","Colchester","Connacht","Cornouailles",
+        "Dal Araide","Dal Riada","Deira","Devon","Dol","Domnonie","Dorchester","Dorset","Dover","Eburacum","Edinburgh","Escavalon","Escoce","Essex","Estregales","Exeter","Ganis","Glevum","Gloucester","Gorre",
+        "Hampshire","Hantonne","Hertford","Huntingdon","Ilchester","Inverness","Jagent","Kent","La Rochelle","Lambor","Lancashire","Leicester","Leinster","Leon","Lestroite","Lincoln","Lindsey","Listeneisse","Lonazep","Long Isles","London","Lothian",
+        "Marlborough","Meath","Metz","Munster","Nantes","Neustria","Norwich","Oriel","Orléans","Oxford","Peterborough","Pomitain","Portchester","Quimper","Rennes","Richmond","Ripon","Rouse","Rydychan",
+        "Salisbury","Sarum","Silchester","Silchester City","Soissons","Southports","St Albans","St Brienc","Stafford","Staines","Strangorre","Surluse","Surrey","Thamesmouth","The Orkneys","Tintagel","Totnes","Vannes","Wandborough","Winchester","Wuerensis","Yarmouth",
     ],
     culture: ["Cymric","French","Irish","Pict","Roman","Saxon","Occitanian",],
     religion: [ 'Arian Christian','British Christian','Roman Christian','Heathen','Jewish','British Pagan','Germanic Pagan'],
@@ -122,31 +125,45 @@ let periodList = [
 // SELECT OBJECT :: random selection object of regions available per time period
 let regionSelect = {
     'Uther':{
-        14:'Logres',
-        16:'Cambria',
-        18:'Cumbria',
-        19:'Cornwall & Brittany',
-        20:'Gaul',
+        28:'Logres',
+        32:'Cambria',
+        36:'Cumbria',
+        38:'Cornwall & Brittany',
+        40:'Gaul',
+        41:'The North',
+        42:'Ireland',
+        43:'France'
     },
     'Anarchy':{
-        16:'Logres',
-        18:'Cambria',
-        19:'Cornwall & Brittany',
-        20:'Gaul',
+        32:'Logres',
+        36:'Cambria',
+        38:'Cornwall & Brittany',
+        40:'Gaul',
+        41:'The North',
+        42:'Ireland',
+        43:'France',
+        44:'Cumbria'
     },
     'Boy King':{
-        16:'Logres',
-        18:'Cambria',
-        19:'Cornwall & Brittany',
-        20:'Gaul',
+        32:'Logres',
+        36:'Cambria',
+        38:'Cornwall & Brittany',
+        40:'Gaul',
+        41:'The North',
+        42:'Ireland',
+        43:'France',
+        44:'Cumbria'
     },
     'Conquest':{
-        11:'Logres',
-        13:'Cambria',
-        15:'Cumbria',
-        17:'The North',
-        19:'Cornwall & Brittany',
-        20:'Gaul',
+        22:'Logres',
+        26:'Cambria',
+        30:'Cumbria',
+        34:'The North',
+        38:'Cornwall & Brittany',
+        40:'Gaul',
+        41:'Ireland',
+        42:'France',
+        
     },
     'Romance':{
         9:'Logres',
@@ -203,12 +220,12 @@ let homelandLocate = {
     region: ['Logres','Saxon','Cambria','Cumbria','The North','Cornwall & Brittany','Ireland','Gaul','France'],
     // dimension 2:
     Logres: [['Uther','Anarchy'],['Boy King'],['Conquest','Romance','Tournament','Grail Quest','Twilight']],
-    Saxon: [['Romance','Tournament','Grail Quest','Twilight']],
+    Saxon: [['Uther','Anarchy','Boy King','Conquest'],['Romance','Tournament','Grail Quest','Twilight']],
     Cambria: [['Uther','Anarchy','Conquest','Romance','Tournament','Grail Quest','Twilight'],['Boy King']],
     Cumbria: [['Uther'],['Conquest','Romance','Tournament','Grail Quest','Twilight']],
     'The North':[['Conquest','Romance','Tournament','Grail Quest','Twilight']],
     'Cornwall & Brittany':[['Uther','Anarchy'],['Boy King','Conquest'],['Romance','Tournament','Grail Quest','Twilight']],
-    Ireland:[['Romance','Tournament','Grail Quest','Twilight']],
+    Ireland:[['Uther','Anarchy','Boy King','Conquest'],['Romance','Tournament','Grail Quest','Twilight']],
     Gaul:[['Uther','Anarchy','Boy King','Conquest','Romance','Tournament','Grail Quest','Twilight']],
     France: [['Romance','Tournament','Grail Quest','Twilight']]
 }
@@ -297,6 +314,14 @@ let homelandSelect = [
 
     // Saxon objects:
     [
+        // Saxons: Uther, Anarchy, Boy King, Conquest
+        {
+            15:'Deira',
+            32:'Essex',
+            46:'Nohaut',
+            48:'Sorestan',
+            63:'Sussex',
+        },
         // Saxons: Romance, Tournament, Grail Quest, Twilight
         {
             15:'Deira',
@@ -361,7 +386,16 @@ let homelandSelect = [
             24:'Escoce',
             40:'Garloth',
             55:'Gorre',
-            60:'Long',
+            60:'Long Isles',
+            85:'Lothian',
+            100:'Strangorre',
+        },
+        {
+            11:'Benoic',
+            24:'Escoce',
+            40:'Garloth',
+            55:'Gorre',
+            60:'Long Isles',
             85:'Lothian',
             100:'Strangorre',
         }
@@ -396,6 +430,17 @@ let homelandSelect = [
     ],
     // Ireland objects:
     [
+        {
+            5:'Ailech',
+            10:'Connacht',
+            25:'Dal Araide',
+            40:'Dal Riada',
+            75:'Leinster',
+            80:'Meath',
+            86:'Munster',
+            90:'Oriel',
+            100:'Pomitain',
+        },
         {
             5:'Ailech',
             10:'Connacht',
@@ -517,7 +562,7 @@ let homeSelect ={
                     }
                 },
                 2: 'Edinburgh',
-                5:'Lothian',
+                5: 'Lothian',
                 6: 'The Orkneys'
             },
             Strangorre: { 1: 'Alcud', 6: 'Strangorre' }
@@ -549,7 +594,7 @@ let homeSelect ={
             'Munster':'Munster',
             'Oriel':'Oriel',
             'Pomitain':'Pomitain',
-
+            'Long Isles':{5: 'Long Isles', 6:'Cockermouth'}
         }
     }
 
@@ -640,6 +685,7 @@ let cultureSelect = {
         Lonazep:{4:'Cymric',6:'Cymric',},
         London:{3:'Cymric',6:'Roman',},
         'Long Isles':'Irish',
+        'Cockermouth':'Irish',
         Lothian:'Cymric',
         Lyons:'Roman',
         Malahaut:{6:'Cymric'},
@@ -801,6 +847,7 @@ let religionSelect = {
         Lonazep:{4:'British Christian',6:'British Pagan',},
         London:{3:'British Christian',6:'Roman Christian',},
         'Long Isles':'British Christian',
+        'Cockermouth':'British Christian',
         Lothian:'British Pagan',
         Lyons:'Roman Christian',
         Malahaut:{4:'British Christian',6:'British Pagan'},
