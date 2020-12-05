@@ -114,7 +114,29 @@ export default function ViewEdit(props) {
             return isChiv
         }
        
-
+        function PersonalityPair(props) {
+            console.log("buildPersonalityPair:",props.val1,"/",props.val2)
+            let v1Style = {}
+            let v2Style = {}
+            
+            if (props.val1 > 15) {
+                v1Style = {fontWeight:'bold'}
+            } else if (props.val2 > 15) {
+                v2Style = {fontWeight:'bold'}
+            }
+            
+            return (
+                <p className="traitVals">
+                    <span style={v1Style}>
+                        {props.val1}
+                    </span>
+                    /
+                    <span style={v2Style}>
+                        {props.val2}
+                    </span>
+                </p>
+            )   
+        }
 
         let personalityPair = personalityObj(props.entry);
         
@@ -153,7 +175,7 @@ export default function ViewEdit(props) {
                     </div>
                 </Col>
                 <Col xs={2} lg={2} className="line-container">
-                    <p className="traitVals">{personalityPair.val1+"/"+personalityPair.val2}</p>
+                    <PersonalityPair val1={personalityPair.val1} val2={personalityPair.val2} />
                 </Col>
                 <Col xs={1} lg={1} className="line-container text-left">
                     <div className="traitVals">
