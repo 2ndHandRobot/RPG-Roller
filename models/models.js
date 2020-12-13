@@ -35,15 +35,6 @@ const LabelBoolPairSchema = new mongoose.Schema ({
     value: Boolean
 })
 
-const WoundSchema = new mongoose.Schema ({
-    index: Number,
-    hitpoints: Number,
-    firstAid: { type: Boolean, default: false },
-    lethal: { type: Boolean, default: false },
-    major: { type: Boolean, default: false },
-    mortal: { type: Boolean, default: false },
-})
-
 const PersonalityTraitPairSchema = new mongoose.Schema ({
     index: Number,
     trait1: { 
@@ -101,6 +92,23 @@ const FollowerSchema = new mongoose.Schema ({
     aux_reputation: [String],
     aux_equipment: [String]
 })
+
+const WoundSchema = new mongoose.Schema ({
+    index: Number,
+    label: String,
+    value: Number,
+    firstAid: { type: Boolean, default: false },
+    major: { type: Boolean, default: false },
+    mortal: { type: Boolean, default: false },
+})
+
+const HealthSchema = new mongoose.Schema ({
+    CHP: Number,
+    wounds: [WoundSchema],
+    unhealthy: Boolean,
+    chirurgeryReceived: Boolean,
+})
+
 const CharacterSchema = new mongoose.Schema ({
     index: Number,
     playerInfo: {
@@ -118,10 +126,7 @@ const CharacterSchema = new mongoose.Schema ({
     directedTraits: [LabelNumberPairSchema],
     passions: [LabelNumberPairSchema],
     statistics: [LabelNumberPairSchema],
-    health: {
-        chirurgeryNeeded: Boolean,
-        wounds: [WoundSchema]
-    },
+    health: HealthSchema,
     distinctiveFeatures: [String],
     description: [String],
     skills: [LabelNumberPairSchema],
@@ -137,6 +142,13 @@ const CharacterSchema = new mongoose.Schema ({
     history: [LabelNumberPairSchema],
     reserves: Object
 });
+
+
+const SquadSchema = new mongoose.Schema({
+    who:[LabelStringPairSchema],
+    squadMembers:[FollowerSchema]
+
+})
 
 const BugReportSchema = new mongoose.Schema ({
     reportedBy: String,
@@ -157,6 +169,7 @@ const FamilyMembers = mongoose.model("FamilyMember", FamilyMemberSchema);
 const Followers = mongoose.model("Follower", FollowerSchema);
 const Animals = mongoose.model("Animal", AnimalSchema);
 const Wounds = mongoose.model("Wound", WoundSchema);
+const Squads = mongoose.model("Squad", SquadSchema);
 
 
 module.exports = { 
@@ -165,6 +178,7 @@ module.exports = {
         Followers: Followers, 
         Animals: Animals, 
         Users: Users, 
-        DiceSets: DiceSets, 
-        BugReports: BugReports 
+        DiceSets: DiceSets,
+        Squads: Squads,
+        BugReports: BugReports
     }

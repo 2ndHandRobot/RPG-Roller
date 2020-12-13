@@ -47,55 +47,55 @@ const personality= [
     {
         trait1:{label:"Honest",isTicked: false},
         trait2:{label:"Deceitful",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Just",isTicked: false},
         trait2:{label:"Arbitrary",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Merciful",isTicked: false},
         trait2:{label:"Cruel",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Modest",isTicked: false},
         trait2:{label:"Proud",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Spiritual",isTicked: false},
         trait2:{label:"Worldly",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Prudent",isTicked: false},
         trait2:{label:"Reckless",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Temperate",isTicked: false},
         trait2:{label:"Indulgent",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Trusting",isTicked: false},
         trait2:{label:"Suspiscious",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     },
     {
         trait1:{label:"Valorous",isTicked: false},
         trait2:{label:"Cowardly",isTicked: false},
-        value: 0, 
+        value: 10, 
         
     }
 ]
@@ -146,6 +146,13 @@ const stats =
         value: 0
     }
 ]
+
+const health = {
+    CHP: 0,
+    wounds: [],
+    unhealthy: false,
+    chirurgeryReceived: false,
+}
 
 const skills =
     [
@@ -304,6 +311,7 @@ const character = {
     passions:passions,
     statistics: stats,
     distinctiveFeatures:[],
+    health: health,
     equipment: [],
     horses: horse,
     skills: skillsAnarchy,

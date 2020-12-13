@@ -343,14 +343,24 @@ router.post('/edit-entry', (req, res) => {
                    new: true
                 }
              } else {
-                console.log("label-value pair")
-                updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};  
-                options = {
-                   arrayFilters: [{ 'entry._id' : data.fieldId }], 
-                   useFindAndModify: false,
-                   upsert: true, 
-                   new: true
-                }
+                if (data.group === 'health') {
+                  console.log("health tickbox")
+                  updateObject = {$set: {[`${data.group}.${data.field}`]:`${value}`}};  
+                  options = {
+                     useFindAndModify: false,
+                     upsert: true, 
+                     new: true
+                  }
+                } else {
+                  console.log("label-value pair")
+                  updateObject = {$set: {[`${data.group}.$[entry].${data.field}`]:`${value}`}};  
+                  options = {
+                     arrayFilters: [{ 'entry._id' : data.fieldId }], 
+                     useFindAndModify: false,
+                     upsert: true, 
+                     new: true
+                  }
+               }
              }
           }
        }

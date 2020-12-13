@@ -10,7 +10,7 @@ import Reserves from './Reserves';
 import ViewEditPersonality from './ViewEditPersonality';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShieldAlt, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faShieldAlt, faHandHoldingMedical, faTint, faFirstAid } from "@fortawesome/free-solid-svg-icons";
 
 export default function CharacterSheet(props) {
     console.log("LOADING CharacterSheet. Props:",props)
@@ -70,6 +70,23 @@ export default function CharacterSheet(props) {
     sSkills = sortByIndex(characterSheetData.skills)
     // sSkills = sortByIndex(props.activeKnight.skills)
     };
+    let sHealth = {_id:'new', unhealthy:false, chirurgeryReceived:false};
+    if (getNested(characterSheetData,'health','_id')){
+        sHealth._id = characterSheetData.health._id
+    }
+    if (getNested(characterSheetData,'health','CHP')){
+        sHealth.CHP = characterSheetData.health.CHP
+    }
+    if (getNested(characterSheetData,'health','unhealthy')){
+        sHealth.unhealthy = characterSheetData.health.unhealthy
+    }
+    if (getNested(characterSheetData,'health','chirurgeryReceived')){
+        sHealth.chirurgeryReceived = characterSheetData.health.chirurgeryReceived
+    }
+    let sWounds = [];
+    if (getNested(characterSheetData,'health','wounds')){
+        sWounds = sortByIndex(characterSheetData.health.wounds)
+    }
     let sArmour = [];
     // if (getNested(props,'activeKnight','armour')){
     if (getNested(characterSheetData,'armour')){
@@ -120,7 +137,7 @@ export default function CharacterSheet(props) {
     if (getNested(props,'activeKnight','personalInfo',[0],'label')==="Name"){
         console.log("Personal info [0] label is 'Name'. Value:",getNested(props,'activeKnight','personalInfo',[0],'value'))
         characterName = props.activeKnight.personalInfo[0].value
-        console.log('characterId:',characterName) 
+        console.log('characterName:',characterName) 
     };
     
     let characterGlory = '0';
@@ -164,11 +181,7 @@ export default function CharacterSheet(props) {
 
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
-    // const [isChivalrous, setChivalrous] = useState();
-    // const [isReligious, setReligious] = useState();
-
-
-
+    
     function getNested(obj, ...args) {
         return args.reduce((obj, level) => obj && obj[level], obj)
     }
@@ -227,10 +240,10 @@ export default function CharacterSheet(props) {
     }
 
     function findItemLabelled(obj,lab){
-        console.log("Looking for",lab,"in",obj)
+        // console.log("Looking for",lab,"in",obj)
         for (let item in obj) {
             if (obj[item].label === lab){
-                console.log("Found:",obj[item])
+                // console.log("Found:",obj[item])
                 return obj[item]    
             }
         }
@@ -246,7 +259,7 @@ export default function CharacterSheet(props) {
     }
 
     function getPersonalityTraitValue(trait){
-        console.log("Getting value for",trait,"trait.")
+        // console.log("Getting value for",trait,"trait.")
         let personalityTraitList = {
             righthand: ['Lustful','Lazy','Vengeful','Selfish','Deceitful','Arbitrary','Cruel','Proud','Worldly','Reckless','Indulgent','Suspicious','Cowardly'],
             lefthand: ['Chaste','Energetic','Forgiving','Generous','Honest','Just','Merciful','Modest','Spiritual','Prudent','Temperate','Trusting','Valorous'],
@@ -254,23 +267,23 @@ export default function CharacterSheet(props) {
         }
         let traitValue = 0
         if (personalityTraitList.lefthand.includes(trait)){
-            console.log("Trait is lefthand")
+            // console.log("Trait is lefthand")
             for (let persoPair in sPersonality) {
                 if (sPersonality[persoPair].trait1.label === trait){
                     traitValue = sPersonality[persoPair].value
-                    console.log("Trait value:",traitValue)
+                    // console.log("Trait value:",traitValue)
                 }
             }
         } else if (personalityTraitList.righthand.includes(trait)){
-            console.log("Trait is lefthand")
+            // console.log("Trait is righthand")
             for (let persoPair in sPersonality) {
                 if (sPersonality[persoPair].trait2.label === trait){
                     traitValue = 20 - sPersonality[persoPair].value
-                    console.log("Trait value:",traitValue)
+                    // console.log("Trait value:",traitValue)
                 }
             }
         }
-        console.log("Value of",trait,"trait is",traitValue)
+        // console.log("Value of",trait,"trait is",traitValue)
         return traitValue
     }
 
@@ -318,13 +331,13 @@ export default function CharacterSheet(props) {
                 
                 for (let trait in religiousTraits){
                     if (getPersonalityTraitValue(religiousTraits[trait])<16){
-                        console.log(trait,"is less than 16. isReligious = false")
+                        // console.log(trait,"is less than 16. isReligious = false")
                         isReligious = false
                     }
                 }
             }
         }
-        console.log("isReligious:",isReligious)
+        // console.log("isReligious:",isReligious)
 
         let religiousBonuses = {}
 
@@ -367,6 +380,22 @@ export default function CharacterSheet(props) {
         const influence = (influenceMod < 0 ) ? influenceMod : "+"+influenceMod
 
 
+        if (!(sHealth.CHP)) {
+            sHealth.CHP = totalHitPoints
+            console.log("Full hit points:", sHealth.CHP)
+            
+            let totalWounds = 0
+            sWounds.forEach(wound=>{
+                if (wound.value) {
+                    totalWounds += wound.value
+                }
+            })
+            console.log("All wounds:", totalWounds)
+            
+            sHealth.CHP -= totalWounds
+            console.log("Current hit points:", sHealth.CHP)
+        }
+        
         return ([
             {label:"Influence mod.", value: influence},
             {label:"Damage", value: damage},
@@ -384,8 +413,17 @@ export default function CharacterSheet(props) {
         console.log("event.target:",event.target)
         console.log("event.target.group:",event.target.group)
         console.log("event.target.name:",event.target.name)
-        
+        console.log("event.target.field:",event.target.field)
+
+        let field = "isTicked"
         let group = event.target.name
+
+        if (group.includes("health")) {
+            field = group.slice(group.lastIndexOf(".")+1)
+            group = group.slice(0,group.lastIndexOf("."));
+        }
+
+
         if (event.target.name === "armour") {
             console.log("ticked an armour box. Updating total")
             group = event.target.name
@@ -402,10 +440,11 @@ export default function CharacterSheet(props) {
 
         const payload = {
             group: group,
-            field: "isTicked",
+            field: field,
             value: event.target.checked,
             fieldId: fieldId
         }
+        console.log("CHARACTERSHEET :: handleBoxTick: saving payload:",payload)
         props.saveEdit(payload);
         
         
@@ -444,17 +483,17 @@ export default function CharacterSheet(props) {
 
 
     function calcArmourValue() {
-        console.log("calculating current armour value")
+        // console.log("calculating current armour value")
         const equippedArmour = sArmour.filter(a=>a.isTicked).map(a=>a.value)
         let sumArmour = 0;
-        console.log("equippedArmour:",equippedArmour)
+        // console.log("equippedArmour:",equippedArmour)
         if (equippedArmour.length>0){
             sumArmour = equippedArmour.reduce((a,b)=>a+b);
         }
         if (isChivalrous()) {
             sumArmour += 3
         }
-        console.log("new armour value is:",sumArmour)
+        // console.log("new armour value is:",sumArmour)
         return sumArmour;
     }
 
@@ -463,16 +502,16 @@ export default function CharacterSheet(props) {
         let chivTotal = 0
         
         for (let trait in sPersonality) {
-            console.log("Trait:",sPersonality[trait])
+            // console.log("Trait:",sPersonality[trait])
             if (chivTraits.includes(_.capitalize(sPersonality[trait].trait1.label))){
-                console.log("Chivalrous trait found. Value:",sPersonality[trait].value)
+                // console.log("Chivalrous trait found. Value:",sPersonality[trait].value)
                 chivTotal += sPersonality[trait].value
-                console.log("New chivalrous total:",chivTotal)
+                // console.log("New chivalrous total:",chivTotal)
 
             }
         }
 
-        console.log("Chivalry total:",chivTotal)
+        // console.log("Chivalry total:",chivTotal)
         if (chivTotal > 80){
             return true
         } else {
@@ -498,7 +537,8 @@ export default function CharacterSheet(props) {
                     <div className="charsheet-box">
                         {sPersonalInfo.map((item, index)=>{
                             return (
-                                <Row key={item._id+"_row"} className="lv-pair">
+                                <Container  key={characterId+"_"+sPersonalInfo+"_"+index}>
+                                <Row key={item._id+"_"+index+"_row"} className="lv-pair">
                                     <Col xs={6} lg={6} className="char-col-left">
                                         <ViewEdit
                                             key={item._id+"_lab_"+index} 
@@ -534,6 +574,7 @@ export default function CharacterSheet(props) {
                                         />
                                     </Col>            
                                 </Row>
+                                </Container>
                             )
                         })}
                         <Row  className="lv-pair">
@@ -560,7 +601,7 @@ export default function CharacterSheet(props) {
                     <div key="distinctiveFeatures" className="charsheet-box">
                         {arDistinctiveFeatures.map((item, index)=>{
                             return (
-                                <Col xs={12} className="ghost-div">
+                                <Col key={"distFeat_"+index} xs={12} className="ghost-div">
                                     <ViewEdit
                                         key={"dF_"+index} 
                                         id={"dF_"+index} 
@@ -636,7 +677,7 @@ export default function CharacterSheet(props) {
                     <div key="equipment" className="charsheet-box">
                         {arEquipment.map((item, index)=>{
                             return (
-                                    <Col xs={12} className=" ghost-div">
+                                    <Col key={"eqpt_"+index} xs={12} className="ghost-div">
                                         <ViewEdit
                                             key={"equip_"+index} 
                                             id={"equip_"+index} 
@@ -701,7 +742,7 @@ export default function CharacterSheet(props) {
                     <div key="statistics" className="charsheet-box">
                         {sStatistics.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row  key={"stat_"+index} className="lv-pair">
                                     <Col xs={6} lg={6} className="char-col-left">
                                     
                                         <ViewEdit
@@ -738,7 +779,7 @@ export default function CharacterSheet(props) {
                         <hr className="double-hr" />
                         {derivedStats().map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"dervStat_"+index} className="lv-pair">
                                     <Col xs={6} lg={6} className="char-col-left">
                                         <ViewEdit
                                             key={"derivedStats_lab"+index} 
@@ -767,6 +808,147 @@ export default function CharacterSheet(props) {
                             )
                         })}
                     </div>
+                    <h6>Health</h6>
+                    <div className="charsheet-box">
+                        <h5 className="armour-total">Current Hit Points: {sHealth.CHP}</h5>
+                        
+                        {/* <Row className="aligned-div" noGutters={true}> */}
+                        <Row className="aligned-div lv-pair small-text" >
+                            <Col xs={6} className="char-col-left">
+                                <Row className="lv-pair" noGutters={true}>
+                                    <Col xs={9} className="char-col-left">
+                                        <p className="">Unconscious</p>
+                                    </Col>
+                                    <Col xs={3} className="char-col-right centered-box">
+                                        <p>{99}</p>
+                                    </Col>
+                                </Row>
+                                <Row className="lv-pair" noGutters={true}>
+                                    <Col xs={9} className="char-col-left">
+                                        <p className="">Unhealthy</p>
+                                    </Col>
+                                    <Col xs={3} className="centered-box char-col-right" >
+                                        <input 
+                                            type="checkbox" 
+                                            id={sHealth._id}
+                                            name="health.unhealthy" 
+                                            field="checkBox"
+                                            onClick={(event)=>{console.log("Box ticked:",event.target.name);handleBoxTick(event, sHealth._id)}}
+                                            defaultChecked={getNested(characterSheetData,"health","unhealthy")?getNested(characterSheetData,"health","unhealthy"):false}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col xs={6} className="char-col-right">
+                                <Row className="lv-pair" noGutters={true}>
+                                    <Col xs={9} className="char-col-left">
+                                        <p className="">Total HP</p>
+                                    </Col>
+                                    <Col xs={3} className="char-col-right centered-box" >
+                                        <p>{99}</p>
+                                    </Col>
+                                </Row>
+                                <Row className="lv-pair" noGutters={true}>
+                                    <Col xs={9} className="char-col-left">
+                                        <p className="">Chirurgery</p>
+                                    </Col>
+                                    <Col xs={3} className="centered-box char-col-right" >
+                                        <input 
+                                            type="checkbox" 
+                                            id={sHealth._id}
+                                            name="health.chirurgeryReceived" 
+                                            field="checkBox"
+                                            onClick={(event)=>{console.log("Box ticked:",event.target.name);handleBoxTick(event, sHealth._id)}} 
+                                            defaultChecked={sHealth.chirurgeryReceived}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <hr className="double-hr" />
+                        {/* <Row className="lv-headers" noGutters={true}> */}
+                        <Row className="lv-headers" >
+                            <Col xs={2} className="tick_col">
+                            <FontAwesomeIcon icon={faHandHoldingMedical} />
+                            </Col>
+                            <Col xs={8} className="lab_col">
+                                <p>Wound</p>
+                            </Col>
+                            <Col xs={2} className="val_col">
+                                <p>HP</p>
+                            </Col>
+                        </Row>
+                        {sWounds.map((item, index)=>{
+                            return (
+                                <Row key={"wound_"+index} className="lv-pair">
+                                <Col xs={1} lg={1} className="tick_col">
+                                        <input 
+                                            type="checkbox" 
+                                            id={item._id} 
+                                            name="health.wounds.firstAid" 
+                                            field="checkBox"
+                                            className="centered-box" 
+                                            onClick={(event)=>{console.log("Box ticked:",event.target.name);handleBoxTick(event, item._id)}} 
+                                            defaultChecked={item.firstAid}
+                                        />
+                                    </Col>
+                                    <Col xs={9} lg={9} className="label_col">
+                                        <ViewEdit
+                                            key={item._id+"_lab"} 
+                                            id={item._id+"_lab"}
+                                            fieldId={item._id}
+                                            group="health.wounds"
+                                            field="label"
+                                            value={item.label || ''}
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
+                                        />
+                                        </Col>
+                                    <Col xs={2} lg={2} className="value_col">
+                                        <ViewEdit
+                                            key={item._id+"_val"} 
+                                            id={item._id+"_val"}
+                                            fieldId={item._id}
+                                            group="health.wounds"
+                                            field="value"
+                                            value={item.value || 0}
+                                            placeHolderText="0"
+                                            addWindowClickListener={addWindowClickListener}
+                                            removeWindowClickListeners={removeWindowClickListeners}
+                                            editInProgress={editInProgress}
+                                            setEditInProgress={setEditInProgress}
+                                            saveEdit={props.saveEdit}
+                                            deleteEntry={props.deleteEntry}
+                                        />    
+                                    </Col>
+                                    
+                                </Row>
+                            )
+                        })}
+                        <Row  className="lv-pair">
+                            <Col>
+                                <ViewEdit
+                                    key={"wound_new_lab"} 
+                                    id={"wound_new_lab"}
+                                    fieldId={''}
+                                    group="health.wounds"
+                                    field="label"
+                                    value={''}
+                                    placeHolderText="Click to add wound"
+                                    addWindowClickListener={addWindowClickListener}
+                                    removeWindowClickListeners={removeWindowClickListeners}
+                                    editInProgress={editInProgress}
+                                    setEditInProgress={setEditInProgress}
+                                    saveEdit={props.saveEdit}
+                                    deleteEntry={props.deleteEntry}
+                                />
+                            </Col>
+                        </Row>
+                    </div>
                     <h6>Armour</h6>
                     <div className="charsheet-box">
                         <h5 className="armour-total">Current Armour: {armourVal || 0}</h5>
@@ -784,14 +966,14 @@ export default function CharacterSheet(props) {
                         </Row>
                         {sArmour.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"armour_"+index} className="lv-pair">
                                 <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id} 
                                             name="armour" 
                                             field="checkBox"
-                                            className="entry_tick" 
+                                            className="centered-box" 
                                             onClick={(event)=>{console.log("Box ticked:",event.target.name);handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
@@ -872,14 +1054,14 @@ export default function CharacterSheet(props) {
                         <h6>Directed Traits</h6>
                         {arDirectedTraits.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"dirTrait_"+index} className="lv-pair">
                                     <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
                                             name="directedTraits" 
                                             field="checkBox"
-                                            className="entry_tick" 
+                                            className="centered-box" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
@@ -945,14 +1127,14 @@ export default function CharacterSheet(props) {
                     <div className="charsheet-box">
                         {sPassions.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"passion_"+index} className="lv-pair">
                                     <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
                                             name="passions" 
                                             field="checkBox"
-                                            className="entry_tick" 
+                                            className="centered-box" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
@@ -1046,14 +1228,14 @@ export default function CharacterSheet(props) {
                     <div key="combatSkills" className="charsheet-box">
                         {sCombatSkillsGeneral.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"cSkillGen_"+index} className="lv-pair">
                                     <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
                                             name="combatSkills.general" 
                                             field="checkBox"
-                                            className="entry_tick" 
+                                            className="centered-box" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
@@ -1116,14 +1298,14 @@ export default function CharacterSheet(props) {
                         <hr className="double-hr" />
                         {sCombatSkillsWeapons.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"cSkillWeap_"+index} className="lv-pair">
                                     <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
                                             name="combatSkills.weapons"
                                             field="checkBox" 
-                                            className="entry_tick" 
+                                            className="centered-box" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
@@ -1189,14 +1371,14 @@ export default function CharacterSheet(props) {
                         
                             {sSkills.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"skill_"+index} className="lv-pair">
                                 <Col xs={1} lg={1} className="tick_col">
                                         <input 
                                             type="checkbox" 
                                             id={item._id+"_tick"} 
                                             name="skills" 
                                             field="checkBox"
-                                            className="entry_tick" 
+                                            className="centered-box" 
                                             onClick={(event)=>{handleBoxTick(event, item._id)}} 
                                             defaultChecked={item.isTicked}
                                         />
@@ -1298,7 +1480,7 @@ export default function CharacterSheet(props) {
                         </Row>
                         {sHistory.map((item, index)=>{
                             return (
-                                <Row  className="lv-pair">
+                                <Row key={"hist_"+index} className="lv-pair">
                                     <Col xs={2} className="year_col">
                                         <ViewEdit
                                             key={item._id+"_val"+index} 

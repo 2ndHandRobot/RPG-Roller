@@ -9,7 +9,7 @@ import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ViewEdit(props) {
-    console.log("LOADING ViewEditPersonality. Props: ", JSON.stringify(props));
+    // console.log("LOADING ViewEditPersonality. Props: ", JSON.stringify(props));
 
         function personalityObj (traitsObj) {
 
@@ -42,7 +42,7 @@ export default function ViewEdit(props) {
         }
 
         function changeValue(direction){
-            console.log("DOING THIS: changeValue (",direction,")")
+            // console.log("DOING THIS: changeValue (",direction,")")
             let newVal = props.entry.value
             if (direction==="+") {
                 
@@ -52,25 +52,25 @@ export default function ViewEdit(props) {
                 newVal--;
                 
             }
-            console.log("Setting value to ",newVal);
+            // console.log("Setting value to ",newVal);
             let newObj = props.entry;
             newObj.value = newVal
             props.saveEntry(props.group, props.entry._id, newObj, "trait");
         }
 
         function handleBoxTick(event){
-            console.log("Handling Tick Event.")
-            console.log("checked:",event.target.checked)
+            // console.log("Handling Tick Event.")
+            // console.log("checked:",event.target.checked)
             
             if (event.target.name === 'tick1') {
                 personalityPair.tick1=event.target.checked;
-                console.log("personalityPair.tick1:",personalityPair.tick1)
+                // console.log("personalityPair.tick1:",personalityPair.tick1)
                 let newObj = props.entry;
                 newObj.trait1.isTicked = personalityPair.tick1
                 props.saveEntry(props.group, props.entry._id, newObj, "trait");
             } else if (event.target.name === 'tick2') {
                 personalityPair.tick2=event.target.checked;
-                console.log("personalityPair.tick2:",personalityPair.tick2);
+                // console.log("personalityPair.tick2:",personalityPair.tick2);
                 let newObj = props.entry;
                 newObj.trait2.isTicked = personalityPair.tick2
                 props.saveEntry(props.group, props.entry._id, newObj, "trait");
@@ -93,9 +93,9 @@ export default function ViewEdit(props) {
                 'Germanic Pagan': ['Generous', 'Proud', 'Worldly', 'Reckless', 'Indulgent'],
             }
 
-            console.log("Religious traits:",religiousTraitList[props.religion],". Looking for:",trait)
+            // console.log("Religious traits:",religiousTraitList[props.religion],". Looking for:",trait)
             const relTraits = religiousTraitList[props.religion]
-            console.log("Religious traits:",relTraits)
+            // console.log("Religious traits:",relTraits)
             let isRel = false;
             if (relTraits !== undefined){
                 isRel = relTraits.includes(_.capitalize(trait))
@@ -106,16 +106,16 @@ export default function ViewEdit(props) {
 
         function isChivalrous(trait){
             const chivalrousTraitList = ['Energetic','Generous','Just','Merciful','Modest','Valorous']
-            console.log("Chivalrous traits:",chivalrousTraitList,". Looking for:",_.capitalize(trait))
+            // console.log("Chivalrous traits:",chivalrousTraitList,". Looking for:",_.capitalize(trait))
             
             const isChiv = chivalrousTraitList.includes(_.capitalize(trait))
-            if (isChiv) {console.log(trait,"is chivalrous")}
+            // if (isChiv) {console.log(trait,"is chivalrous")}
             
             return isChiv
         }
        
         function PersonalityPair(props) {
-            console.log("buildPersonalityPair:",props.val1,"/",props.val2)
+            // console.log("buildPersonalityPair:",props.val1,"/",props.val2)
             let v1Style = {}
             let v2Style = {}
             

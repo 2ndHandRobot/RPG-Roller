@@ -23,24 +23,24 @@ class AuxList extends React.Component {
         }
         this.auxListName=Disp.getOpenAuxList()
         
-        console.log("AUXLIST :: CONSTRUCTING. Disp.openAuxList:",Disp.getOpenAuxList())
-        console.log("AUXLIST :: CONSTRUCTING. auxListName:",this.state.auxListName)
-        console.log("AUXLIST :: CONSTRUCTING. Disp.openAux:",Disp.getOpenAuxList(),"/",Disp.getOpenAuxId())
-        console.log("AUXLIST :: CONSTRUCTING.  : AuxList. auxList:",this.state.auxList)
+    //     console.log("AUXLIST :: CONSTRUCTING. Disp.openAuxList:",Disp.getOpenAuxList())
+    //     console.log("AUXLIST :: CONSTRUCTING. auxListName:",this.state.auxListName)
+    //     console.log("AUXLIST :: CONSTRUCTING. Disp.openAux:",Disp.getOpenAuxList(),"/",Disp.getOpenAuxId())
+    //     console.log("AUXLIST :: CONSTRUCTING.  : AuxList. auxList:",this.state.auxList)
     }
     
     static getDerivedStateFromProps(props, state){
-        console.log("AUXLIST :: MOUNTING: getDerivedStateFromProps. Setting auxList state to",Disp.getOpenAuxList()," and opening sheet for",Disp.getOpenAuxId())
+        // console.log("AUXLIST :: MOUNTING: getDerivedStateFromProps. Setting auxList state to",Disp.getOpenAuxList()," and opening sheet for",Disp.getOpenAuxId())
         function prevAuxData () {
             const auxId = Disp.getOpenAuxId()
-            console.log("AUXLIST :: MOUNTING: getting activeAuxData for:",auxId)
+            // console.log("AUXLIST :: MOUNTING: getting activeAuxData for:",auxId)
             let auxData = {_id: ''};
             if (props.auxiliaries){
                 if (props.auxiliaries[Disp.getOpenAuxList()]){
                     for (var a of props.auxiliaries[Disp.getOpenAuxList()]) {
-                        console.log("AUXLIST :: prevAuxSheet : checking if Aux:",a," has an _id of",auxId)
+                        // console.log("AUXLIST :: prevAuxSheet : checking if Aux:",a," has an _id of",auxId)
                         if (a._id===auxId) {
-                            console.log("AUXLIST :: prevAuxSheet : match found:",a.who)
+                            // console.log("AUXLIST :: prevAuxSheet : match found:",a.who)
                             auxData = a
                         }
                     }
@@ -48,23 +48,23 @@ class AuxList extends React.Component {
             } else {
                 return [];
             }
-            console.log("AUXLIST :: MOUNTING: auxData._id:",auxData._id)
+            // console.log("AUXLIST :: MOUNTING: auxData._id:",auxData._id)
             return auxData;
         }
 
         function prevAuxListData () {
             const list = Disp.getOpenAuxList()
-            console.log("AUXLIST :: MOUNTING: getting AuxListData for:",list)
+            // console.log("AUXLIST :: MOUNTING: getting AuxListData for:",list)
             if (props.auxiliaries){
                 if (props.auxiliaries[list]) {
                 const auxListData = 
                     props.auxiliaries[list].map(aux=>{
-                        console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
+                        // console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
                         const lab = aux.who[0].label
                         const val = aux.who[0].value
                         return ({[lab]:val, auxId:aux._id})
                     })
-                console.log("AUXLIST :: auxListData:",auxListData)
+                // console.log("AUXLIST :: auxListData:",auxListData)
                 return auxListData
                 } else {
                     return [];
@@ -73,20 +73,20 @@ class AuxList extends React.Component {
                 return [];
             }
         }
-        console.log("AUXLIST :: MOUNTING: restored states. auxList:",prevAuxListData(),", activeAuxId:", Disp.getOpenAuxId(),", activeAuxData:", prevAuxData())
+        // console.log("AUXLIST :: MOUNTING: restored states. auxList:",prevAuxListData(),", activeAuxId:", Disp.getOpenAuxId(),", activeAuxData:", prevAuxData())
         return ({auxList:prevAuxListData(), activeAuxId: Disp.getOpenAuxId(),activeAuxData: prevAuxData()})
         // this.setState({auxList:this.getAuxListData(Disp.getOpenAuxList()),activeAuxId: Disp.getOpenAuxId()})
     }
 
     changeAuxList(list){
-        console.log("AUXLIST :: DOING: changeAuxList:",list)
+        // console.log("AUXLIST :: DOING: changeAuxList:",list)
         if (this.auxListName !== list){
             this.auxListName = list
-            console.log("AUXLIST :: setting openAux to",list,"/''")
+            // console.log("AUXLIST :: setting openAux to",list,"/''")
             Disp.setOpenAuxList(list)
-            console.log("AUXLIST :: Disp.openAux is now",Disp.getOpenAuxList(),"/",Disp.getOpenAuxId());
+            // console.log("AUXLIST :: Disp.openAux is now",Disp.getOpenAuxList(),"/",Disp.getOpenAuxId());
             Disp.setOpenAuxId('')
-            console.log("AUXLIST :: Disp.openAux is now",Disp.getOpenAuxList(),"/",Disp.getOpenAuxId());
+            // console.log("AUXLIST :: Disp.openAux is now",Disp.getOpenAuxList(),"/",Disp.getOpenAuxId());
             // const auxListData = 
             // this.props.auxiliaries[list].map(aux=>{
             //     console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
@@ -106,7 +106,7 @@ class AuxList extends React.Component {
     }
 
     getAuxListData(list){
-        console.log("AUXLIST :: DOING: getAuxListData for:",list)
+        // console.log("AUXLIST :: DOING: getAuxListData for:",list)
         // if (this.auxListName !== list){
         //     this.auxListName = list
         //     console.log("AUXLIST :: setting openAux to",list,"/''")
@@ -117,12 +117,12 @@ class AuxList extends React.Component {
             if (this.props.auxiliaries[list]) {
             const auxListData = 
                 this.props.auxiliaries[list].map(aux=>{
-                    console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
+                    // console.log("AUXLIST :: comparing auxiliaries, this aux:",aux)
                     const lab = aux.who[0].label
                     const val = aux.who[0].value
                     return ({[lab]:val, auxId:aux._id})
                 })
-            console.log("AUXLIST :: auxListData:",auxListData)
+            // console.log("AUXLIST :: auxListData:",auxListData)
             return auxListData
             } else {
                 return [];
@@ -133,13 +133,13 @@ class AuxList extends React.Component {
     handleAuxClick(auxId){
         console.log("AUXLIST :: DOING: handleAuxClick. auxId:",auxId)
         if (this.state.activeAuxData._id===auxId){
-            console.log("AUXLIST :: handleAuxClick : Aux ",auxId,"clicked twice: closing sheet")
+            // console.log("AUXLIST :: handleAuxClick : Aux ",auxId,"clicked twice: closing sheet")
             Disp.setOpenAuxId('')
             this.setState({activeAuxId:''});
         } else {
-            console.log("AUXLIST :: handleAuxClick : Aux ",auxId,"clicked: opening sheet")
+            // console.log("AUXLIST :: handleAuxClick : Aux ",auxId,"clicked: opening sheet")
             Disp.setOpenAuxId(auxId)
-            console.log("AUXLIST :: handleAuxClick : Disp auxId set to",Disp.getOpenAuxId())
+            // console.log("AUXLIST :: handleAuxClick : Disp auxId set to",Disp.getOpenAuxId())
             this.selectAuxSheet()
         }
     }
@@ -152,9 +152,9 @@ class AuxList extends React.Component {
         
         if (this.props.auxiliaries[this.auxListName]){
             for (var a of this.props.auxiliaries[this.auxListName]) {
-                console.log("AUXLIST :: selectAuxSheet : checking Aux:",a)
+                // console.log("AUXLIST :: selectAuxSheet : checking Aux:",a)
                 if (a._id===newAuxId) {
-                    console.log("AUXLIST :: selectAuxSheet : match found:",a.who)
+                    // console.log("AUXLIST :: selectAuxSheet : match found:",a.who)
                     activeAuxData = a
                     this.setState({activeAuxId:newAuxId , activeAuxData:activeAuxData});
                 }
@@ -163,14 +163,14 @@ class AuxList extends React.Component {
     }  
 
     getAuxData(auxId){
-        console.log("AUXLIST :: DOING: getActiveAuxData for:",auxId)
+        // console.log("AUXLIST :: DOING: getActiveAuxData for:",auxId)
         let auxData = {};
         
         if (this.props.auxiliaries[this.auxListName]){
             for (var a of this.props.auxiliaries[this.auxListName]) {
-                console.log("AUXLIST :: getAuxData : checking Aux:",a)
+                // console.log("AUXLIST :: getAuxData : checking Aux:",a)
                 if (a._id===auxId) {
-                    console.log("AUXLIST :: getAuxData : match found:",a.who)
+                    // console.log("AUXLIST :: getAuxData : match found:",a.who)
                     auxData = a
                 }
             }
@@ -182,11 +182,10 @@ class AuxList extends React.Component {
     // returnAuxSheet(activeAuxData){
     returnAuxSheet(){
         console.log("AUXLIST :: returnAuxSheet : activeAuxData:",this.state.activeAuxData)
-        console.log("AUXLIST :: returnAuxSheet : aux render check: (this.state.activeAuxData._id!=='') =",this.state.activeAuxData._id!=='')
         if (this.state.activeAuxData._id!==''){
             switch (this.auxListName){
                 case "animals":
-                    console.log("AUXLIST :: returnAuxSheet : Animals aux selected. Returning sheet for render...")
+                    // console.log("AUXLIST :: returnAuxSheet : Animals aux selected. Returning sheet for render...")
                     return (
                         <Animal
                             data={this.state.activeAuxData} 
@@ -201,7 +200,7 @@ class AuxList extends React.Component {
                     )
                     // break;
                 case "followers":
-                    console.log("AUXLIST :: returnAuxSheet : Followers aux selected. Returning sheet for render...")
+                    // console.log("AUXLIST :: returnAuxSheet : Followers aux selected. Returning sheet for render...")
                     return (
                         <Follower
                             data={this.state.activeAuxData} 
@@ -216,7 +215,7 @@ class AuxList extends React.Component {
                     )
                     // break;
                     case "familyMembers":
-                        console.log("AUXLIST :: returnAuxSheet : FamilyMembers aux selected. Returning sheet for render...")
+                        // console.log("AUXLIST :: returnAuxSheet : FamilyMembers aux selected. Returning sheet for render...")
                     return (
                         <FamilyMember
                             data={this.state.activeAuxData} 
@@ -252,8 +251,8 @@ class AuxList extends React.Component {
     
     render(){
 
-        console.log("AUXLIST :: RENDER: this.state.activeAuxData._id:",this.state.activeAuxData._id,". Sheet display check:",((this.state.activeAuxData._id!=='')&&(this.returnAuxSheet())))
-        console.log("AUXLIST :: RENDER: state at render:",this.state)
+        // console.log("AUXLIST :: RENDER: this.state.activeAuxData._id:",this.state.activeAuxData._id,". Sheet display check:",((this.state.activeAuxData._id!=='')&&(this.returnAuxSheet())))
+        // console.log("AUXLIST :: RENDER: state at render:",this.state)
         return (
             <Row className="auxsheet-box" >
             <Col xs={12} lg={4}>

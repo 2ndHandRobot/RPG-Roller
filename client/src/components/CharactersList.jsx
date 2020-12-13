@@ -23,7 +23,7 @@ export default function CharactersList(props) {
                     {props.listData.isOwner
                     && props.listData.isOwner.map((char, index)=>{
                         return( 
-                            <div>
+                            <div key={"isOwner_"+index}>
                                 <button 
                                     key={"own_"+index}  
                                     type="button" 
@@ -55,7 +55,7 @@ export default function CharactersList(props) {
                         {props.listData.canEdit
                             && props.listData.canEdit.map((char, index)=>{
                                 return( 
-                                    <div>
+                                    <div key={"canEdit_"+index}>
                                         <button 
                                             key={"edit_"+index}  
                                             type="button" 
@@ -91,7 +91,7 @@ export default function CharactersList(props) {
                             {props.listData.viewOnly
                             && props.listData.viewOnly.map((char, index)=>{
                                 return( 
-                                    <div>
+                                    <div key={"viewOnly_"+index}>
                                         <button 
                                             key={"view_"+index}  
                                             type="button" 

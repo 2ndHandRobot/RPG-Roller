@@ -167,7 +167,7 @@ export default function Access(props) {
                     <div className="login-field">
                         <input 
                             className="password" 
-                            type={!showPass&&"password"}
+                            type={!showPass?"password":"text"}
                             name="passwd" 
                             id="passwd" 
                             placeholder="enter password" 
@@ -179,7 +179,7 @@ export default function Access(props) {
                             <input
                                 // className={regMode ? "password" : "password hidden"}
                                 name="pass-val"
-                                type={!showPass&&"password"}
+                                type={!showPass?"password":"text"}
                                 id="password-validation"
                                 placeholder="confirm password"
                                 onChange={handleChange} 
@@ -203,8 +203,8 @@ export default function Access(props) {
                     className="btn btn-primary shadow-none login-btn"
                     type="button"
                     id="reg-button"
-                    dataToggle="collapse"
-                    dataTarget="#password-validation"
+                    data-toggle="collapse"
+                    data-target="#password-validation"
                     aria-expanded={regMode}
                     aria-controls="password-validation"
                     onClick={handleRegClick}

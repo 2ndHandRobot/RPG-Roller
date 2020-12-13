@@ -165,9 +165,9 @@ export default function Roller(props){
                 // console.log("Saved set:", JSON.stringify(props.set));
 
                 return (
-                    props.set.map(set=>{
+                    props.set.map((set,index)=>{
                         return (
-                            <div className="saved-dice">
+                            <div key={"diceSet_"+index} className="saved-dice">
                                 <button type="button" className="dice-button" onClick={()=>rollDice(set)}>{diceSetString(set)}</button>
                                 <button type="button" className="dice-button" onClick={()=>removeSet(set)}>-</button>
                             </div>
@@ -195,9 +195,9 @@ export default function Roller(props){
                     
                         <h2>Roller</h2>
                         
-                        <label for="add-dice">Add a Die:</label>
+                        <label htmlFor="add-dice">Add a Die:</label>
                         <div className="die-input-div">
-                            <input type="number" className="die-input" min="2" id="add-dice" onChange={handeDiceInput} onKeyPress={handleKeyPress} value={diceInput} autocomplete="off"></input>
+                            <input type="number" className="die-input" min="2" id="add-dice" onChange={handeDiceInput} onKeyPress={handleKeyPress} value={diceInput} autoComplete="off"></input>
                         </div>
                         <button type="button" onClick={clearDice}>clear</button>                        
                         <button type="button" onClick={()=>{saveDice(diceSet)}}>save</button>
@@ -229,8 +229,8 @@ export default function Roller(props){
                     </div>
             </Row>
             <Row className="roller-row">
-            <hr />
-                        <DiceSets type="button" set={savedDiceSets}/>
+                <hr />
+                <DiceSets key="dice-sets" type="button" set={savedDiceSets}/>
             </Row>
         </Container>
     )

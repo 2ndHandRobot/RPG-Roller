@@ -1,7 +1,9 @@
 html {background-color: rgb(245, 245, 235);}
 
 p {
-  margin: 0;  overflow-wrap: break-word;
+  margin: 0; 
+  padding: 0 3px;
+  overflow-wrap: break-word;
 }
 .Charsheet h3 {
   font-family: 'MedievalSharp', cursive;
@@ -253,7 +255,9 @@ footer {
   align-items: center;
 }
 
-
+.small-text {
+  font-size: .8rem;
+}
 
 .pt-pair {
   margin: 0;
@@ -435,6 +439,15 @@ footer {
 }
 .tick_col {
   padding: 0 5px 0 15px;
+}
+
+.tickbox {
+  vertical-align: middle;
+  text-align: center;
+}
+.centered-box {
+  vertical-align: middle;
+  text-align: center;
 }
 
 .label_col {
