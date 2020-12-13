@@ -255,6 +255,11 @@ footer {
   align-items: center;
 }
 
+.pad-contents > * {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
 .small-text {
   font-size: .8rem;
 }
@@ -405,6 +410,7 @@ footer {
 
 .aligned-div {
   display: flex;
+  vertical-align: middle;
 }
 
 .icon-pair {
@@ -437,9 +443,7 @@ footer {
   display: block;
   font-size: 1rem;
 }
-.tick_col {
-  padding: 0 5px 0 15px;
-}
+
 
 .tickbox {
   vertical-align: middle;
@@ -448,6 +452,10 @@ footer {
 .centered-box {
   vertical-align: middle;
   text-align: center;
+}
+
+.tick_col {
+  padding: 0 5px 0 15px;
 }
 
 .label_col {

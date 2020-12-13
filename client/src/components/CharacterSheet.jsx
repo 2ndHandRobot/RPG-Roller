@@ -10,7 +10,7 @@ import Reserves from './Reserves';
 import ViewEditPersonality from './ViewEditPersonality';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShieldAlt, faHandHoldingMedical, faTint, faFirstAid } from "@fortawesome/free-solid-svg-icons";
+import { faShieldAlt, faHandHoldingMedical, faDizzy, faCross } from "@fortawesome/free-solid-svg-icons";
 
 export default function CharacterSheet(props) {
     console.log("LOADING CharacterSheet. Props:",props)
@@ -181,7 +181,7 @@ export default function CharacterSheet(props) {
 
     const [editInProgress, setEditInProgress] = useState(false);
     const [_listeners, set_Listeners] = useState([]);
-    
+
     function getNested(obj, ...args) {
         return args.reduce((obj, level) => obj && obj[level], obj)
     }
@@ -379,6 +379,8 @@ export default function CharacterSheet(props) {
         const influenceMod = Math.min((Math.ceil(APP/3)-4),10)
         const influence = (influenceMod < 0 ) ? influenceMod : "+"+influenceMod
 
+        sHealth.unconscious = unconscious
+        sHealth.THP = totalHitPoints
 
         if (!(sHealth.CHP)) {
             sHealth.CHP = totalHitPoints
@@ -810,17 +812,20 @@ export default function CharacterSheet(props) {
                     </div>
                     <h6>Health</h6>
                     <div className="charsheet-box">
-                        <h5 className="armour-total">Current Hit Points: {sHealth.CHP}</h5>
+                        <h5 className="armour-total">Current Hit Points: {sHealth.CHP} <span className="pad-contents">{(sHealth.CHP < sHealth.unconscious)&&<FontAwesomeIcon icon={faDizzy} />} {(sHealth.CHP < 1)&&<FontAwesomeIcon icon={faCross} />}</span></h5>
                         
                         {/* <Row className="aligned-div" noGutters={true}> */}
                         <Row className="aligned-div lv-pair small-text" >
                             <Col xs={6} className="char-col-left">
                                 <Row className="lv-pair" noGutters={true}>
                                     <Col xs={9} className="char-col-left">
-                                        <p className="">Unconscious</p>
+                                        <div className="aligned-div">
+                                            
+                                            <p className="">Unconscious</p>
+                                        </div>
                                     </Col>
                                     <Col xs={3} className="char-col-right centered-box">
-                                        <p>{99}</p>
+                                        <p>{sHealth.unconscious}</p>
                                     </Col>
                                 </Row>
                                 <Row className="lv-pair" noGutters={true}>
@@ -842,10 +847,13 @@ export default function CharacterSheet(props) {
                             <Col xs={6} className="char-col-right">
                                 <Row className="lv-pair" noGutters={true}>
                                     <Col xs={9} className="char-col-left">
-                                        <p className="">Total HP</p>
+                                        <div className="aligned-div">
+                                            
+                                            <p className="">Total HP</p>
+                                        </div>
                                     </Col>
                                     <Col xs={3} className="char-col-right centered-box" >
-                                        <p>{99}</p>
+                                        <p>{sHealth.THP}</p>
                                     </Col>
                                 </Row>
                                 <Row className="lv-pair" noGutters={true}>
