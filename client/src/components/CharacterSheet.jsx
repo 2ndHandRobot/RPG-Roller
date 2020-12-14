@@ -372,13 +372,15 @@ export default function CharacterSheet(props) {
         }
 
         const damage = damageCalculation
-        const healRate = Math.round((STR + CON) / 10) + (religiousBonuses.healRate || 0)
-        const moveRate = Math.round((STR + DEX) / 10) + (religiousBonuses.moveRate || 0)
-        const totalHitPoints = SIZ + CON + (religiousBonuses.totalHitPoints || 0)
-        const unconscious = Math.round((SIZ+CON) / 4) + (religiousBonuses.unconscious || 0)
-        const influenceMod = Math.min((Math.ceil(APP/3)-4),10)
+        const healRate = Math.round((1*STR + 1*CON) / 10) + (religiousBonuses.healRate || 0)
+        const moveRate = Math.round((1*STR + 1*DEX) / 10) + (religiousBonuses.moveRate || 0)
+        const totalHitPoints = 1*SIZ + 1*CON + (religiousBonuses.totalHitPoints || 0)
+        const unconscious = Math.round((1*SIZ+1*CON) / 4) + (religiousBonuses.unconscious || 0)
+        const influenceMod = Math.min((Math.ceil(1*APP/3)-4),10)
         const influence = (influenceMod < 0 ) ? influenceMod : "+"+influenceMod
 
+        console.log("Derived stats:\nHeal:",healRate,"\nMove:",moveRate,"\nTHP:",totalHitPoints,"\nUnconscious:",unconscious)
+        
         sHealth.unconscious = unconscious
         sHealth.THP = totalHitPoints
 
@@ -812,7 +814,14 @@ export default function CharacterSheet(props) {
                     </div>
                     <h6>Health</h6>
                     <div className="charsheet-box">
-                        <h5 className="armour-total">Current Hit Points: {sHealth.CHP} <span className="pad-contents">{(sHealth.CHP < sHealth.unconscious)&&<FontAwesomeIcon icon={faDizzy} />} {(sHealth.CHP < 1)&&<FontAwesomeIcon icon={faCross} />}</span></h5>
+                        <h5 className="armour-total">
+                            Current Hit Points: 
+                            {sHealth.CHP} 
+                            <span className="pad-contents">
+                                {(sHealth.CHP < sHealth.unconscious)&&<FontAwesomeIcon icon={faDizzy} />} 
+                                {(sHealth.CHP < 1)&&<FontAwesomeIcon icon={faCross} />}
+                            </span>
+                        </h5>
                         
                         {/* <Row className="aligned-div" noGutters={true}> */}
                         <Row className="aligned-div lv-pair small-text" >
