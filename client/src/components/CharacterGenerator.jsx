@@ -3853,47 +3853,47 @@ let check = {
         let validDiceString = true;
 
         function splitString(myString){
-            console.log("splitting string:",myString)
+            // console.log("splitting string:",myString)
             let stringPieces = [];
             if (myString.length>0){
-               console.log("myString has length. Examining...")
+            //    console.log("myString has length. Examining...")
 
                if (myString.indexOf("+",1)!==-1){
-                   console.log("found '+':",myString.indexOf("+",1))
+                //    console.log("found '+':",myString.indexOf("+",1))
                    stringPieces.push(myString.slice(0,myString.indexOf("+",1)))
-                   console.log("piece added:",stringPieces)
+                //    console.log("piece added:",stringPieces)
                    let rest = myString.slice(myString.indexOf("+",1))
                    if (rest.length>0){
-                      console.log("splitting rest:",rest)
+                    //   console.log("splitting rest:",rest)
                       stringPieces.push(...splitString(rest))
                    }
                } else if (myString.indexOf("-", 1)!==-1){
-                   console.log("found '-':",myString.indexOf("-",1))
+                //    console.log("found '-':",myString.indexOf("-",1))
                    stringPieces.push(myString.slice(0,myString.indexOf("-",1)))
-                   console.log("piece added:",stringPieces)
+                //    console.log("piece added:",stringPieces)
                    let rest = myString.slice(myString.indexOf("-",1))
                    if (rest.length>0){
-                      console.log("splitting rest:",rest)
+                    //   console.log("splitting rest:",rest)
                       stringPieces.push(...splitString(rest))
                    }
                } else {
-                  console.log("No more pieces. Pushing remainder",myString,"to array.")
+                //   console.log("No more pieces. Pushing remainder",myString,"to array.")
                    stringPieces.push(myString)
                }
 
                return stringPieces;
             } else {
-               console.log("myString has no length. Returning nothing.")
+            //    console.log("myString has no length. Returning nothing.")
                return ;
             }
 
         }
-        console.log("diceString:",diceString)
+        // console.log("diceString:",diceString)
         const stringPieces=splitString(diceString)
-        console.log("diceString split:",stringPieces)
+        // console.log("diceString split:",stringPieces)
 
         stringPieces.forEach(bit=>{
-            console.log("examining bit:",bit)
+            // console.log("examining bit:",bit)
             let dIndex=-1;
             if (bit.includes("d")) {
                 dIndex = bit.indexOf("d")
@@ -3902,7 +3902,7 @@ let check = {
             }
             // console.log("dIndex:",dIndex)
             if (dIndex>-1) {
-                console.log("bit",bit," is a die")
+                // console.log("bit",bit," is a die")
                 let extractCount = 1
                 let plusMinus = 1
                 if (dIndex>0) {
@@ -3925,12 +3925,12 @@ let check = {
                     console.log("invalid dice string:",bit)
                 }
             } else {
-               console.log("bit",bit," is a bonus")
+            //    console.log("bit",bit," is a bonus")
                 if (!isNaN(bit*1)) {
                     valChange=valChange+(bit*1)
                 } else {
                     validDiceString=false
-                    console.log("invalid dice string:",bit)
+                    // console.log("invalid dice string:",bit)
                 }
             }
         })
