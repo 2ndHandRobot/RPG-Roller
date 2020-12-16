@@ -115,9 +115,10 @@ footer {
 }
 
 .label-field  {
-  /* width: 50%;
-  float: left; */
+  text-align: left;
+  vertical-align: bottom;
   border-bottom: dotted 1px;
+  display: inline-block;
 }
 
 .new-label-field  {
@@ -254,10 +255,14 @@ footer {
   display: flex;
   align-items: center;
 }
+.pad-contents {
+  padding-left: 5px;
+  /* padding-right: 1px; */
+}
 
 .pad-contents > * {
-  padding-left: 1px;
-  padding-right: 1px;
+  padding-left: 3px;
+  /* padding-right: 1px; */
 }
 
 .small-text {
