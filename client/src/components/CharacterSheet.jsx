@@ -1222,7 +1222,7 @@ export default function CharacterSheet(props) {
                         <h5 className="resSP-total label-view">Skill Points: </h5>
                         </Col>
                         <Col xs={3} className="value-col">
-                        <h5 className="value-field">
+                        <h5 style={{textAlign: "center"}}>
                             <ViewEdit
                                 key={"resSP_val"} 
                                 id={"resSP_val"}
