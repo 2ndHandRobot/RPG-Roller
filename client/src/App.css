@@ -119,6 +119,7 @@ footer {
   vertical-align: bottom;
   border-bottom: dotted 1px;
   display: inline-block;
+  height: 100%;
 }
 
 .new-label-field  {
@@ -136,6 +137,7 @@ footer {
   border-bottom: dotted 1px;
   vertical-align: bottom;
   display: inline-block;
+  height: 100%;
 }
 
 
@@ -341,6 +343,8 @@ footer {
   color: rgb(100,100,100);
   font-style: italic;
   font-size: 0.8rem;
+  border-top: 2px solid rgb(245, 245, 235);
+  /* border-bottom: 1px solid rgb(245, 245, 235); */
 }
 
 .bug {
