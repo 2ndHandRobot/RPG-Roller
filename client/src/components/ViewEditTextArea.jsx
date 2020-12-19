@@ -25,7 +25,7 @@ import _ from 'lodash';
         // console.log("LOADING ViewEdit")
         const [value, setValue] = useState(props.value)
         const [editMode, setEditMode] = useState(false)
-        const fieldId = props.name;
+        const fieldId = props.fieldId;
         
         const placeHolderText = props.placeHolderText || "click to add info"
         const canEdit = props.lockEdit ? false : true
