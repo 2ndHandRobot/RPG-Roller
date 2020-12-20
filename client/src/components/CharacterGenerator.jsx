@@ -222,7 +222,7 @@ let homelandLocate = {
     Logres: [['Uther','Anarchy'],['Boy King'],['Conquest','Romance','Tournament','Grail Quest','Twilight']],
     Saxon: [['Uther','Anarchy','Boy King','Conquest'],['Romance','Tournament','Grail Quest','Twilight']],
     Cambria: [['Uther','Anarchy','Conquest','Romance','Tournament','Grail Quest','Twilight'],['Boy King']],
-    Cumbria: [['Uther'],['Conquest','Romance','Tournament','Grail Quest','Twilight']],
+    Cumbria: [['Uther','Anarchy','Boy King'],['Conquest','Romance','Tournament','Grail Quest','Twilight']],
     'The North':[['Conquest','Romance','Tournament','Grail Quest','Twilight']],
     'Cornwall & Brittany':[['Uther','Anarchy'],['Boy King','Conquest'],['Romance','Tournament','Grail Quest','Twilight']],
     Ireland:[['Uther','Anarchy','Boy King','Conquest'],['Romance','Tournament','Grail Quest','Twilight']],
@@ -359,7 +359,7 @@ let homelandSelect = [
 
     // Cumbria objects:
     [
-        // Cumbria: Uther
+        // Cumbria: Uther, Anarchy, Boy King
         {
             2: 'Listeneisse',
             15:'Cambenet',
@@ -4319,7 +4319,7 @@ let check = {
         // reduce homesObj to only region.homelands that have a possibleHome
         let reducedHomesObj = {}
         for (let region in select.home){
-            console.log("Checking region:",region,"for homes that have culture: buildChar.culture ::",select.home[region])
+            console.log("Checking region:",region,"for homes that have pre-selected culture:",buildChar.culture,"::",select.home[region])
             let reducedHomesRegionObj = reduceSelectObj(select.home[region], possibleHomes)
             console.log("Region",region,"reduced for possibleHomes:",reducedHomesRegionObj)
             let propCount = 0
@@ -4344,7 +4344,7 @@ let check = {
                     possibleHomelands = [buildChar.homeland]
                 }
             }
-            if (possibleHomelands.legnth === 0){
+            if (possibleHomelands.length === 0){
                 console.log("Preselected homeland was invalid. Setting possibleHomelands and possibleRegions from reducedHomesObj")
                 for (let region in reducedHomesObj){
                     possibleRegions.push(region);
@@ -4357,6 +4357,19 @@ let check = {
             } else {
                 console.log("Valid Homeland preselect found. possibleHomelands narrowed to one:", possibleHomelands)
                 console.log("Possible Regions set based on preselect homeland:",possibleRegions)
+            }
+        } else {
+            for (let region in reducedHomesObj){
+                console.log("region:",region)
+                possibleRegions.push(region)
+                console.log("possibleRegions:",possibleRegions)
+                console.log("reducedHomesObj[region]:",reducedHomesObj[region])
+                let homelandsList = Object.keys(reducedHomesObj[region])
+
+                for (let homeland of homelandsList){
+                    console.log("homeland:",homeland)
+                    possibleHomelands.push(homeland)
+                }
             }
         }
         // // if there's a preselected region... 
@@ -4438,37 +4451,45 @@ let check = {
         })
         reducedHomelandLocator.region = possibleRegions;
 
-        
+        if (buildChar.hasOwnProperty("period")) {
+            if (!Object.values(possiblePeriods).includes(buildChar.period)){
+                console.log("Preselected period (",buildChar.period,") is not valid. Making random seletion")
+                buildChar.period = randomSelect(possiblePeriods).outcome;
+                console.log("BUILDCHAR:: Preselected Period replaced from possiblePeriods:",buildChar.period)
+            } else {
+                possiblePeriods = [buildChar.period]
+            }
+        } else {
+            buildChar.period = randomSelect(possiblePeriods).outcome;
+            console.log("BUILDCHAR:: Period selected from possiblePeriods:",buildChar.period)
+        }
+
 console.log("REBUILDING: Starting from buildChar:",buildChar)
 console.log("possibleRegions:",possibleRegions)
 console.log("possibleHomelands:",possibleHomelands)
 console.log("possibleHomes:",possibleHomes)
 console.log("possiblePeriods:",possiblePeriods)
 
-            if (buildChar.hasOwnProperty("period")) {
-                if (!Object.values(possiblePeriods).includes(buildChar.period)){
-                    console.log("Preselected period (",buildChar.period,") is not valid. Making random seletion")
-                    buildChar.period = randomSelect(possiblePeriods).outcome;
-                    console.log("BUILDCHAR:: Preselected Period replaced from possiblePeriods:",buildChar.period)
-                }
-            } else {
-                buildChar.period = randomSelect(possiblePeriods).outcome;
-                console.log("BUILDCHAR:: Period selected from possiblePeriods:",buildChar.period)
-            }
+        if (possibleRegions.length === 0){
+            buildChar.region = possibleRegions[0]
+        } else {
             n=0;
+            let tryRegion = buildChar.region;
             do {
-                // console.log("Random region table:",select.region[buildChar.period])
+                console.log("Random region table:",select.region[buildChar.period])
                 if (buildChar.hasOwnProperty("region")) {
                     if (!Object.values(possibleRegions).includes(buildChar.region)){
-                        buildChar.region = randomSelect(select.region[buildChar.region]).outcome
-                        console.log("BUILDCHAR:: Preselected Region replaced from possibleRegions:",buildChar.region)
+                        tryRegion = randomSelect(select.region[buildChar.region]).outcome
+                        console.log("BUILDCHAR:: Preselected Region replaced from possibleRegions:",tryRegion)
                     }
                 } else {
-                    buildChar.region = randomSelect(select.region[buildChar.period]).outcome
-                    console.log("BUILDCHAR:: Region selected from possibleRegions:",buildChar.region)
+                    tryRegion= randomSelect(select.region[buildChar.period]).outcome
+                    console.log("BUILDCHAR:: Region selected from possibleRegions:",tryRegion)
                 }
                 n++
-            } while (!(possibleRegions.includes(buildChar.region)) && n < 200)
+            } while (!(possibleRegions.includes(tryRegion)) && n < 100)
+
+            buildChar.region = tryRegion
             console.log("BUILDCHAR:: Restricted Region selected:",buildChar.region)
 
             let regionIndex = reducedHomelandLocator.region.indexOf(buildChar.region);
@@ -4478,38 +4499,54 @@ console.log("possiblePeriods:",possiblePeriods)
                     periodIndex = pIndex;
                 }
             })
+            
+        
+            
+        if (possibleHomelands.length === 0){
+            buildChar.homeland = possibleHomelands[0]
+        } else {
             n=0;
+            let tryHomeland = buildChar.homeland
             do {
                 if (buildChar.hasOwnProperty("homeland")) {
                     if (!Object.values(possibleHomelands).includes(buildChar.homeland)){
-                        buildChar.homeland = randomSelect(reducedHomelands[regionIndex][periodIndex]).outcome
-                        console.log("BUILDCHAR:: Preselected Homeland replaced from reducedHomelands:",buildChar.homeland)
+                        tryHomeland = randomSelect(reducedHomelands[regionIndex][periodIndex]).outcome
+                        console.log("BUILDCHAR:: Preselected Homeland replaced from reducedHomelands:",tryHomeland)
                     }
                 } else {
-                    buildChar.homeland = randomSelect(reducedHomelands[regionIndex][periodIndex]).outcome
-                    console.log("BUILDCHAR:: Homeland selected from reducedHomelands:",buildChar.homeland)
+                    tryHomeland = randomSelect(reducedHomelands[regionIndex][periodIndex]).outcome
+                    console.log("BUILDCHAR:: Homeland selected from reducedHomelands:",tryHomeland)
                 }
                 
                 n++
-            } while (!(possibleHomelands.includes(buildChar.homeland)) && n < 200)
+            } while (!(possibleHomelands.includes(buildChar.homeland)) && n < 100)
+            buildChar.homeland = tryHomeland
             console.log("BUILDCHAR:: Restricted Homeland selected:",buildChar.homeland)
+        }
+    }
+
+        if (possibleHomes.length === 0){
+            buildChar.home = possibleHomes[0]
+        } else {
             n=0
+            let tryHome = buildChar.home
             do {
                 if (buildChar.hasOwnProperty("home")) {
                     if (!Object.values(possibleHomes).includes(buildChar.home)){
-                        buildChar.home = randomSelect(reducedHomesObj[buildChar.region][buildChar.homeland]).outcome
-                        console.log("BUILDCHAR:: Preselected Home replaced from reducedHomes:",buildChar.home)
+                        tryHome = randomSelect(reducedHomesObj[buildChar.region][buildChar.homeland]).outcome
+                        console.log("BUILDCHAR:: Preselected Home replaced from reducedHomes:",tryHome)
                     }
                 } else {
-                    buildChar.home = randomSelect(reducedHomesObj[buildChar.region][buildChar.homeland]).outcome
-                    console.log("BUILDCHAR:: Home selected from reducedHomes:",buildChar.home)
+                    tryHome = randomSelect(reducedHomesObj[buildChar.region][buildChar.homeland]).outcome
+                    console.log("BUILDCHAR:: Home selected from reducedHomes:",tryHome)
                 }
                 // buildChar.home = randomSelect(reducedHomesObj[buildChar.region][buildChar.homeland]).outcome
                 // console.log("Random home:",buildChar.home)
                 n++
             } while (!(possibleHomes.includes(buildChar.home)) && n < 200)
+            buildChar.home = tryHome
             console.log("BUILDCHAR:: Restricted Home selected:",buildChar.home)
-
+        }
 
             if (!(buildChar.hasOwnProperty('religion'))) {
                 console.log("Religion undefined. Deriving from home/culture")
